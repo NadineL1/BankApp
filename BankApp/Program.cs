@@ -4,7 +4,7 @@
     {
         static void Main()
         {
-            
+            // INGEN LOGIK HÄR ENDAST STARTA IGÅNG APPEN :)
         }
     }
 }
