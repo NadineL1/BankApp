@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankApp
 {
-    internal class Customer : User
+    internal static class Helper
     {
     }
 }
