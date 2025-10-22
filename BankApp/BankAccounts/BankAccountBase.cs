@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankApp
+namespace BankApp.BankAccounts
 {
-    internal class SavingsAccount : BankAccount
+    public class BankAccountBase
     {
+
     }
 }

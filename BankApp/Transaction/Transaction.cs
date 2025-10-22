@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankApp
+namespace BankApp.Transaction
 {
-    internal class Admin : User
+    internal class Transaction
     {
+
     }
 }

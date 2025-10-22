@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankApp
+namespace BankApp.BankAccounts
 {
-    internal class Account
+    internal class CheckingAccount : BankAccountBase
     {
-        public decimal Balance { get; set; }
- 
-        public Guid 
+
     }
 }

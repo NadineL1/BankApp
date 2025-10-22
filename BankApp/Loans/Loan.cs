@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-namespace BankApp
+namespace BankApp.Loans
 {
     internal class Loan
     {
