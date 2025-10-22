@@ -8,5 +8,11 @@ namespace BankApp
 {
     internal class BankSystem
     {
+        // List with all users
+        // List with all accounts
+        //               transactions
+        //               Loans
+
+        // Exchangerates
     }
 }

@@ -48,6 +48,8 @@ namespace BankApp
         }
         public static void CustomerMenu(Customer customer)
         {
+            // Print overview of customer's accounts
+
             // Show list of options
             /*
                 Withdraw/deposit money( extra feature )
@@ -59,6 +61,7 @@ namespace BankApp
                 Check loans
                     Pick a loan
                          Repay loan
+                Update profile information
                 Log out
              */
             // Ask user for input on which menu option they want

@@ -9,6 +9,10 @@ namespace BankApp.Loans
 {
     internal class Loan
     {
+        // Balance 
+
+        // Interest
         
+        // Customer
     }
 }
