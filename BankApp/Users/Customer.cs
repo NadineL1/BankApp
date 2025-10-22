@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Principal;
 
 namespace BankApp.Users
 {
@@ -58,23 +59,50 @@ namespace BankApp.Users
         {
             // Call list accounts method()
             // Select BankAccount from list
-                // 
+                // PrintTransaction foreach TRansaction in BankAccount.Transaction history
         }
+        /*
         public void CheckBankAccounts()
         {
 
         }
+        */
         public void CreateBankAccount()
         {
-
+            // Confirm that the customer want to make an new account
+                // Which type of bankaccount do they want (check or savings)
+                // (Later check what currency they want the acount in)
+                // Create a BankAccount object of thr correct type
+                    // Add it to Customer AccountList, BankSystem account list
+                    // Write confirmation of the new BankAccount
         }
         public void CheckLoans()
         {
-
+            // Foreach Loan in Customer Loan list
+                // Write Loan.info
+            // (Later, maybe make the customer select a loan to make repayments)
         }
-        public void MakeLoan()
+        public void TakeoutLoan()
         {
-
+            // Ask user what account they want the money from the loan to go to
+            // Ask user the amount they want to borrow
+            // If loan amount isn't more than 5x total balance in all of customer accounts
+                // Show how much customer wants to borrow and how much extra they have to pay in interest
+                // Ask if they still want to take the loan
+                // If yes
+                    // Create Loan object
+                        // Add Loan object to Customer Loan list
+                        // Add Loan to syste Loan list
+        }
+        public void UpdateCustomerInformation()
+        {
+            // Ask what the user wants to change (mail/phone/password)
+                // Ask the user to enter new value
+                // Ask the user to enter the value again
+                // If they match
+                    // Update specified info
+                // Else
+                    // Ask if they want to try again or go back to customer menu
         }
 
 

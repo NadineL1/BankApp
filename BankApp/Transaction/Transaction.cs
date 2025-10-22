@@ -8,6 +8,18 @@ namespace BankApp.Transaction
 {
     internal class Transaction
     {
+        // BankAccounr Receiver, Sender, Value, dateTime
+
+        public void ExecuteTransaction()
+        {
+
+        }
+        public void PrintTransaction()
+        {
+            // Print: The dateTime you sent amount from sender to receiver
+        }
 
     }
+
+
 }
