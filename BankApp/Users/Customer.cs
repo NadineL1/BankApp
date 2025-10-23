@@ -112,34 +112,100 @@ namespace BankApp.Users
             Console.WriteLine("What would you like to change?");
             Console.WriteLine("1. Mail\n2. Phonenumber\n3, Password");
             string choice = Console.ReadLine();
-            if (choice == "1")
+
+            switch (choice)
             {
-                while (true)
-                {
-                    Console.WriteLine("Change mail");
-
-                    Console.WriteLine("Please enter your new mail:");
-                    string newMail1 = Console.ReadLine();
-
-                    Console.WriteLine("Please confirm yyour new mail:");
-                    string newMail2 = Console.ReadLine();
-
-                    if (newMail1 != newMail2)
+                //CHANGE EMAIL
+                case "1":
                     {
-                        Console.WriteLine("The mailnames doesn't match. Please try again.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Mail has been changed!");
+                        while (true)
+                        {
+                            Console.WriteLine("Change Email");
 
+                            Console.WriteLine("Please enter your new Email:");
+                            string newMail1 = Console.ReadLine();
+
+                            Console.WriteLine("Please confirm your new Email:");
+                            string newMail2 = Console.ReadLine();
+
+                            if (newMail1 != newMail2)
+                            {
+                                Console.WriteLine("The Emailnames does not match. Please try again.");
+                            }
+                            else
+                            {
+                                this.Email = newMail2;
+                                Console.WriteLine("Email has been changed!");
+
+                                break;
+
+                            }
+                        }
                         break;
-
                     }
-                }
+                //CHANGE PHONENUMBER
+                case "2":
+                    {
+                        while (true)
+                        {
+                            Console.WriteLine("Change Phonenumber");
+
+                            Console.WriteLine("Please enter your new phonenumber:");
+                            string newPhoneNumber1 = Console.ReadLine();
+
+                            Console.WriteLine("Please confirm your new phonenumber:");
+                            string newPhoneNumber2 = Console.ReadLine();
+
+                            if (newPhoneNumber1 != newPhoneNumber2)
+                            {
+                                Console.WriteLine("The phonenumbers does not match. Please try again.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Phonenumber has been changed!");
+                                this.PhoneNumber = newPhoneNumber2;
+                                break;
+
+                            }
+                        }
+                        break;
+                    }
+                //CHANGE PASSWORD
+                case "3":
+                    {
+                        while (true)
+                        {
+                            Console.WriteLine("Change Password");
+
+                            Console.WriteLine("Please enter your new password:");
+                            string newPassword1 = Console.ReadLine();
+
+                            Console.WriteLine("Please confirm your new password:");
+                            string newPassword2 = Console.ReadLine();
+
+                            if (newPassword1 != newPassword2)
+                            {
+                                Console.WriteLine("The passwords does not match. Please try again.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Password has been changed!");
+
+                                break;
+
+                            }
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("Invalid choice.");
+                        break;
+                    }
+            }
                 
 
-            }
-        }
+         }
 
 
 
