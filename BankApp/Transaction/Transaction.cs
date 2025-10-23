@@ -18,7 +18,6 @@ namespace BankApp.Transaction
         {
             // Print: The dateTime you sent amount from sender to receiver
         }
-
     }
 
 
