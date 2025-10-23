@@ -55,8 +55,8 @@ namespace BankApp
                     {
                         int attempts = 0;
                         bool logIn = false; //changes to true when successful login.
-                        int index = -1;
-                        int inputId = 0;
+                        int index = -1; // Start looking from zero in the UserID List.
+                        int inputId = 0; // Create a place to store the User's ID.
 
                         // Gives customer 2 attempts to enter a valid UserID.
                         while (attempts < 2 && index == -1)
