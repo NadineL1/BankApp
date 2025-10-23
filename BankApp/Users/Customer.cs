@@ -39,25 +39,25 @@ namespace BankApp.Users
             // If yes
             // Go to MakeLoan()
 
-            Console.WriteLine("Choose an account to withdrawal from:\n");
-            List<BankAccountBase> CustomerBankAccounts;
-            string choice = Console.ReadLine();
+            //Console.WriteLine("Choose an account to withdrawal from:\n");
+            //List<BankAccountBase> CustomerBankAccounts;
+            //string choice = Console.ReadLine();
 
-            if (choice == "1")
-            {
-                Console.WriteLine("Withdrawal amount:\n");
-                double withdrawal = double.Parse(Console.ReadLine());
+            //if (choice == "1")
+            //{
+            //    Console.WriteLine("Withdrawal amount:\n");
+            //    double withdrawal = double.Parse(Console.ReadLine());
 
-                if (CheckingAccount.balance >= withdrawal)
-                {
-                    CheckingAccount.balance - withdrawal;
-                    Console.WriteLine("Withdrawal confirmed!");
-                }
-                else
-                {
-                    Console.WriteLine("Error");
-                }
-            }
+            //    if (BankAccountBase.balance >= withdrawal)
+            //    {
+            //        BankAccountBase.balance -- withdrawal;
+            //        Console.WriteLine("Withdrawal confirmed!");
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Error");
+            //    }
+            //}
 
 
             

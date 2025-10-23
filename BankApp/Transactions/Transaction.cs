@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankApp.Transaction
+namespace BankApp.Transactions
 {
     internal class Transaction
     {
@@ -18,7 +18,6 @@ namespace BankApp.Transaction
         {
             // Print: The dateTime you sent amount from sender to receiver
         }
-
     }
 
 
