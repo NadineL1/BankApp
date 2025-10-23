@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Principal;
+using System.Threading.Channels;
 
 namespace BankApp.Users
 {
@@ -27,16 +28,39 @@ namespace BankApp.Users
         {
             // Call list accounts method()
             // Ask user which bankaccount to make the withdrawal from
-                // ASk user for how much to withdraw
-                // Check if customer has that much money in bankaccount
-                    // If true
-                        // Subtract asked amount from selected account.Saldo
-                        // Write confirmation of withdrawal in console
-                    // Else
-                        // Tell the user they don't have enough money in that account
-                        // Ask user if they want to take out a loan
-                        // If yes
-                            // Go to MakeLoan()
+            // ASk user for how much to withdraw
+            // Check if customer has that much money in bankaccount
+            // If true
+            // Subtract asked amount from selected account.Saldo
+            // Write confirmation of withdrawal in console
+            // Else
+            // Tell the user they don't have enough money in that account
+            // Ask user if they want to take out a loan
+            // If yes
+            // Go to MakeLoan()
+
+            Console.WriteLine("Choose an account to withdrawal from:\n");
+            List<BankAccountBase> CustomerBankAccounts;
+            string choice = Console.ReadLine();
+
+            if (choice == "1")
+            {
+                Console.WriteLine("Withdrawal amount:\n");
+                double withdrawal = double.Parse(Console.ReadLine());
+
+                if (CheckingAccount.balance >= withdrawal)
+                {
+                    CheckingAccount.balance - withdrawal;
+                    Console.WriteLine("Withdrawal confirmed!");
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+
+
+            
         }
         public void StartTransaction()
         {
