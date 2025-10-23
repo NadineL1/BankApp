@@ -6,8 +6,8 @@ namespace BankApp
     {
         static void Main()
         {
-			// Log-in metod
-			// INGEN LOGIK HÄR ENDAST STARTA IGÅNG APPEN :)
+            // Log-in metod
+            // INGEN LOGIK HÄR ENDAST STARTA IGÅNG APPEN :)
 
 		}
     }
