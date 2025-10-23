@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BankApp.BankAccounts
 {
-    internal class CheckingAccount : BankAccountBase
+    internal class CheckingsAccount 
     {
 
-    }
+
+	}
 }
