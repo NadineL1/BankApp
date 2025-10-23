@@ -13,16 +13,16 @@ namespace BankApp.Users
         public string Email { get; set; }
         private string Password { get; set; }
         public string PhoneNumber {  get; set; }
-        public bool isAdmin { get; set; }
+        public bool IsAdmin { get; set; }
 
-        public User(int userid, string name, string email, string password, string phonenumber, bool isadmin)
+        public User(int userid, string name, string email, string password, string phonenumber, bool isAdmin)
         {
             UserID = userid;
             Name = name;
             Email = email;
             Password = password;
             PhoneNumber = phonenumber;
-            isAdmin = isadmin;
+            IsAdmin = isAdmin;
 
 
         }

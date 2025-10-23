@@ -16,7 +16,7 @@ namespace BankApp.Users
         public List<BankAccountBase> CustomerBankAccounts { get; set; }
         public List<Loan> CustomerActiveLoans { get; set; }
 
-        public Customer(bool lockbool, int userId, string name, string email, string password, string phoneNumber, bool isAdmin): base(userId, name, email, password, phoneNumber, isAdmin)
+        public Customer( int userId, string name, string email, string password, string phoneNumber, bool lockbool) : base(userId, name, email, password, phoneNumber, false)
         {
             LockBool = lockbool;
             CustomerBankAccounts = new List<BankAccountBase>();
@@ -102,12 +102,43 @@ namespace BankApp.Users
         public void UpdateCustomerInformation()
         {
             // Ask what the user wants to change (mail/phone/password)
-                // Ask the user to enter new value
-                // Ask the user to enter the value again
-                // If they match
-                    // Update specified info
-                // Else
-                    // Ask if they want to try again or go back to customer menu
+            // Ask the user to enter new value
+            // Ask the user to enter the value again
+            // If they match
+            // Update specified info
+            // Else
+            // Ask if they want to try again or go back to customer menu
+
+            Console.WriteLine("What would you like to change?");
+            Console.WriteLine("1. Mail\n2. Phonenumber\n3, Password");
+            string choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                while (true)
+                {
+                    Console.WriteLine("Change mail");
+
+                    Console.WriteLine("Please enter your new mail:");
+                    string newMail1 = Console.ReadLine();
+
+                    Console.WriteLine("Please confirm yyour new mail:");
+                    string newMail2 = Console.ReadLine();
+
+                    if (newMail1 != newMail2)
+                    {
+                        Console.WriteLine("The mailnames doesn't match. Please try again.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Mail has been changed!");
+
+                        break;
+
+                    }
+                }
+                
+
+            }
         }
 
 
