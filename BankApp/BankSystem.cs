@@ -25,7 +25,7 @@ namespace BankApp
             // Lists with some default values just for testing.
             List<User> defaultUsers = new List<User>()
             {
-                new Customer(1, )
+                
             };
             /*
 
