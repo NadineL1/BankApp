@@ -149,17 +149,22 @@ namespace BankApp
         public static void AdminMenu(Admin admin) 
         {
             // Show list of options
-                /*
-                    Create user method
-                    Check customer stats
-                    Unlock user (Extra user)
-                    Update currency
-                    Interest rules( additional task)
-                    Log out
-                 */
+            /*
+                Create user method
+                Check customer stats
+                Unlock user (Extra user)
+                Update currency
+                Interest rules( additional task)
+                Log out
+             */
             // Ask user for input on which menu option they want
             // Switch case
-                // Call to method matching the selected option
+            // Call to method matching the selected option
+
+            Console.WriteLine("Welcome Admin!");
+            Console.WriteLine("What would you like to do?");
+            Console.WriteLine("[1] ");
+
         }
         public static void CustomerMenu(Customer customer)
         {
