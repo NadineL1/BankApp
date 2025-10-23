@@ -9,14 +9,21 @@ namespace BankApp.Users
     internal class User
     {
         public int UserID { get; set; }
-        public string name { get; set; }
-        public string email { get; set; }
-        private string password { get; set; }
-        public string phoneNumber {  get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        private string Password { get; set; }
+        public string PhoneNumber {  get; set; }
         public bool isAdmin { get; set; }
 
-        public User()
+        public User(int userid, string name, string email, string password, string phonenumber, bool isadmin)
         {
+            UserID = userid;
+            Name = name;
+            Email = email;
+            Password = password;
+            PhoneNumber = phonenumber;
+            isAdmin = isadmin;
+
 
         }
 

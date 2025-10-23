@@ -8,6 +8,13 @@ namespace BankApp.Users
 {
     internal class Admin : User
     {
+
+        public Admin( int userId, string name, string email, string password, string phoneNumber, bool isAdmin) : base(userId, name, email, password, phoneNumber, isAdmin)
+        {
+            
+        }
+
+
         public void CreateCustomer()
         {
             // Confirm admin wants to make a new customer

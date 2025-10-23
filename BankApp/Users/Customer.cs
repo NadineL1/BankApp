@@ -12,11 +12,16 @@ namespace BankApp.Users
 {
     internal class Customer : User
     {
-        public bool LockBool {  get; set; } = false;
+        public bool LockBool { get; set; } = false;
         public List<BankAccountBase> CustomerBankAccounts { get; set; }
         public List<Loan> CustomerActiveLoans { get; set; }
 
-        public Customer() { }
+        public Customer(bool lockbool, int userId, string name, string email, string password, string phoneNumber, bool isAdmin): base(userId, name, email, password, phoneNumber, isAdmin)
+        {
+            LockBool = lockbool;
+            CustomerBankAccounts = new List<BankAccountBase>();
+            CustomerActiveLoans = new List<Loan>();
+        }
 
         public void Withdraw()
         {
