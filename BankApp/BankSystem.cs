@@ -8,11 +8,24 @@ namespace BankApp
 {
     internal class BankSystem
     {
-        // List with all users
-        // List with all accounts
-        //               transactions
-        //               Loans
+        // List<user> AllUsers {get; set;] = new List<user>()
+        // List<BankAccountBase> AllAccounts {get; set;] = new List<BankAccountBase>()
+        // List<transaction> AllTransactions {get; set;] = new List<transaction>()
+        // List<loan> AllLoan {get; set;] = new List<loan>()
 
-        // Exchangerates
+        // public decimal ExchangeEuro {get; set;}
+
+        public BankSystem()
+        {
+            /*
+            List<User> defaultUsers = new List<Users>()
+            {
+
+            }
+
+            List<BankAccountBase> defaultAccounts =
+            */
+
+        }
     }
 }
