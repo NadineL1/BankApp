@@ -8,8 +8,8 @@ namespace BankApp
         {
             // Log-in metod
             Menu.LogInMenu();
-			// INGEN LOGIK HÄR ENDAST STARTA IGÅNG APPEN :)
+            // INGEN LOGIK HÄR ENDAST STARTA IGÅNG APPEN :)
 
-		}
+        }
     }
 }
