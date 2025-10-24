@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -163,9 +164,47 @@ namespace BankApp
 
             Console.WriteLine("Welcome Admin!");
             Console.WriteLine("What would you like to do?");
-            Console.WriteLine("[1] ");
+            Console.WriteLine("[1] Create a customer.");
+			Console.WriteLine("[2] Check customer stats.");
+            Console.WriteLine("[3] Unlock customer.");
+            Console.WriteLine("[4] Update exchange rates.");
+			Console.WriteLine("[5] Update interest rules for loans.");
+			Console.WriteLine("[6] Log out,");
 
-        }
+            string input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+					Console.WriteLine("Create customer.");
+					// call to customer
+                    break;
+                case "2":
+                    Console.WriteLine("Customer statistics:");
+                    // call method for printing statistics
+                    break;
+                case "3":
+                    Console.WriteLine("Unlock customer");
+                    // method for unlockingg
+                    break;
+                case "4":
+                    Console.WriteLine("Update exchange rates");
+                    // call to exchange rates method 
+                    break;
+                case "5":
+                    Console.WriteLine("Update interest rules");
+                    // update interest rules, loans
+                    break;
+                case "6":
+                    Console.WriteLine("Log out.");
+                    // back to login ? 
+                    break;
+                default:
+                    Console.WriteLine("Something went wrong.");
+                    break;
+            }
+
+			}
         public static void CustomerMenu(Customer customer)
         {
             // Print overview of customer's accounts
