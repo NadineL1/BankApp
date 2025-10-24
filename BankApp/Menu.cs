@@ -177,30 +177,36 @@ namespace BankApp
             {
                 case "1":
 					Console.WriteLine("Create customer.");
-					// call to customer
+                    // call to customer
+                    admin.CreateCustomer();
                     break;
                 case "2":
                     Console.WriteLine("Customer statistics:");
                     // call method for printing statistics
+                    admin.GetCustomerStatistics();
                     break;
                 case "3":
                     Console.WriteLine("Unlock customer");
                     // method for unlockingg
+                    admin.UnlockCustomerAccount();
                     break;
                 case "4":
                     Console.WriteLine("Update exchange rates");
                     // call to exchange rates method 
+                    admin.Exchangerates();
                     break;
                 case "5":
                     Console.WriteLine("Update interest rules");
                     // update interest rules, loans
+                    admin.UpdateInterestRates();
                     break;
                 case "6":
                     Console.WriteLine("Log out.");
+
                     // back to login ? 
                     break;
                 default:
-                    Console.WriteLine("Something went wrong.");
+                    Console.WriteLine("Something went wrong.Try again with a different number choice.");
                     break;
             }
 
