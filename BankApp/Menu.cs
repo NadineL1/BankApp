@@ -318,6 +318,7 @@ namespace BankApp
                     case "5":
                         Console.WriteLine("Create bank account");
                         // Call to CreateBankAccount() from Customer
+                        customer.CreateBankAccount();
                         break;
                     case "6":
                         Console.WriteLine("Make loan request.");
@@ -330,6 +331,7 @@ namespace BankApp
                     case "8":
                         Console.WriteLine("Update profile information.");
                         // Call to UpdateCustomerInformation() from Customer.
+                        customer.UpdateCustomerInformation();
                         break;
                     case "9":
                         Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
