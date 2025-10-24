@@ -1,6 +1,7 @@
 ﻿
 using BankApp.BankAccounts;
 using BankApp.Loans;
+using System.Threading;
 
 namespace BankApp.Users
 {
@@ -82,20 +83,27 @@ namespace BankApp.Users
 
             Console.Clear();
             Console.Write("Enter the amount you want to transfer: ");
-            decimal amount = Convert.ToDecimal(Console.ReadLine());
-
-            if (sender.Balance < amount) 
+            
+            if (decimal.TryParse(Console.ReadLine(), out decimal amount) && amount > 0) 
             {
-                Console.WriteLine("\nFailed to transfer! Not enough balance.");
+                if (sender.Balance < amount)
+                {
+                    Console.WriteLine("\nFailed to transfer! Not enough balance.");
+                }
+                else 
+                {
+                    //Console.WriteLine("\nPlease hold, this prossesing transaction will take 15-minutes.");
+                    // Need to make a Thread.sleep?
+
+                    sender.Balance -= amount;
+                    receiver.Balance += amount;
+                    Console.WriteLine($"\nTransfer successful! {amount} has been sent.");
+                }               
             }
-
-            // The transfering begins
-            sender.Balance -= amount;
-            receiver.Balance += amount;
-
-
-
-
+            else
+            {
+                Console.WriteLine("\nYou have entered an incorrect value.");
+            }
         }
         public void CheckTransactionHistory()
         {
