@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace BankApp.BankAccounts
 {
-    internal class CheckingsAccount 
+    internal class CheckingsAccount : BankAccountBase
     {
-
+		public CheckingsAccount(int customerID, double balance): base (customerID, balance)
+		{
+			
+		}
 
 	}
 }

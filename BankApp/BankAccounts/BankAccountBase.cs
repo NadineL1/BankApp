@@ -10,7 +10,7 @@ namespace BankApp.BankAccounts
     {
 		public int AccountNumber;
 		public double Balance { get; set; } = 0;
-		//public readonly string CustomerID;
+		public readonly int CustomerID;
 		private static int s_nextAccountNumber;
 
 		static BankAccountBase()
@@ -18,15 +18,12 @@ namespace BankApp.BankAccounts
 			Random random = new Random();
 			s_nextAccountNumber = random.Next(10000000, 20000000);
 		}
-		public BankAccountBase(/*string customerID*/double balance)
+		public BankAccountBase(int customerID,double balance)
 		{
 			this.AccountNumber = s_nextAccountNumber++;
 			this.Balance = balance;
-			//this.CustomerID = customerID;
+			this.CustomerID = customerID;
 		}
-
-
-
 
 	}
 }
