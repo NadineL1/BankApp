@@ -26,6 +26,7 @@ namespace BankApp.Users
 
         public void Withdraw()
         {
+            Console.WriteLine("Withdraws money");
             // Call list accounts method()
             // Ask user which bankaccount to make the withdrawal from
             // ASk user for how much to withdraw
@@ -64,6 +65,7 @@ namespace BankApp.Users
         }
         public void StartTransaction()
         {
+            Console.WriteLine("Starts Transaction");
             // Call list accounts method()
             // Ask user which account to make the transaction from
                 // Ask user what account to make the transaction to internal or external
@@ -78,6 +80,7 @@ namespace BankApp.Users
 
         public void MakeTransaction(BankAccountBase sender, BankAccountBase receiver)
         {
+            Console.WriteLine("Makes Transaction");
             // Ask user how much money to transact
                 // Check if account has the money to do so
                     // (This should be delayed 15 min, we'll look at that in week 2)
@@ -86,6 +89,7 @@ namespace BankApp.Users
         }
         public void CheckTransactionHistory()
         {
+            Console.WriteLine("Checks Transaction History");
             // Call list accounts method()
             // Select BankAccount from list
                 // PrintTransaction foreach TRansaction in BankAccount.Transaction history
@@ -98,6 +102,7 @@ namespace BankApp.Users
         */
         public void CreateBankAccount()
         {
+            Console.WriteLine("Creates Bank Account");
             // Confirm that the customer want to make an new account
                 // Which type of bankaccount do they want (check or savings)
                 // (Later check what currency they want the acount in)
@@ -107,12 +112,14 @@ namespace BankApp.Users
         }
         public void CheckLoans()
         {
+            Console.WriteLine("Checks Loans");
             // Foreach Loan in Customer Loan list
                 // Write Loan.info
             // (Later, maybe make the customer select a loan to make repayments)
         }
         public void TakeoutLoan()
         {
+            Console.WriteLine("Takes out Loan");
             // Ask user what account they want the money from the loan to go to
             // Ask user the amount they want to borrow
             // If loan amount isn't more than 5x total balance in all of customer accounts
