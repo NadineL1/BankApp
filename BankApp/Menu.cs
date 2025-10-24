@@ -1,4 +1,5 @@
 ﻿using BankApp.Users;
+using BankApp.BankAccounts; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -209,7 +210,12 @@ namespace BankApp
                         break;                    
                 case "2":                    
                         Console.WriteLine("Make transaction.");
-                        // Call to MakeTransaction() from Customer
+                        // Temporarily test accounts (Costumer ID, starting amount)
+                        BankAccountBase sender = new BankAccountBase(1, 5000);
+                        BankAccountBase receiver = new BankAccountBase(2, 500);
+                    // Call to method
+                        customer.MakeTransaction(sender, receiver);
+
                         break;                                        
                 case "3":                    
                         Console.WriteLine("Check transaction history.");
