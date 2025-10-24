@@ -12,7 +12,8 @@ namespace BankApp
 {
     internal class BankSystem
     {
-        List<User> AllUsers { get; set; } = new List<User>();
+        List<User> AllCustomers { get; set; } = new List<User>();
+        Admin Admin { get; set; } = new Admin(1, "Adam Admin", "blandsystemmail@thisbank.com", "admin1", "0769998877");
         List<BankAccountBase> AllAccounts { get; set; } = new List<BankAccountBase>();
         List<Transaction> PendingTransactions { get; set; } = new List<Transaction>();
         List<Transaction> TransactionHistory { get; set; } = new List<Transaction>();
@@ -23,13 +24,13 @@ namespace BankApp
         public BankSystem()
         {
             // Lists with some default values just for testing.
-            List<User> defaultUsers = new List<User>()
-            {
-                
+            AllCustomers = new List<User>()
+            {                
+                new Customer(2, "John Doe", "blehblah@msn.com", "test1", "0761234567", false),
+                new Customer(3, "Anna Deer", "defaultemail@hotmail.com", "test2", "0769876543", false),
+                new Customer(4, "Tina Stag", "destroyerofworlds@gmail.com", "test3", "0761011010", false)
             };
             /*
-
-
             List<BankAccountBase> defaultAccounts = new List<BankAccountBase>()
             {
 

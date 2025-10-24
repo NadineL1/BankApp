@@ -225,7 +225,23 @@ namespace BankApp
              */
             // Ask user for input on which menu option they want
             // Switch case
-                // Call to method matching the selected option
+            // Call to method matching the selected option
+
+            Console.WriteLine("Welcome customer!");
+            Console.WriteLine("What would you like to do?");
+            Console.WriteLine("\n[1] Withdraw/deposit money."); // (extra features)
+            Console.WriteLine("[2] Make transaction.");
+            Console.WriteLine("[3] Check transaction history.");
+            Console.WriteLine("[4] Check bank accounts.");
+            Console.WriteLine("[5] Create bank accounts.");
+            Console.WriteLine("[6] Make loan request.");
+            Console.WriteLine("[7] Check loans.");
+            Console.WriteLine("[8] Update profile information.");
+            Console.WriteLine("[9] Log out.");
+            Console.Write("\nYour choice: ");
+
+            string choice = Console.ReadLine();
+
         }
 
 
