@@ -22,17 +22,18 @@ namespace BankApp.Users
             Console.WriteLine("Withdraws money");
             // Call list accounts method()
             // Ask user which bankaccount to make the withdrawal from
-            // ASk user for how much to withdraw
-            // Check if customer has that much money in bankaccount
-            // If true
-            // Subtract asked amount from selected account.Saldo
-            // Write confirmation of withdrawal in console
-            // Else
-            // Tell the user they don't have enough money in that account
-            // Ask user if they want to take out a loan
-            // If yes
-            // Go to MakeLoan()
+                // Ask user for how much to withdraw
+                    // Check if customer has that much money in bankaccount
+                        // If true
+                        // Subtract asked amount from selected account.Saldo
+                        // Write confirmation of withdrawal in console
+                    // Else
+                        // Tell the user they don't have enough money in that account
+                        // Ask user if they want to take out a loan
+                            // If yes
+                            // Go to MakeLoan()
 
+            
             //Console.WriteLine("Choose an account to withdrawal from:\n");
             //List<BankAccountBase> CustomerBankAccounts;
             //string choice = Console.ReadLine();
@@ -61,14 +62,14 @@ namespace BankApp.Users
             Console.WriteLine("Starts Transaction");
             // Call list accounts method()
             // Ask user which account to make the transaction from
-            // Ask user what account to make the transaction to internal or external
-            // If Internal
-            // Select account with list accounts method
-            //MakeTransaction();
-            // Else if external
-            // Ask user to enter bank number
-            // If matches another BankAccount number
-            //MakeTransaction();
+                // Ask user what account to make the transaction to internal or external
+                    // If Internal
+                        // Select account with list accounts method
+                        //MakeTransaction();
+                    // Else if external
+                    // Ask user to enter bank number
+                        // If matches another BankAccount number
+                        //MakeTransaction();
         }
 
         public void MakeTransaction(BankAccountBase sender, BankAccountBase receiver)
@@ -163,24 +164,24 @@ namespace BankApp.Users
         {
             Console.WriteLine("Takes out Loan");
             // Ask user what account they want the money from the loan to go to
-            // Ask user the amount they want to borrow
-            // If loan amount isn't more than 5x total balance in all of customer accounts
-            // Show how much customer wants to borrow and how much extra they have to pay in interest
-            // Ask if they still want to take the loan
-            // If yes
-            // Create Loan object
-            // Add Loan object to Customer Loan list
-            // Add Loan to syste Loan list
+                // Ask user the amount they want to borrow
+                    // If loan amount isn't more than 5x total balance in all of customer accounts
+                    // Show how much customer wants to borrow and how much extra they have to pay in interest
+                        // Ask if they still want to take the loan
+                            // If yes
+                            // Create Loan object
+                            // Add Loan object to Customer Loan list
+                            // Add Loan to syste Loan list
         }
         public void UpdateCustomerInformation()
         {
             // Ask what the user wants to change (mail/phone/password)
-            // Ask the user to enter new value
-            // Ask the user to enter the value again
-            // If they match
-            // Update specified info
-            // Else
-            // Ask if they want to try again or go back to customer menu
+                // Ask the user to enter new value
+                // Ask the user to enter the value again
+                    // If they match
+                        // Update specified info
+                    // Else
+                        // Ask if they want to try again or go back to customer menu
 
             Console.WriteLine("What would you like to change?");
             Console.WriteLine("1. Mail\n2. Phonenumber\n3, Password");
