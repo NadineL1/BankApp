@@ -187,6 +187,7 @@ namespace BankApp
             // Switch case
             // Call to method matching the selected option
 
+            Console.Clear();
             Console.WriteLine("Welcome customer!");
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("\n[1] Withdraw/deposit money."); // (extra features)
