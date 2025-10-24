@@ -8,8 +8,8 @@ namespace BankApp
         static void Main()
         {
             // Log-in metod
+            Menu.LogInMenu();
             // INGEN LOGIK HÄR ENDAST STARTA IGÅNG APPEN :)
-
 
         }
     }
