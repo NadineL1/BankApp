@@ -184,8 +184,7 @@ namespace BankApp
 
         public static void AdminMenu(Admin admin) 
         {
-            bool adminmenu = true;
-            while (adminmenu)
+
             {
                 // Show list of options
                 /*
@@ -200,75 +199,14 @@ namespace BankApp
                 // Switch case
                 // Call to method matching the selected option
 
-            Console.Clear();
-            Console.WriteLine("Welcome customer!");
-            Console.WriteLine("What would you like to do?");
-            Console.WriteLine("\n[1] Withdraw/deposit money."); // (extra features)
-            Console.WriteLine("[2] Make transaction.");
-            Console.WriteLine("[3] Check transaction history.");
-            Console.WriteLine("[4] Check bank accounts.");
-            Console.WriteLine("[5] Create bank accounts.");
-            Console.WriteLine("[6] Make loan request.");
-            Console.WriteLine("[7] Check loans.");
-            Console.WriteLine("[8] Update profile information.");
-            Console.WriteLine("[9] Log out.");
-            Console.Write("\nYour choice: ");
-
-                string input = Console.ReadLine();
-
-            switch (choice) 
-            {
-                case "1":                    
-                        Console.WriteLine("Withdraw/Deposit");
-                        // Call to Withdraw() from Customer
-                        break;                    
-                case "2":                    
-                        Console.WriteLine("Make transaction.");
-                        // Temporarily test accounts (Costumer ID, starting amount)
-                        BankAccountBase sender = new BankAccountBase(1, 5000);
-                        BankAccountBase receiver = new BankAccountBase(2, 500);
-                    // Call to method
-                        customer.MakeTransaction(sender, receiver);
-
-                        break;                                        
-                case "3":                    
-                        Console.WriteLine("Check transaction history.");
-                        // Call to CheckTransactionHistory() from Customer.
-                        break;                    
-                case "4":                    
-                        Console.WriteLine("Check bank accounts.");
-                        // Call to CheckingAccount
-                        break;                    
-                case "5":                    
-                        Console.WriteLine("Create bank account");
-                        // Call to CreateBankAccount() from Customer
-                        break;                    
-                case "6":                     
-                        Console.WriteLine("Make loan request.");
-                        // Call to LoanRequest() from customer.
-                        break;                    
-                case "7":                    
-                        Console.WriteLine("check loans.");
-                        // Call to CheckLoans() from Customer.
-                        break;                    
-                case "8":                    
-                        Console.WriteLine("Update profile information.");
-                        // Call to UpdateCustomerInformation() from Customer.
-                        break;                    
-                case "9":                    
-                        Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
-                        break;                   
-                default:                    
-                        Console.WriteLine("\nInvalid choice. Please restart the program and try again.");
-                        break;                
             }
-
+            
 		}
         public static void CustomerMenu(Customer customer)
         {
             bool customermenu = true;
             while (customermenu)
-            { 
+            {
                 // Print overview of customer's accounts
 
                 // Show list of options
@@ -289,6 +227,7 @@ namespace BankApp
                 // Switch case
                 // Call to method matching the selected option
 
+                Console.Clear();
                 Console.WriteLine("Welcome customer!");
                 Console.WriteLine("What would you like to do?");
                 Console.WriteLine("\n[1] Withdraw/deposit money."); // (extra features)
@@ -302,73 +241,57 @@ namespace BankApp
                 Console.WriteLine("[9] Log out.");
                 Console.Write("\nYour choice: ");
 
-                string choice = Console.ReadLine();
+                string input = Console.ReadLine();
 
-                switch (choice) 
+                switch (input)
                 {
                     case "1":
-                        {
-                            Console.WriteLine("Withdraw/Deposit");
-                            // Call to Withdraw() from Customer
-                            break;
-                        }
+                        Console.WriteLine("Withdraw/Deposit");
+                        // Call to Withdraw() from Customer
+                        break;
                     case "2":
-                        {
-                            Console.WriteLine("Make transaction.");
-                            // Call to MakeTransaction() from Customer
-                            break;                     
-                        }
+                        Console.WriteLine("Make transaction.");
+                        // Temporarily test accounts (Costumer ID, starting amount)
+                        BankAccountBase sender = new BankAccountBase(1, 5000);
+                        BankAccountBase receiver = new BankAccountBase(2, 500);
+                        // Call to method
+                        customer.MakeTransaction(sender, receiver);
+                        break;
                     case "3":
-                        {
-                            Console.WriteLine("Check transaction history.");
-                            // Call to CheckTransactionHistory() from Customer.
-                            break;
-                        }
+                        Console.WriteLine("Check transaction history.");
+                        // Call to CheckTransactionHistory() from Customer.
+                        break;
                     case "4":
-                        {
-                            Console.WriteLine("Check bank accounts.");
-                            // Call to CheckingAccount
-                            break;
-                        }
+                        Console.WriteLine("Check bank accounts.");
+                        // Call to CheckingAccount
+                        break;
                     case "5":
-                        {
-                            Console.WriteLine("Create bank account");
-                            // Call to CreateBankAccount() from Customer
-                            break;
-                        }
-                    case "6": 
-                        {
-                            Console.WriteLine("Make loan request.");
-                            // Call to LoanRequest() from customer.
-                            break;
-                        }
+                        Console.WriteLine("Create bank account");
+                        // Call to CreateBankAccount() from Customer
+                        break;
+                    case "6":
+                        Console.WriteLine("Make loan request.");
+                        // Call to LoanRequest() from customer.
+                        break;
                     case "7":
-                        {
-                            Console.WriteLine("check loans.");
-                            // Call to CheckLoans() from Customer.
-                            break;
-                        }
+                        Console.WriteLine("check loans.");
+                        // Call to CheckLoans() from Customer.
+                        break;
                     case "8":
-                        {
-                            Console.WriteLine("Update profile information.");
-                            // Call to UpdateCustomerInformation() from Customer.
-                            break;
-                        }
+                        Console.WriteLine("Update profile information.");
+                        // Call to UpdateCustomerInformation() from Customer.
+                        break;
                     case "9":
-                        {
-                            Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
-							Console.WriteLine("Press any key to exit.");
-                            Console.ReadKey();
-                            customermenu = false;
-                            break;
-                        }
+                        Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
+                        Console.WriteLine("Press any key to exit.");
+                        Console.ReadKey();
+                        customermenu = false;
+                        break;
                     default:
-                        {
-                            Console.WriteLine("\nInvalid choice. Please restart the program and try again.");
-                            break;
-                        }
-
+                        Console.WriteLine("\nInvalid choice. Please restart the program and try again.");
+                        break;
                 }
+
 			}
 
 		}
