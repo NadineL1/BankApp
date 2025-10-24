@@ -58,55 +58,81 @@ namespace BankApp
                     case "1":
                         {
                             int attempts = 0;
-                            bool logIn = false; //changes to true when successful login.
-                            int index = -1; // Start looking from zero in the UserID List.
                             int inputId = 0; // Create a place to store the User's ID.
+                            Customer loginCustomer = null; // If a customer with matching ID is found we store it here
 
-                            // Gives customer 2 attempts to enter a valid UserID.
-                            while (attempts < 2 && index == -1)
+                            // Gives customer 2 attempts to enter a valid UserID
+                            while (attempts < 2 && loginCustomer == null)
                             {
                                 Console.Write("Enter your UserID: ");
                                 inputId = Convert.ToInt32(Console.ReadLine());
+                                attempts++;
 
-                                // Find the userId in the list
-                                index = userID.IndexOf(inputId);
-
-                                if (index == -1)
+                                // Checks if there is a Customer in the customer list with an UserID that matches user input  
+                                foreach (Customer customer in BankSystem.AllCustomers)
                                 {
-                                    attempts++;
+                                    // If a customer is found we make a note of that customer and use it for the rest of the login
+                                    if (inputId == customer.UserID)
+                                    {
+                                        // Stops the program if the customer's account is locked.
+                                        if (customer.LockBool == true)
+                                        {
+                                            Console.WriteLine("This account is locked and cannot be accessed.\nPlease contact an admin to resolve this.");
+                                            return;
+                                        }
+                                        loginCustomer = customer;
+                                    }
+                                }          
+                                // If we don't find a matching customer we check if the user still has attempts left
+                                if (loginCustomer == null && attempts < 2)
+                                {
                                     Console.WriteLine($"\nThis user ID does not exsist. Attempts left: {2 - attempts}");
                                 }
-                            }
-                            if (index == -1)
-                            {
-                                Console.WriteLine("\nTo many failed attempts. Program will shut down.");
-                                return;
+                                // Or if they have used all their attempts
+                                else if (loginCustomer == null && attempts == 2)
+                                {
+                                    Console.WriteLine("\nTo many failed attempts. Program will shut down.");
+                                    return;
+                                }
                             }
                             // Reset attempts for password stage
                             attempts = 0;
 
+                            bool logIn = false; //changes to true when successful login.
                             while (attempts < 3 && !logIn)
                             {
                                 Console.Write("Enter your password: ");
-                                int inputPassword = Convert.ToInt32(Console.ReadLine());
+                                string? inputPassword = Console.ReadLine();
+                                attempts++;
 
-                                // Find the correct password in the list.
-                                if (userPasswords[index] == inputPassword)
+                                // Checks if the stored customer's password matches user input
+                                if (loginCustomer.Password == inputPassword)
                                 {
                                     Console.WriteLine("\nSuccess! You are now logged in as customer!");
                                     // ANROPA CustomerMenu-metoden !!
+                                    // Sends the found customer object into the customer menu
+                                    CustomerMenu(loginCustomer);
                                     logIn = true;
                                 }
-                                else
+                                // If not matching check if they still have attempts left
+                                else if (logIn == false && attempts < 3)
                                 {
-                                    attempts++;
                                     Console.WriteLine($"\nWrong password! Attempts left: {3 - attempts}");
                                 }
-                            }
-
-                            if (!logIn)
-                            {
-                                Console.WriteLine("\nTo many failed attempts! Your account has been locked.");
+                                // Or if they've used all their attempts
+                                else if (logIn == false && attempts >= 3)
+                                {
+                                    Console.WriteLine("\nTo many failed attempts! Your account has been locked.");
+                                    // Locks that customer's account.
+                                    loginCustomer.LockBool = true;
+                                    Console.WriteLine("Returning to start screen...");
+                                    // Added a slight delay before they get sent back to the start menu.
+                                    for (int i = 0; i < 3; i++)
+                                    {
+                                        Thread.Sleep(1000);
+                                        Console.WriteLine("...");
+                                    }
+                                }
                             }
                             break;
                         }
