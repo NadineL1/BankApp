@@ -89,9 +89,11 @@ namespace BankApp
                             // Find the correct password in the list.
                             if (userPasswords[index] == inputPassword)
                             {
-                                Console.WriteLine("\nSuccess! You are now logged in as customer!");
-                                // ANROPA CustomerMenu-metoden !!
+                                Console.WriteLine("\nSuccess! You are now logged in as customer!");                                
                                 logIn = true;
+
+                              
+
                             }
                             else
                             {
