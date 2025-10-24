@@ -186,14 +186,13 @@ namespace BankApp.Users
                         // Ask if they want to try again or go back to customer menu
 
             Console.WriteLine("What would you like to change?");
-            Console.WriteLine("1. Mail\n2. Phonenumber\n3, Password");
+            Console.WriteLine("1. Mail\n2. Phonenumber\n3. Password");
             string choice = Console.ReadLine();
 
             switch (choice)
             {
                 //CHANGE EMAIL
                 case "1":
-                    {
                         while (true)
                         {
                             Console.WriteLine("Change Email");
@@ -214,14 +213,12 @@ namespace BankApp.Users
                                 Console.WriteLine("Email has been changed!");
 
                                 break;
-
                             }
                         }
                         break;
-                    }
+                    
                 //CHANGE PHONENUMBER
                 case "2":
-                    {
                         while (true)
                         {
                             Console.WriteLine("Change Phonenumber");
@@ -241,14 +238,12 @@ namespace BankApp.Users
                                 Console.WriteLine("Phonenumber has been changed!");
                                 this.PhoneNumber = newPhoneNumber2;
                                 break;
-
                             }
                         }
                         break;
-                    }
+                    
                 //CHANGE PASSWORD
                 case "3":
-                    {
                         while (true)
                         {
                             Console.WriteLine("Change Password");
@@ -266,18 +261,16 @@ namespace BankApp.Users
                             else
                             {
                                 Console.WriteLine("Password has been changed!");
-
+                                this.Password = newPassword2;
                                 break;
-
                             }
                         }
                         break;
-                    }
+                    
                 default:
-                    {
                         Console.WriteLine("Invalid choice.");
                         break;
-                    }
+                    
 
             }
 
