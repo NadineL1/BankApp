@@ -7,6 +7,7 @@ namespace BankApp
     {
         static void Main()
         {
+            Menu.LogInMenu();
             // Log-in metod
             Menu.LogInMenu();
             // INGEN LOGIK HÄR ENDAST STARTA IGÅNG APPEN :)
