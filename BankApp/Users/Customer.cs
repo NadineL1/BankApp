@@ -1,13 +1,6 @@
 ﻿
-using BankApp.Loans;
 using BankApp.BankAccounts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security.Principal;
-using System.Threading.Channels;
+using BankApp.Loans;
 
 namespace BankApp.Users
 {
@@ -17,7 +10,7 @@ namespace BankApp.Users
         public List<BankAccountBase> CustomerBankAccounts { get; set; }
         public List<Loan> CustomerActiveLoans { get; set; }
 
-        public Customer( int userId, string name, string email, string password, string phoneNumber, bool lockbool) : base(userId, name, email, password, phoneNumber, false)
+        public Customer(int userId, string name, string email, string password, string phoneNumber, bool lockbool) : base(userId, name, email, password, phoneNumber, false)
         {
             LockBool = lockbool;
             CustomerBankAccounts = new List<BankAccountBase>();
@@ -61,38 +54,38 @@ namespace BankApp.Users
             //}
 
 
-            
+
         }
         public void StartTransaction()
         {
             Console.WriteLine("Starts Transaction");
             // Call list accounts method()
             // Ask user which account to make the transaction from
-                // Ask user what account to make the transaction to internal or external
-                // If Internal
-                // Select account with list accounts method
-                    // MakeTransaction();
-                // Else if external
-                // Ask user to enter bank number
-                    // If matches another BankAccount number
-                        // MakeTransaction()
-            }
+            // Ask user what account to make the transaction to internal or external
+            // If Internal
+            // Select account with list accounts method
+            //MakeTransaction();
+            // Else if external
+            // Ask user to enter bank number
+            // If matches another BankAccount number
+            //MakeTransaction();
+        }
 
         public void MakeTransaction(BankAccountBase sender, BankAccountBase receiver)
         {
             Console.WriteLine("Makes Transaction");
             // Ask user how much money to transact
-                // Check if account has the money to do so
-                    // (This should be delayed 15 min, we'll look at that in week 2)
-                    // If yes, subtrac from active Bankaccount.Saldo
-                    // Add that money to receivning BankAccount.Saldo
+            // Check if account has the money to do so
+            // (This should be delayed 15 min, we'll look at that in week 2)
+            // If yes, subtrac from active Bankaccount.Saldo
+            // Add that money to receivning BankAccount.Saldo
         }
         public void CheckTransactionHistory()
         {
             Console.WriteLine("Checks Transaction History");
             // Call list accounts method()
             // Select BankAccount from list
-                // PrintTransaction foreach TRansaction in BankAccount.Transaction history
+            // PrintTransaction foreach TRansaction in BankAccount.Transaction history
         }
         /*
         public void CheckBankAccounts()
@@ -102,33 +95,82 @@ namespace BankApp.Users
         */
         public void CreateBankAccount()
         {
-            Console.WriteLine("Creates Bank Account");
             // Confirm that the customer want to make an new account
-                // Which type of bankaccount do they want (check or savings)
-                // (Later check what currency they want the acount in)
-                // Create a BankAccount object of thr correct type
-                    // Add it to Customer AccountList, BankSystem account list
-                    // Write confirmation of the new BankAccount
+            Console.WriteLine("Are you sure you want to create a new account?");
+            Console.WriteLine("1. Yes");
+            Console.WriteLine("2. No");
+
+            int input = int.Parse(Console.ReadLine());
+
+            switch (input)
+            {
+                case 1:
+                    // Which type of bankaccount do they want (check or savings)
+                    Console.WriteLine("What type of account would you like to create?");
+                    Console.WriteLine("1. Checkings account");
+                    Console.WriteLine("2. Savings account");
+                    int accountType = int.Parse(Console.ReadLine());
+
+                    // Create a BankAccount object of the correct type
+                    switch (accountType)
+                    {
+                        // Add it to Customer AccountList, BankSystem account list
+                        // Write confirmation of the new BankAccount
+                        case 1:
+                            CheckingsAccount checkingsaccount = new CheckingsAccount(123, 0);
+                            CustomerBankAccounts.Add(checkingsaccount);
+                            BankSystem.AllAccounts.Add(checkingsaccount);
+                            Console.WriteLine("Checkings account created successfully!");
+                            break;
+
+                        // Add it to Customer AccountList, BankSystem account list
+                        // Write confirmation of the new BankAccount
+                        case 2:
+                            SavingsAccount savingsaccount = new SavingsAccount(123, 0);
+                            CustomerBankAccounts.Add(savingsaccount);
+                            BankSystem.AllAccounts.Add(savingsaccount);
+                            Console.WriteLine("Savings account created successfully!");
+                            break;
+
+
+                        default:
+                            Console.WriteLine("Invalid account type selected.");
+                            break;
+                    }
+                    break;
+
+                case 2:
+                    break;
+
+
+                default:
+                    Console.WriteLine("Invalid option.");
+                    break;
+
+            }
+
+            // (Later check what currency they want the acount in)
+
         }
         public void CheckLoans()
         {
             Console.WriteLine("Checks Loans");
             // Foreach Loan in Customer Loan list
-                // Write Loan.info
+            // Write Loan.info
             // (Later, maybe make the customer select a loan to make repayments)
         }
-        public void TakeoutLoan()
+        public void LoanRequest()
         {
             Console.WriteLine("Takes out Loan");
             // Ask user what account they want the money from the loan to go to
             // Ask user the amount they want to borrow
             // If loan amount isn't more than 5x total balance in all of customer accounts
-                // Show how much customer wants to borrow and how much extra they have to pay in interest
-                // Ask if they still want to take the loan
-                // If yes
-                    // Create Loan object
-                        // Add Loan object to Customer Loan list
-                        // Add Loan to syste Loan list
+            // Show how much customer wants to borrow and how much extra they have to pay in interest
+            // Ask if they still want to take the loan
+            // If yes
+            // Create Loan object
+            // Add Loan object to Customer Loan list
+            // Add Loan to syste Loan list
         }
         public void UpdateCustomerInformation()
         {
@@ -233,11 +275,11 @@ namespace BankApp.Users
                         Console.WriteLine("Invalid choice.");
                         break;
                     }
-            
-            }
-                
 
-         }
+            }
+
+
+        }
 
 
 
