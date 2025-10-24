@@ -1,4 +1,5 @@
 ﻿using BankApp.Users;
+using BankApp.BankAccounts; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -151,8 +152,11 @@ namespace BankApp
                             // If the username exists (index != -1) and the password matches.
                             if (index != -1 && adminPasswords[index] == password)
                             {
-                                Console.WriteLine("\nSuccess! You are now logged in as Admin!");
-                                // ANROPA AdminMenu - metoden
+                                Console.WriteLine("\nSuccess! You are now logged in as customer!");                                
+                                logIn = true;
+
+                              
+
                             }
                             else
                             {
@@ -196,54 +200,67 @@ namespace BankApp
                 // Switch case
                 // Call to method matching the selected option
 
-                Console.WriteLine("Welcome Admin!");
-                Console.WriteLine("What would you like to do?");
-                Console.WriteLine("[1] Create a customer.");
-                Console.WriteLine("[2] Check customer stats.");
-                Console.WriteLine("[3] Unlock customer.");
-                Console.WriteLine("[4] Update exchange rates.");
-                Console.WriteLine("[5] Update interest rules for loans.");
-                Console.WriteLine("[6] Log out.");
+            Console.Clear();
+            Console.WriteLine("Welcome customer!");
+            Console.WriteLine("What would you like to do?");
+            Console.WriteLine("\n[1] Withdraw/deposit money."); // (extra features)
+            Console.WriteLine("[2] Make transaction.");
+            Console.WriteLine("[3] Check transaction history.");
+            Console.WriteLine("[4] Check bank accounts.");
+            Console.WriteLine("[5] Create bank accounts.");
+            Console.WriteLine("[6] Make loan request.");
+            Console.WriteLine("[7] Check loans.");
+            Console.WriteLine("[8] Update profile information.");
+            Console.WriteLine("[9] Log out.");
+            Console.Write("\nYour choice: ");
 
                 string input = Console.ReadLine();
 
-                switch (input)
-                {
-                    case "1":
-                        Console.WriteLine("Create customer.");
-                        // call to customer
-                        admin.CreateCustomer();
-                        break;
-                    case "2":
-                        Console.WriteLine("Customer statistics:");
-                        // call method for printing statistics
-                        admin.GetCustomerStatistics();
-                        break;
-                    case "3":
-                        Console.WriteLine("Unlock customer");
-                        // method for unlockingg
-                        admin.UnlockCustomerAccount();
-                        break;
-                    case "4":
-                        Console.WriteLine("Update exchange rates");
-                        // call to exchange rates method 
-                        admin.Exchangerates();
-                        break;
-                    case "5":
-                        Console.WriteLine("Update interest rules");
-                        // update interest rules, loans
-                        admin.UpdateInterestRates();
-                        break;
-                    case "6":
-                        Console.WriteLine("Log out? Thank you for today.");
-						Console.WriteLine("Press any key to exit.");
-						Console.ReadKey();
-						adminmenu = false;
-                        break;
-                    default:
-                        Console.WriteLine("Something went wrong.Try again with a different number choice.");
-                        break;
-                }
+            switch (choice) 
+            {
+                case "1":                    
+                        Console.WriteLine("Withdraw/Deposit");
+                        // Call to Withdraw() from Customer
+                        break;                    
+                case "2":                    
+                        Console.WriteLine("Make transaction.");
+                        // Temporarily test accounts (Costumer ID, starting amount)
+                        BankAccountBase sender = new BankAccountBase(1, 5000);
+                        BankAccountBase receiver = new BankAccountBase(2, 500);
+                    // Call to method
+                        customer.MakeTransaction(sender, receiver);
+
+                        break;                                        
+                case "3":                    
+                        Console.WriteLine("Check transaction history.");
+                        // Call to CheckTransactionHistory() from Customer.
+                        break;                    
+                case "4":                    
+                        Console.WriteLine("Check bank accounts.");
+                        // Call to CheckingAccount
+                        break;                    
+                case "5":                    
+                        Console.WriteLine("Create bank account");
+                        // Call to CreateBankAccount() from Customer
+                        break;                    
+                case "6":                     
+                        Console.WriteLine("Make loan request.");
+                        // Call to LoanRequest() from customer.
+                        break;                    
+                case "7":                    
+                        Console.WriteLine("check loans.");
+                        // Call to CheckLoans() from Customer.
+                        break;                    
+                case "8":                    
+                        Console.WriteLine("Update profile information.");
+                        // Call to UpdateCustomerInformation() from Customer.
+                        break;                    
+                case "9":                    
+                        Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
+                        break;                   
+                default:                    
+                        Console.WriteLine("\nInvalid choice. Please restart the program and try again.");
+                        break;                
             }
 
 		}

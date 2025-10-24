@@ -80,6 +80,8 @@ namespace BankApp.Users
             // (This should be delayed 15 min, we'll look at that in week 2)
             // If yes, subtrac from active Bankaccount.Saldo
             // Add that money to receivning BankAccount.Saldo
+
+            Console.WriteLine("Hello you made it this far in your method...");
         }
         public void CheckTransactionHistory()
         {
