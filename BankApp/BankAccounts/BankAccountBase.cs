@@ -9,7 +9,7 @@ namespace BankApp.BankAccounts
     public class BankAccountBase
     {
 		public int AccountNumber;
-		public double Balance { get; set; } = 0;
+		public decimal Balance { get; set; } = 0;
 		public readonly int CustomerID;
 		private static int s_nextAccountNumber;
 
@@ -18,7 +18,7 @@ namespace BankApp.BankAccounts
 			Random random = new Random();
 			s_nextAccountNumber = random.Next(10000000, 20000000);
 		}
-		public BankAccountBase(int customerID,double balance)
+		public BankAccountBase(int customerID,decimal balance)
 		{
 			this.AccountNumber = s_nextAccountNumber++;
 			this.Balance = balance;

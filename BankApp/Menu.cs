@@ -153,7 +153,7 @@ namespace BankApp
                             if (index != -1 && adminPasswords[index] == password)
                             {
                                 Console.WriteLine("\nSuccess! You are now logged in as customer!");                                
-                                logIn = true;
+                                //logIn = true;
 
                               
 
@@ -251,7 +251,7 @@ namespace BankApp
                         break;
                     case "2":
                         Console.WriteLine("Make transaction.");
-                        // Temporarily test accounts (Costumer ID, starting amount)
+                        // Temporarily test accounts (Bank ID, starting amount)
                         BankAccountBase sender = new BankAccountBase(1, 5000);
                         BankAccountBase receiver = new BankAccountBase(2, 500);
                         // Call to method

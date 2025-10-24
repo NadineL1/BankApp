@@ -41,7 +41,7 @@ namespace BankApp.Users
             //if (choice == "1")
             //{
             //    Console.WriteLine("Withdrawal amount:\n");
-            //    double withdrawal = double.Parse(Console.ReadLine());
+            //    decimal withdrawal = decimal.Parse(Console.ReadLine());
 
             //    if (BankAccountBase.balance >= withdrawal)
             //    {
@@ -74,14 +74,28 @@ namespace BankApp.Users
 
         public void MakeTransaction(BankAccountBase sender, BankAccountBase receiver)
         {
-            Console.WriteLine("Makes Transaction");
             // Ask user how much money to transact
             // Check if account has the money to do so
             // (This should be delayed 15 min, we'll look at that in week 2)
             // If yes, subtrac from active Bankaccount.Saldo
             // Add that money to receivning BankAccount.Saldo
 
-            Console.WriteLine("Hello you made it this far in your method...");
+            Console.Clear();
+            Console.Write("Enter the amount you want to transfer: ");
+            decimal amount = Convert.ToDecimal(Console.ReadLine());
+
+            if (sender.Balance < amount) 
+            {
+                Console.WriteLine("\nFailed to transfer! Not enough balance.");
+            }
+
+            // The transfering begins
+            sender.Balance -= amount;
+            receiver.Balance += amount;
+
+
+
+
         }
         public void CheckTransactionHistory()
         {

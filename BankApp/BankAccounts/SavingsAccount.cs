@@ -8,8 +8,8 @@ namespace BankApp.BankAccounts
 {
     internal class SavingsAccount: BankAccountBase
     {
-        public double interest { get; set; }
-        public SavingsAccount(int customerID, double balance): base(customerID, balance)
+        public decimal interest { get; set; }
+        public SavingsAccount(int customerID, decimal balance): base(customerID, balance)
         { 
             
         }
