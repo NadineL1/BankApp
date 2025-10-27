@@ -284,15 +284,20 @@ namespace BankApp
                         // Call to Withdraw() from Customer
                         break;
                     case "2":
+                        // Commented out test code to try proper implementation
+                        /*
                         Console.WriteLine("Make transaction.");
                         // Temporarily test accounts (Costumer ID, starting amount)
                         BankAccountBase sender = new BankAccountBase(1, 5000);
                         BankAccountBase receiver = new BankAccountBase(2, 500);
                         // Call to method
                         customer.MakeTransaction(sender, receiver);
+                        */
+
+                        customer.StartTransaction();
                         break;
                     case "3":
-                        Console.WriteLine("Check transaction history.");
+                        customer.CheckTransactionHistory();
                         // Call to CheckTransactionHistory() from Customer.
                         break;
                     case "4":
