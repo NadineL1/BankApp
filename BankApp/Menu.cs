@@ -35,14 +35,6 @@ namespace BankApp
                 // Set account lock bool on that user object
                 // else ask for login details again
 
-
-                //List of Admin username and password.
-                List<string> admins = new List<string> { "admin" };
-                List<string> adminPasswords = new List<string> { "1234" };
-                //List of customer UserID and password.
-                List<int> userID = new List<int> { 1, 2, 3 };
-                List<int> userPasswords = new List<int> { 1111, 2222, 3333 };
-
                 Console.Clear();
                 Console.WriteLine("Welcome to The Five Bank!");
                 Console.WriteLine("How would you like to login?");
@@ -57,132 +49,125 @@ namespace BankApp
                 switch (choice)
                 {
                     case "1":
+                        int attempts = 0;
+                        int inputId = 0; // Create a place to store the User's ID.
+                        Customer loginCustomer = null; // If a customer with matching ID is found we store it here
+                        bool lockCheck = false;
+
+                        // Gives customer 2 attempts to enter a valid UserID
+                        while (attempts < 2 && loginCustomer == null)
                         {
-                            int attempts = 0;
-                            int inputId = 0; // Create a place to store the User's ID.
-                            Customer loginCustomer = null; // If a customer with matching ID is found we store it here
+                            Console.Write("Enter your UserID: ");
+                            int.TryParse(Console.ReadLine(), out inputId);
+                            attempts++;
 
-                            // Gives customer 2 attempts to enter a valid UserID
-                            while (attempts < 2 && loginCustomer == null)
+                            // Checks if there is a Customer in the customer list with an UserID that matches user input  
+                            foreach (Customer customer in BankSystem.AllCustomers)
                             {
-                                Console.Write("Enter your UserID: ");
-                                inputId = Convert.ToInt32(Console.ReadLine());
-                                attempts++;
-
-                                // Checks if there is a Customer in the customer list with an UserID that matches user input  
-                                foreach (Customer customer in BankSystem.AllCustomers)
+                                // If a customer is found we make a note of that customer and use it for the rest of the login
+                                if (inputId == customer.UserID)
                                 {
-                                    // If a customer is found we make a note of that customer and use it for the rest of the login
-                                    if (inputId == customer.UserID)
+                                    // Stops the program if the customer's account is locked.
+                                    if (customer.LockBool == true)
                                     {
-                                        // Stops the program if the customer's account is locked.
-                                        if (customer.LockBool == true)
-                                        {
-                                            Console.WriteLine("This account is locked and cannot be accessed.\nPlease contact an admin to resolve this.");
-                                            return;
-                                        }
-                                        loginCustomer = customer;
+                                        lockCheck = true;
+                                        break;
                                     }
-                                }          
-                                // If we don't find a matching customer we check if the user still has attempts left
-                                if (loginCustomer == null && attempts < 2)
-                                {
-                                    Console.WriteLine($"\nThis user ID does not exsist. Attempts left: {2 - attempts}");
-                                }
-                                // Or if they have used all their attempts
-                                else if (loginCustomer == null && attempts == 2)
-                                {
-                                    Console.WriteLine("\nTo many failed attempts. Program will shut down.");
-                                    return;
+                                    loginCustomer = customer;
                                 }
                             }
-                            // Reset attempts for password stage
-                            attempts = 0;
-
-                            bool logIn = false; //changes to true when successful login.
-                            while (attempts < 3 && !logIn)
+                            if(lockCheck == true)
                             {
-                                Console.Write("Enter your password: ");
-                                string? inputPassword = Console.ReadLine();
-                                attempts++;
-
-                                // Checks if the stored customer's password matches user input
-                                if (loginCustomer.Password == inputPassword)
-                                {
-                                    Console.WriteLine("\nSuccess! You are now logged in as customer!");
-                                    // ANROPA CustomerMenu-metoden !!
-                                    // Sends the found customer object into the customer menu
-                                    CustomerMenu(loginCustomer);
-                                    logIn = true;
-                                }
-                                // If not matching check if they still have attempts left
-                                else if (logIn == false && attempts < 3)
-                                {
-                                    Console.WriteLine($"\nWrong password! Attempts left: {3 - attempts}");
-                                }
-                                // Or if they've used all their attempts
-                                else if (logIn == false && attempts >= 3)
-                                {
-                                    Console.WriteLine("\nTo many failed attempts! Your account has been locked.");
-                                    // Locks that customer's account.
-                                    loginCustomer.LockBool = true;
-                                    Console.WriteLine("Returning to start screen...");
-                                    // Added a slight delay before they get sent back to the start menu.
-                                    for (int i = 0; i < 3; i++)
-                                    {
-                                        Thread.Sleep(1000);
-                                        Console.WriteLine("...");
-                                    }
-                                }
+                                Console.WriteLine("This account is locked and cannot be accessed.\nPlease contact an admin to resolve this.");
+                                Helper.PauseBreak("Returning to start screen", 3);
+                                break;
                             }
-                            break;
-                        }
-                    // LOGIN AS ADMIN
-                    case "2":
-                        {
-                            Console.Write("Enter your username: ");
-                            string username = Console.ReadLine();
-
-                            Console.Write("Enter your password: ");
-                            string password = Console.ReadLine();
-
-                            // Find index in the admin-username-list
-                            int index = admins.IndexOf(username.ToLower());
-
-                            // If the username exists (index != -1) and the password matches.
-                            if (index != -1 && adminPasswords[index] == password)
+                            // If we don't find a matching customer we check if the user still has attempts left
+                            if (loginCustomer == null && attempts < 2)
                             {
-                                Console.WriteLine("\nSuccess! You are now logged in as customer!");                                
-                                //logIn = true;
-
-                              
+                                Console.WriteLine($"\nThis user ID does not exist. Attempts left: {2 - attempts}");
 
                             }
-                            else
+                            // Or if they have used all their attempts
+                            else if (loginCustomer == null && attempts == 2)
                             {
-                                Console.WriteLine("\nWrong username or password! Access denied!");
-                            }
-                            break;
-                        }
-                    // QUIT PROGRAM
-                    case "3":
-                        {
-                            {
-                                Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
-                                isRunning = false;
+                                Console.WriteLine("\nToo many failed attempts. Program will shut down.");
                                 return;
                             }
                         }
-                    default:
+                        // Reset attempts for password stage
+                        attempts = 0;
+
+                        bool logIn = false; //changes to true when successful login.
+                        while (attempts < 3 && !logIn && lockCheck != true)
                         {
-                            Console.WriteLine("\nInvalid choice. Please restart the program and try again.");
-                            break;
+                            Console.Write("Enter your password: ");
+                            string? inputPassword = Console.ReadLine();
+                            attempts++;
+
+                            // Checks if the stored customer's password matches user input
+                            if (loginCustomer.Password == inputPassword)
+                            {
+                                Console.WriteLine("\nSuccess! You are now logged in as customer!");                                
+                                
+
+                              
+
+                                // ANROPA CustomerMenu-metoden !!
+                                // Sends the found customer object into the customer menu
+                                CustomerMenu(loginCustomer);
+                                logIn = true;
+                            }
+                            // If not matching check if they still have attempts left
+                            else if (logIn == false && attempts < 3)
+                            {
+                                Console.WriteLine($"\nWrong password! Attempts left: {3 - attempts}");
+                            }
+                            // Or if they've used all their attempts
+                            else if (logIn == false && attempts >= 3)
+                            {
+                                Console.WriteLine("\nToo many failed attempts! Your account has been locked.");
+                                // Locks that customer's account.
+                                loginCustomer.LockBool = true;
+                                Helper.PauseBreak("Returning to start screen", 3);
+                            }
                         }
+                            break;
+                    // LOGIN AS ADMIN
+                    case "2":
+                        Console.Write("Enter your username: ");
+                        string? username = Console.ReadLine();
+
+                        Console.Write("Enter your password: ");
+                        string? password = Console.ReadLine();
+
+
+                        // Checks if username and password matches system admin
+                        if (username.ToLower() == BankSystem.Admin.Name.ToLower() && password == BankSystem.Admin.Password)
+                        {
+                            Console.WriteLine("\nSuccess! You are now logged in as admin!");
+                            AdminMenu(BankSystem.Admin);
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nWrong username or password! Access denied!");
+                            Helper.PauseBreak("Returning to start screen", 3);
+                        }
+                        break;
+                    // QUIT PROGRAM
+                    case "3":
+                        Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
+                        isRunning = false;
+                        return;
+
+                    default:
+                        Console.WriteLine("\nInvalid choice. Please restart the program and try again.");
+                        break;
                 }
 			}
 		}
 
-        public static void AdminMenu(Admin admin) 
+        public static void AdminMenu(Admin admin)
         {
 
             {
@@ -199,9 +184,57 @@ namespace BankApp
                 // Switch case
                 // Call to method matching the selected option
 
+                Console.WriteLine("Welcome Admin!");
+                Console.WriteLine("What would you like to do?");
+                Console.WriteLine("[1] Create a customer.");
+                Console.WriteLine("[2] Check customer stats.");
+                Console.WriteLine("[3] Unlock customer.");
+                Console.WriteLine("[4] Update exchange rates.");
+                Console.WriteLine("[5] Update interest rules for loans.");
+                Console.WriteLine("[6] Log out.");
+
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        Console.WriteLine("Create customer.");
+                        // call to customer
+                        admin.CreateCustomer();
+                        break;
+                    case "2":
+                        Console.WriteLine("Customer statistics:");
+                        // call method for printing statistics
+                        admin.GetCustomerStatistics();
+                        break;
+                    case "3":
+                        Console.WriteLine("Unlock customer");
+                        // method for unlockingg
+                        admin.UnlockCustomerAccount();
+                        break;
+                    case "4":
+                        Console.WriteLine("Update exchange rates");
+                        // call to exchange rates method 
+                        admin.Exchangerates();
+                        break;
+                    case "5":
+                        Console.WriteLine("Update interest rules");
+                        // update interest rules, loans
+                        admin.UpdateInterestRates();
+                        break;
+                    case "6":
+                        Console.WriteLine("Log out? Thank you for today.");
+                        Console.WriteLine("Press any key to exit.");
+                        Console.ReadKey();
+                        adminmenu = false;
+                        break;
+                    default:
+                        Console.WriteLine("Something went wrong.Try again with a different number choice.");
+                        break;
+                }
             }
-            
-		}
+        }
+        
         public static void CustomerMenu(Customer customer)
         {
             bool customermenu = true;
@@ -251,7 +284,7 @@ namespace BankApp
                         break;
                     case "2":
                         Console.WriteLine("Make transaction.");
-                        // Temporarily test accounts (Bank ID, starting amount)
+                        // Temporarily test accounts (Costumer ID, starting amount)
                         BankAccountBase sender = new BankAccountBase(1, 5000);
                         BankAccountBase receiver = new BankAccountBase(2, 500);
                         // Call to method
@@ -264,10 +297,12 @@ namespace BankApp
                     case "4":
                         Console.WriteLine("Check bank accounts.");
                         // Call to CheckingAccount
+                        customer.CheckBankAccounts();
                         break;
                     case "5":
                         Console.WriteLine("Create bank account");
                         // Call to CreateBankAccount() from Customer
+                        customer.CreateBankAccount();
                         break;
                     case "6":
                         Console.WriteLine("Make loan request.");
@@ -280,6 +315,7 @@ namespace BankApp
                     case "8":
                         Console.WriteLine("Update profile information.");
                         // Call to UpdateCustomerInformation() from Customer.
+                        customer.UpdateCustomerInformation();
                         break;
                     case "9":
                         Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
@@ -292,10 +328,14 @@ namespace BankApp
                         break;
                 }
 
-			}
+            }
 
-		}
+        }
 
 
     }
+
 }
+
+
+
