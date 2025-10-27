@@ -26,6 +26,10 @@ namespace BankApp.Users
                 new CheckingsAccount(userId, bankAccountBalance1),
                 new SavingsAccount(userId, bankAccountBalance2)
             };
+            foreach (BankAccountBase account in CustomerBankAccounts)
+            {
+                BankSystem.AllAccounts.Add(account);
+            }
             CustomerActiveLoans = new List<Loan>();
         }
 

@@ -13,6 +13,7 @@ namespace BankApp
     internal static class BankSystem
     {
         // Creates a default list of customers
+        public static List<BankAccountBase> AllAccounts { get; set; } = new List<BankAccountBase>();
         public static List<Customer> AllCustomers { get; set; } = new List<Customer>()
         {
             new Customer(2, "John Doe", "blehblah@msn.com", "test1", "0761234567", false, 20000m, 10m),
@@ -21,7 +22,6 @@ namespace BankApp
         };
 
         public static Admin Admin { get; set; } = new Admin(1, "Adam Admin", "blandsystemmail@thisbank.com", "admin1", "0769998877");
-        public static List<BankAccountBase> AllAccounts { get; set; } = new List<BankAccountBase>();
         public static List<Transaction> PendingTransactions { get; set; } = new List<Transaction>();
         public static List<Transaction> TransactionHistory { get; set; } = new List<Transaction>();
         public static List<Loan> AllLoan { get; set; } = new List<Loan>();
