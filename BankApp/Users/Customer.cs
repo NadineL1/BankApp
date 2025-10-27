@@ -1,4 +1,4 @@
-﻿
+﻿using BankApp.Transactions;
 using BankApp.BankAccounts;
 using BankApp.Loans;
 using System.Threading;
@@ -75,17 +75,85 @@ namespace BankApp.Users
         }
         public void StartTransaction()
         {
-            Console.WriteLine("Starts Transaction");
-            // Call list accounts method()
-            // Ask user which account to make the transaction from
-                // Ask user what account to make the transaction to internal or external
-                    // If Internal
-                        // Select account with list accounts method
-                        //MakeTransaction();
-                    // Else if external
+            Console.WriteLine("Starts Transaction"); // DEBUG: REMOVE LATER
+            Console.WriteLine("Which account would like to make the transfer from?");
+            // Creates a new list with all checking accounts the customer has in their name.
+            List<BankAccountBase> checkingList = CustomerBankAccounts.FindAll(account => account is CheckingsAccount);
+            Helper.PrintAccountList(checkingList);
+
+            // Asks user what account to make the transaction from.
+            // Uses user input to select an account based on the index of the temporary checkingaccount list.
+            // Stores the selected account reference in a new variable to be sent into MakeTransaction().
+            var senderAccount = checkingList[Helper.ListSelection(checkingList.Count)];
+
+            Console.WriteLine("Do you want to make the transaction between one of your own accounts or to a external account?");
+            // Creates a new selection list.
+            List<string> internalExternal = new List<string>() { "Internal.", "External"};
+            Helper.PrintSelectionList(internalExternal);
+            // If user selects 1, internal.
+            if(Helper.ListSelection(internalExternal.Count) == 0)
+            {
+                // Finds all the customer's accounts that aren't the sender account.
+                List<BankAccountBase> userAccounts = CustomerBankAccounts.FindAll(account => account != senderAccount);
+                // Asks the user to select which of their other accounts to send to money to.
+                Console.WriteLine("Which of your account would you like to receive the transaction?");
+                Helper.PrintAccountList(userAccounts);
+                // Stores the reference to the receiver account so that we can sent it to MakeTransaction
+                BankAccountBase receiverAccount = userAccounts[Helper.ListSelection(userAccounts.Count)];
+
+                // Calls MakeTransaction with the selected sender and receiver accounts.
+                MakeTransaction(senderAccount, receiverAccount);
+            }
+            // Else they've selected external
+            else
+            {
+                // Initializes a loop so that the user has several attempts to enter a corrct acconut number.
+                bool selectBankNumberLoop = true;
+                while (selectBankNumberLoop)
+                {
+                    // Creates a variable to store the receiver account reference.
+                    BankAccountBase? receiverAccount = null;
                     // Ask user to enter bank number
-                        // If matches another BankAccount number
-                        //MakeTransaction();
+                    Console.WriteLine("Please enter the bank number of the receiving account");
+                    // Prints all accounts so that we devs can see the account numbers.
+                    Helper.PrintAccountList(BankSystem.AllAccounts); // DEBUG: REMOVE LATER
+                    Console.WriteLine();
+
+                    // Makes sure that the user enters a positive integer
+                    if (int.TryParse(Console.ReadLine(), out int tryAccount) && tryAccount > 0)
+                    {
+                        // Checks all accounts in the system for a match against user input.
+                        foreach (BankAccountBase account in BankSystem.AllAccounts)
+                        {
+                            // Stores the reference if a match is found
+                            if (account.AccountNumber == tryAccount)
+                            {
+                                receiverAccount = account;
+                            }
+                        }
+                        // Asks the user if they want another attempt to enter a number if they entered an incorrect number.
+                        if (receiverAccount == null)
+                        {
+                            Console.WriteLine("Couldn't find an account with that account number.");
+                            Console.WriteLine("Do you want to try to enter another banknumber?");
+                            Helper.PrintSelectionList(SelectionLists.YesNo);
+                            if(Helper.ListSelection(SelectionLists.YesNo.Count) == 1)
+                            {
+                                selectBankNumberLoop = false;
+                                Console.WriteLine("Canceling transaction.");
+                                Helper.PauseBreak("Returning to menu", 3);
+                            }
+                        }
+                        // Calls maketransaction if they found a matching account number.
+                        else if(receiverAccount != null)
+                        {
+                            Console.WriteLine("Account found"); // DEBUG: REMOVE LATER
+                            selectBankNumberLoop = false;
+                            MakeTransaction(senderAccount, receiverAccount);
+                        }
+                    }
+                }
+            }
         }
 
         public void MakeTransaction(BankAccountBase sender, BankAccountBase receiver)
@@ -109,9 +177,11 @@ namespace BankApp.Users
                 {
                     //Console.WriteLine("\nPlease hold, this prossesing transaction will take 15-minutes.");
                     // Need to make a Thread.sleep?
-
-                    sender.Balance -= amount;
-                    receiver.Balance += amount;
+                    Transaction transaction = new Transaction(sender, receiver, amount);
+                    transaction.ExecuteTransaction();
+                    // FIX: Needs to add this transaction to transaction history of both sender and receiver.
+                    
+                   
                     Console.WriteLine($"\nTransfer successful! {amount} has been sent.");
                 }               
             }
@@ -123,6 +193,11 @@ namespace BankApp.Users
         public void CheckTransactionHistory()
         {
             Console.WriteLine("Checks Transaction History");
+            foreach(Transaction transaction in BankSystem.TransactionHistory)
+            {
+                transaction.PrintTransaction();
+            }
+            Console.ReadLine();
             // Call list accounts method()
             // Select BankAccount from list
             // PrintTransaction foreach TRansaction in BankAccount.Transaction history
@@ -138,7 +213,7 @@ namespace BankApp.Users
             }
             
             Console.WriteLine("\nPress any key to return to menu.");
-            Console.ReadKey();
+            
         }
         
         public void CreateBankAccount()

@@ -55,7 +55,7 @@ namespace BankApp
         /// <remarks>The method repeatedly prompts the user until a valid selection is made. A valid
         /// selection is an integer between 1 and <paramref name="listSize"/>.</remarks>
         /// <param name="listSize">The total number of items in the list. Must be greater than zero.</param>
-        /// <returns>The number entered by the user, representing their selection, which is guaranteed to be between 1 and
+        /// <returns>The number entered by the user, representing their selection, but subtractet by one in order to be used to index a list
         /// <paramref name="listSize"/>.</returns>
         public static int ListSelection(int listSize)
         {
@@ -64,7 +64,9 @@ namespace BankApp
             {
                 if (int.TryParse(Console.ReadLine(), out selection) && selection > 0 && selection <= listSize)
                 {
-                    return selection;
+                    // Adds an empty line between user input and next line.
+                    Console.WriteLine();
+                    return selection - 1;
                 }
                 else
                 {
@@ -72,6 +74,7 @@ namespace BankApp
                     selection = 0;
                 }
             }
+            Console.WriteLine();
             return selection;
         }
     }

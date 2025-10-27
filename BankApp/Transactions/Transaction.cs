@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,16 +16,19 @@ namespace BankApp.Transactions
         public decimal TransactionAmount {  get; set; }
         public DateTime DateOfTransaction { get; set; }
 
-        public Transaction(BankAccountBase sender, BankAccountBase recever, decimal transactionAmount)
+        public Transaction(BankAccountBase sender, BankAccountBase receiver, decimal transactionAmount)
         {
             Sender = sender;
+            Receiver = receiver;
             TransactionAmount = transactionAmount;
             DateOfTransaction = DateTime.Now;
         }
 
         public void ExecuteTransaction()
         {
-
+            Sender.Balance -= TransactionAmount;
+            Receiver.Balance += TransactionAmount;
+            BankSystem.TransactionHistory.Add(this);
         }
         public void PrintTransaction()
         {
