@@ -90,12 +90,20 @@ namespace BankApp.Users
             // Select BankAccount from list
             // PrintTransaction foreach TRansaction in BankAccount.Transaction history
         }
-        /*
+        
         public void CheckBankAccounts()
         {
-
+            Console.Clear();
+            Console.WriteLine("Your Accounts:\n");
+            foreach (var account in CustomerBankAccounts)
+            {
+                Console.WriteLine($"{account.AccountNumber}, {account.Balance}\n");
+            }
+            
+            Console.WriteLine("\nPress any key to return to menu.");
+            Console.ReadKey();
         }
-        */
+        
         public void CreateBankAccount()
         {
             // Confirm that the customer want to make an new account
@@ -186,7 +194,7 @@ namespace BankApp.Users
                         // Ask if they want to try again or go back to customer menu
 
             Console.WriteLine("What would you like to change?");
-            Console.WriteLine("1. Mail\n2. Phonenumber\n3. Password");
+            Console.WriteLine($"1. Email (current: {this.Email})\n2. Phonenumber (current: {this.PhoneNumber})\n3. Password");
             string choice = Console.ReadLine();
 
             switch (choice)

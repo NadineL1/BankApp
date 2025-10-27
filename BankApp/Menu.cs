@@ -293,6 +293,7 @@ namespace BankApp
                     case "4":
                         Console.WriteLine("Check bank accounts.");
                         // Call to CheckingAccount
+                        customer.CheckBankAccounts();
                         break;
                     case "5":
                         Console.WriteLine("Create bank account");
