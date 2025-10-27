@@ -17,6 +17,17 @@ namespace BankApp.Users
             CustomerBankAccounts = new List<BankAccountBase>();
             CustomerActiveLoans = new List<Loan>();
         }
+        // Overloads the constructor so that it can also take two additioanl decimal values
+        // These values are then used as the balance for a checking account and a savings account made with this customers userID.
+        public Customer(int userId, string name, string email, string password, string phoneNumber, bool lockbool, decimal bankAccountBalance1, decimal bankAccountBalance2) : base(userId, name, email, password, phoneNumber, false)
+        {
+            LockBool = lockbool;
+            CustomerBankAccounts = new List<BankAccountBase>() {
+                new CheckingsAccount(userId, bankAccountBalance1),
+                new SavingsAccount(userId, bankAccountBalance2)
+            };
+            CustomerActiveLoans = new List<Loan>();
+        }
 
         public void Withdraw()
         {

@@ -15,9 +15,9 @@ namespace BankApp
         // Creates a default list of customers
         public static List<Customer> AllCustomers { get; set; } = new List<Customer>()
         {
-            new Customer(2, "John Doe", "blehblah@msn.com", "test1", "0761234567", false),
-            new Customer(3, "Anna Deer", "defaultemail@hotmail.com", "test2", "0769876543", false),
-            new Customer(4, "Tina Stag", "destroyerofworlds@gmail.com", "test3", "0761011010", false)
+            new Customer(2, "John Doe", "blehblah@msn.com", "test1", "0761234567", false, 20000m, 10m),
+            new Customer(3, "Anna Deer", "defaultemail@hotmail.com", "test2", "0769876543", false, 30000m, 10000),
+            new Customer(4, "Tina Stag", "destroyerofworlds@gmail.com", "test3", "0761011010", false, 50000m, 13337m)
         };
 
         public static Admin Admin { get; set; } = new Admin(1, "Adam Admin", "blandsystemmail@thisbank.com", "admin1", "0769998877");

@@ -169,7 +169,8 @@ namespace BankApp
 
         public static void AdminMenu(Admin admin)
         {
-
+            bool adminMenu = true;
+            while (adminMenu)
             {
                 // Show list of options
                 /*
@@ -226,7 +227,7 @@ namespace BankApp
                         Console.WriteLine("Log out? Thank you for today.");
                         Console.WriteLine("Press any key to exit.");
                         Console.ReadKey();
-                        adminmenu = false;
+                        adminMenu = false;
                         break;
                     default:
                         Console.WriteLine("Something went wrong.Try again with a different number choice.");
