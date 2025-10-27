@@ -24,6 +24,10 @@ namespace BankApp.BankAccounts
 			this.Balance = balance;
 			this.CustomerID = customerID;
 		}
+		public void PrintAccountInfo()
+		{
+			Console.WriteLine($"Accountnumber: {AccountNumber}, Balance: {Balance}kr");
+		}
 
 	}
 }
