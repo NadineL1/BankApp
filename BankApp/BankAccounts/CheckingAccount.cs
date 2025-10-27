@@ -8,7 +8,7 @@ namespace BankApp.BankAccounts
 {
     internal class CheckingsAccount : BankAccountBase
     {
-		public CheckingsAccount(int customerID, double balance): base (customerID, balance)
+		public CheckingsAccount(int customerID, decimal balance): base (customerID, balance)
 		{
 			
 		}

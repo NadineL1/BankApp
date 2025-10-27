@@ -108,6 +108,11 @@ namespace BankApp
                             // Checks if the stored customer's password matches user input
                             if (loginCustomer.Password == inputPassword)
                             {
+                                Console.WriteLine("\nSuccess! You are now logged in as customer!");                                
+                                
+
+                              
+
                                 // ANROPA CustomerMenu-metoden !!
                                 // Sends the found customer object into the customer menu
                                 CustomerMenu(loginCustomer);
@@ -164,8 +169,7 @@ namespace BankApp
 
         public static void AdminMenu(Admin admin)
         {
-            bool adminmenu = true;
-            while (adminmenu)
+
             {
                 // Show list of options
                 /*
