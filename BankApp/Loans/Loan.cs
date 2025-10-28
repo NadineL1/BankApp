@@ -9,10 +9,18 @@ namespace BankApp.Loans
 {
     internal class Loan
     {
-        // Balance 
+        // public decial Balance 
 
-        // Interest
+        // public decimal Interest
         
-        // Customer
+        // public Customer customer
+
+        public Loan() { }
+
+
+        public void InterestRateTick()
+        {
+            // Increments balance by interest
+        }
     }
 }
