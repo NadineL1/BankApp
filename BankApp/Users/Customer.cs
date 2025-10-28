@@ -209,10 +209,11 @@ namespace BankApp.Users
             Console.WriteLine("Your Accounts:\n");
             foreach (var account in CustomerBankAccounts)
             {
-                Console.WriteLine($"{account.AccountNumber}, {account.Balance}\n");
+                account.PrintAccountInfo();
             }
             
             Console.WriteLine("\nPress any key to return to menu.");
+            Console.ReadKey();
             
         }
         
