@@ -36,6 +36,7 @@ namespace BankApp
                 // else ask for login details again
 
                 Console.Clear();
+                Logo.BankLogo();
                 Console.WriteLine("Welcome to The Five Bank!");
                 Console.WriteLine("How would you like to login?");
                 Console.WriteLine("\n[1] Log in as customer.");
