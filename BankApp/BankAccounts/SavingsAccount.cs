@@ -6,12 +6,21 @@ using System.Threading.Tasks;
 
 namespace BankApp.BankAccounts
 {
-    internal class SavingsAccount: BankAccountBase
+    internal class SavingsAccount : BankAccountBase
     {
         public decimal interest { get; set; }
-        public SavingsAccount(int customerID, decimal balance): base(customerID, balance)
-        { 
-            
+        public SavingsAccount(int customerID, decimal balance) : base(customerID, balance)
+        {
+
         }
-	}
+
+        public override void PrintAccountInfo()
+        {
+            Console.WriteLine($"Savings account, Accountnumber: {AccountNumber}, Balance: {Balance}kr\n");
+
+        }
+
+    }
+
 }
+
