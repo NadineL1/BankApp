@@ -77,5 +77,18 @@ namespace BankApp
             Console.WriteLine();
             return selection;
         }
+
+        public static decimal ConvertCurrency(decimal amount, Enums.CurrencyTypes from, Enums.CurrencyTypes to) 
+        {
+            if (from == to)
+                return amount;
+            if (BankSystem.ExchangeRate.TryGetValue((from, to), out  decimal rate))
+            {
+                return amount * rate;
+            }
+
+            throw new ArgumentException("Error! Error!");                       
+        }
+
     }
 }

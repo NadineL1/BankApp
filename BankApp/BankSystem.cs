@@ -26,7 +26,7 @@ namespace BankApp
         public static List<Transaction> TransactionHistory { get; set; } = new List<Transaction>();
         public static List<Loan> AllLoan { get; set; } = new List<Loan>();
 
-        public static decimal ExchangeEuro {get; set;}
+        public static decimal ExchangeEuro { get; set; }
 
         /*
         public static BankSystem()
@@ -65,5 +65,14 @@ namespace BankApp
             // Enter value
             // ExchangeEuro = value;
         }
+
+        public static readonly Dictionary<(Enums.CurrencyTypes From, Enums.CurrencyTypes To), decimal> ExchangeRate = new()
+        {
+            { (Enums.CurrencyTypes.SEK, Enums.CurrencyTypes.EUR), 0.088m },
+            { (Enums.CurrencyTypes.EUR, Enums.CurrencyTypes.SEK), 11.36m },
+            { (Enums.CurrencyTypes.SEK, Enums.CurrencyTypes.USD), 0.091m },
+            { (Enums.CurrencyTypes.USD, Enums.CurrencyTypes.SEK), 11.00m }
+        };
+
     }
 }
