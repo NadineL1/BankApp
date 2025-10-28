@@ -286,16 +286,16 @@ namespace BankApp.Users
         public void LoanRequest()
         {
             Console.WriteLine("Takes out Loan");
-            // Ask user what account they want the money from the loan to go to
-                // Ask user the amount they want to borrow
-                    // If loan amount isn't more than 5x total balance in all of customer accounts
-                    // Show how much customer wants to borrow and how much extra they have to pay in interest
-                        // Ask if they still want to take the loan
-                            // If yes
-                            // Create Loan object
-                            // Add Loan object to Customer Loan list
-                            // Add Loan to syste Loan list
-        }
+            // Ask user which account they want the money from the loan to go to
+            // Ask user the amount they want to borrow
+                // If loan amount isn't more than 5x total balance in all of customer accounts
+                // Show how much customer wants to borrow and how much extra they have to pay in interest
+                    // Ask if they still want to take the loan
+                        // If yes
+                        // Create Loan object
+                        // Add Loan object to Customer Loan list
+                        // Add Loan to system Loan list
+    }
         public void UpdateCustomerInformation()
         {
             // Ask what the user wants to change (mail/phone/password)
