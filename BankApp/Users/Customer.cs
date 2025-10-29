@@ -147,7 +147,7 @@ namespace BankApp.Users
                         // Calls maketransaction if they found a matching account number.
                         else if(receiverAccount != null)
                         {
-                            Console.WriteLine("Account found"); // DEBUG: REMOVE LATER
+                            Console.WriteLine("Account found"); // DEBUG, REMOVE LATER: 
                             selectBankNumberLoop = false;
                             MakeTransaction(senderAccount, receiverAccount);
                         }
@@ -193,14 +193,85 @@ namespace BankApp.Users
         public void CheckTransactionHistory()
         {
             Console.WriteLine("Checks Transaction History");
-            foreach(Transaction transaction in BankSystem.TransactionHistory)
+            Console.WriteLine("All transactions in system:");
+            foreach(Transaction transaction in BankSystem.TransactionHistory) // DEBUG, REMOVE LATER: Prints all accounts in system to make checking easier
             {
                 transaction.PrintTransaction();
             }
-            Console.ReadLine();
-            // Call list accounts method()
-            // Select BankAccount from list
-            // PrintTransaction foreach TRansaction in BankAccount.Transaction history
+            Console.WriteLine();
+
+            // Actual method starts here
+            // 
+            Console.WriteLine("Which account's transaction history would you like to see?");
+            Helper.PrintAccountList(CustomerBankAccounts);
+            // An ugly append to the selectionlist for additional options.
+            Console.WriteLine($"{CustomerBankAccounts.Count + 1}. All accounts.");
+            Console.WriteLine($"{CustomerBankAccounts.Count + 2}. Quit.");
+            int historyInput = Helper.ListSelection(CustomerBankAccounts.Count + 2);
+
+            if(historyInput < CustomerBankAccounts.Count)
+            {
+                CustomerBankAccounts[historyInput].PrintTransactionHistory();
+                Console.ReadLine();
+            }
+            else if(historyInput == CustomerBankAccounts.Count)
+            {
+                // Makes a new list and stores all transactions from all the user's accounts in it.
+                List<Transaction> allTransactions = new List<Transaction>();
+                foreach(BankAccountBase account in CustomerBankAccounts)
+                {
+                    foreach(Transaction transaction in account.TransactionList)
+                    {
+                        allTransactions.Add(transaction);
+                    }
+                }
+
+                // Sorts the new list based on the date of the transaction.
+                allTransactions.Sort(delegate (Transaction x, Transaction y)
+                {
+                    if (x.DateOfTransaction == null && y.DateOfTransaction == null) return 0;
+                    else if (x.DateOfTransaction == null) return -1;
+                    else if (y.DateOfTransaction == null) return 1;
+                    else return x.DateOfTransaction.CompareTo(y.DateOfTransaction);
+                });
+
+                Console.WriteLine("Hopefully prints all transactions from all accounts sorted by date of transaction.");
+                Transaction previousTransaction = null;
+                foreach(Transaction transaction in allTransactions)
+                {
+                    // Checks if the this transsaction is the same as the previous one to avoid writing the same things twice.
+                    if(transaction != previousTransaction)
+                    {
+                        // Checks if the sender is one of the user's bankaccounts.
+                        BankAccountBase foundAccount = null;
+                        foundAccount = CustomerBankAccounts.Find(x => x.AccountNumber == transaction.Sender.AccountNumber);
+                        if (foundAccount != null)
+                        {
+                            Console.WriteLine($"At {transaction.DateOfTransaction} you sent {transaction.TransactionAmount} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+                        }
+
+                        // Checks if the receiver is one of the user's bankaccounts.
+                        foundAccount = null;
+                        foundAccount = CustomerBankAccounts.Find(x => x.AccountNumber == transaction.Receiver.AccountNumber);
+                        if (foundAccount != null)
+                        {
+                            Console.WriteLine($"At {transaction.DateOfTransaction} you received {transaction.TransactionAmount} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+                        }
+                        previousTransaction = transaction;
+                    }
+                }
+                Console.ReadLine();
+            }
+            else
+            {
+                Helper.PauseBreak("Returning to menu", 3);
+            }
+
+                // Call list accounts method()
+
+                // Select BankAccount from list
+                // PrintTransaction foreach TRansaction in BankAccount.Transaction history
+                Console.ReadLine();
         }
         
         public void CheckBankAccounts()
