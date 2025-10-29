@@ -314,10 +314,12 @@ namespace BankApp
                     case "6":
                         Console.WriteLine("Make loan request.");
                         // Call to LoanRequest() from customer.
+                        customer.LoanRequest();
                         break;
                     case "7":
-                        Console.WriteLine("check loans.");
+                        Console.WriteLine("Check loans");
                         // Call to CheckLoans() from Customer.
+                        customer.CheckLoans();
                         break;
                     case "8":
                         Console.WriteLine("Update profile information.");
