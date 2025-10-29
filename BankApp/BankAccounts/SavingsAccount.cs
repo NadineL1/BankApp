@@ -8,10 +8,10 @@ namespace BankApp.BankAccounts
 {
     internal class SavingsAccount: BankAccountBase
     {
-        public decimal interest { get; set; }
+        public static decimal InterestRate { get; set; } = 7.5M;
         public SavingsAccount(int customerID, decimal balance): base(customerID, balance)
-        { 
-            
+        {
+            AccountType = "Savings account";
         }
 	}
 }

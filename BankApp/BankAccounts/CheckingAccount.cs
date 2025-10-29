@@ -8,9 +8,10 @@ namespace BankApp.BankAccounts
 {
     internal class CheckingsAccount : BankAccountBase
     {
+		
 		public CheckingsAccount(int customerID, decimal balance): base (customerID, balance)
 		{
-			
+			AccountType = "Checkings";
 		}
 
 	}

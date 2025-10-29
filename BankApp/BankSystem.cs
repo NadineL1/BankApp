@@ -45,7 +45,6 @@ namespace BankApp
             {
 
             }
-            
 
             ExchangeEuro = 1m;
         }

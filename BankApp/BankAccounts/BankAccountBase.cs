@@ -12,7 +12,7 @@ namespace BankApp.BankAccounts
 		public decimal Balance { get; set; } = 0;
 		public readonly int CustomerID;
 		private static int s_nextAccountNumber;
-
+		public string? AccountType { get; set; } 
 		static BankAccountBase()
 		{
 			Random random = new Random();
@@ -26,7 +26,7 @@ namespace BankApp.BankAccounts
 		}
 		public void PrintAccountInfo()
 		{
-			Console.WriteLine($"Accountnumber: {AccountNumber}, Balance: {Balance}kr");
+			Console.WriteLine($"Accountnumber: {AccountNumber}, Balance: {Balance} kr");
 		}
 
 	}

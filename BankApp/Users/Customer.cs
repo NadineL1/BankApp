@@ -1,6 +1,8 @@
-﻿using BankApp.Transactions;
-using BankApp.BankAccounts;
+﻿using BankApp.BankAccounts;
 using BankApp.Loans;
+using BankApp.Transactions;
+using Microsoft.VisualBasic;
+using System.Security.Principal;
 using System.Threading;
 
 namespace BankApp.Users
@@ -77,7 +79,7 @@ namespace BankApp.Users
         {
             Console.WriteLine("Starts Transaction"); // DEBUG: REMOVE LATER
             Console.WriteLine("Which account would like to make the transfer from?");
-            // Creates a new list with all checking accounts the customer has in their name.
+            // Creates a new list with all checking accounts the customer has in their name.     
             List<BankAccountBase> checkingList = CustomerBankAccounts.FindAll(account => account is CheckingsAccount);
             Helper.PrintAccountList(checkingList);
 
@@ -183,6 +185,10 @@ namespace BankApp.Users
                     
                    
                     Console.WriteLine($"\nTransfer successful! {amount} has been sent.");
+                    if (receiver.AccountType == "Savings account")
+                    {
+                        Console.WriteLine($"Savingsaccount {receiver.CustomerID} with interest rate {SavingsAccount.InterestRate}% created!");
+                    }
                 }               
             }
             else
@@ -252,7 +258,7 @@ namespace BankApp.Users
                             SavingsAccount savingsaccount = new SavingsAccount(123, 0);
                             CustomerBankAccounts.Add(savingsaccount);
                             BankSystem.AllAccounts.Add(savingsaccount);
-                            Console.WriteLine("Savings account created successfully!");
+                            Console.WriteLine($"Savingsaccount {savingsaccount.CustomerID} with interest rate {SavingsAccount.InterestRate}% created! Transfer money and see how much money you'll save! ");
                             break;
 
 
