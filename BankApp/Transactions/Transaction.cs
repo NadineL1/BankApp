@@ -26,8 +26,37 @@ namespace BankApp.Transactions
 
         public void ExecuteTransaction()
         {
-            Sender.Balance -= TransactionAmount;
-            Receiver.Balance += TransactionAmount;
+            // Check to see if Cutomer has enough money.
+            if (Sender.Balance < TransactionAmount) 
+            {
+                Console.WriteLine("Transfer failed. Not enough funds.");
+                return;
+            }
+            // If currency are the same, no exchange needs.
+            if (Sender.CurrencyType == Receiver.CurrencyType)
+            {
+                Sender.Balance -= TransactionAmount;
+                Receiver.Balance += TransactionAmount;
+
+                Console.WriteLine($"Transfer successful! {TransactionAmount} has been sent.");
+            }
+            else 
+            {
+                // If currency is different, start exchange
+                decimal convertedAmount = Helper.ConvertCurrency(
+                    TransactionAmount,  // The amount to convert
+                    Sender.CurrencyType,  
+                    Receiver.CurrencyType
+                    );
+
+                // Update the balance.
+                Sender.Balance -= TransactionAmount;
+                Receiver.Balance += TransactionAmount;
+
+                Console.WriteLine($"Transfer successful! {TransactionAmount} has been sent.");
+                Console.WriteLine($"Converted {TransactionAmount} {Sender.CurrencyType} to {convertedAmount} {Receiver.CurrencyType}.");
+            }
+            // Add transaction to history.
             BankSystem.TransactionHistory.Add(this);
         }
         public void PrintTransaction()
