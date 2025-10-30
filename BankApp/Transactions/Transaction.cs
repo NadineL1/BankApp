@@ -18,11 +18,15 @@ namespace BankApp.Transactions
         // TODO: Probably gonna need to add currency type to the transaction class.
         // TODO: Implementing a transaction ID would probably be smart.
 
-        public Transaction(BankAccountBase sender, BankAccountBase receiver, decimal transactionAmount)
+        
+
+        public Transaction(BankAccountBase sender, BankAccountBase receiver, decimal convertedAmount, decimal preConvertedAmount)
         {
             Sender = sender;
             Receiver = receiver;
-            TransactionAmount = transactionAmount;
+            ConvertedAmount = convertedAmount;
+            PreConvertedAmount = preConvertedAmount;
+            CurrencyType = receiver.CurrencyType;
             DateOfTransaction = DateTime.Now;
         }
 

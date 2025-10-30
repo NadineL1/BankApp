@@ -15,18 +15,19 @@ namespace BankApp.BankAccounts
 		public readonly int CustomerID;
 		private static int s_nextAccountNumber;
 		Enums.CurrencyTypes CurrencyType {  get; set; }
-        public List<Transaction> TransactionList {  get; set; } = new List<Transaction>();
+    public List<Transaction> TransactionList {  get; set; } = new List<Transaction>();
 
 		static BankAccountBase()
 		{
 			Random random = new Random();
 			s_nextAccountNumber = random.Next(10000000, 20000000);
 		}
-		public BankAccountBase(int customerID/*,Enums.CurrencyTypes currencyTypes*/,decimal balance)
+		public BankAccountBase(int customerID,Enums.CurrencyTypes currencyTypes,decimal balance)
 		{
 			this.AccountNumber = s_nextAccountNumber++;
 			this.Balance = balance;
 			this.CustomerID = customerID;
+			this.CurrencyType = currencyTypes;
 		}
 		public virtual void PrintAccountInfo()
 		{

@@ -1,7 +1,8 @@
-﻿using BankApp.Transactions;
-using BankApp.BankAccounts;
+﻿using BankApp.BankAccounts;
 using BankApp.Loans;
+using BankApp.Transactions;
 using System.Threading;
+
 
 namespace BankApp.Users
 {
@@ -23,8 +24,8 @@ namespace BankApp.Users
         {
             LockBool = lockbool;
             CustomerBankAccounts = new List<BankAccountBase>() {
-                new CheckingsAccount(userId, bankAccountBalance1),
-                new SavingsAccount(userId, bankAccountBalance2)
+                new CheckingsAccount(userId, Enums.CurrencyTypes.SEK, bankAccountBalance1),
+                new SavingsAccount(userId, Enums.CurrencyTypes.SEK, bankAccountBalance2)
             };
             foreach (BankAccountBase account in CustomerBankAccounts)
             {
@@ -175,14 +176,29 @@ namespace BankApp.Users
                 }
                 else 
                 {
-                    //Console.WriteLine("\nPlease hold, this prossesing transaction will take 15-minutes.");
-                    // Need to make a Thread.sleep?
-                    Transaction transaction = new Transaction(sender, receiver, amount);
-                    transaction.ExecuteTransaction();
-                    // FIX: Needs to add this transaction to transaction history of both sender and receiver.
-                    
-                   
-                    Console.WriteLine($"\nTransfer successful! {amount} has been sent.");
+                    // If currency are the same, no exchange needed.
+                    if (sender.CurrencyType == receiver.CurrencyType)
+                    {
+                        Transaction newTransaction = new Transaction(sender, receiver, amount, amount);
+                        newTransaction.ExecuteTransaction();
+
+                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                    }
+                    else 
+                    {
+                        // If currency is different, start convert.
+                        decimal convertedAmount = Helper.ConvertCurrency(
+                            amount,
+                            sender.CurrencyType,
+                            receiver.CurrencyType
+                            );
+                        // Update the balance.
+                        Transaction newTransaction = new Transaction(sender, receiver, convertedAmount, amount);
+                        newTransaction.ExecuteTransaction();
+
+                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                        Console.WriteLine($"Converted {amount} {sender.CurrencyType} to {convertedAmount} {receiver.CurrencyType}.");
+                    }             
                 }               
             }
             else
@@ -312,7 +328,7 @@ namespace BankApp.Users
                         // Add it to Customer AccountList, BankSystem account list
                         // Write confirmation of the new BankAccount
                         case 1:
-                            CheckingsAccount checkingsaccount = new CheckingsAccount(123, 0);
+                            CheckingsAccount checkingsaccount = new CheckingsAccount(123,Enums.CurrencyTypes.SEK, 0);
                             CustomerBankAccounts.Add(checkingsaccount);
                             BankSystem.AllAccounts.Add(checkingsaccount);
                             Console.WriteLine("Checkings account created successfully!");
@@ -321,7 +337,7 @@ namespace BankApp.Users
                         // Add it to Customer AccountList, BankSystem account list
                         // Write confirmation of the new BankAccount
                         case 2:
-                            SavingsAccount savingsaccount = new SavingsAccount(123, 0);
+                            SavingsAccount savingsaccount = new SavingsAccount(123, Enums.CurrencyTypes.SEK, 0);
                             CustomerBankAccounts.Add(savingsaccount);
                             BankSystem.AllAccounts.Add(savingsaccount);
                             Console.WriteLine("Savings account created successfully!");
@@ -349,23 +365,81 @@ namespace BankApp.Users
         }
         public void CheckLoans()
         {
-            Console.WriteLine("Checks Loans");
             // Foreach Loan in Customer Loan list
             // Write Loan.info
             // (Later, maybe make the customer select a loan to make repayments)
+
+            foreach (var loan in CustomerActiveLoans)
+            {
+                loan.PrintLoanInfo();
+            }
+            Console.ReadKey();
         }
         public void LoanRequest()
         {
             Console.WriteLine("Takes out Loan");
             // Ask user which account they want the money from the loan to go to
+            Console.WriteLine("Which account would you like the loan to be deposited into");
+            Helper.PrintAccountList(CustomerBankAccounts);
+
+            int input = int.Parse(Console.ReadLine());
+            BankAccountBase selectedAccount = CustomerBankAccounts[input - 1];
             // Ask user the amount they want to borrow
-                // If loan amount isn't more than 5x total balance in all of customer accounts
-                // Show how much customer wants to borrow and how much extra they have to pay in interest
-                    // Ask if they still want to take the loan
-                        // If yes
-                        // Create Loan object
-                        // Add Loan object to Customer Loan list
-                        // Add Loan to system Loan list
+            Console.WriteLine("How much would you like to borrow?");
+
+            decimal loanAmount = decimal.Parse(Console.ReadLine());
+            // If loan amount isn't more than 5x total balance in all of customer accounts
+
+            decimal totalBalance = 0;
+
+            foreach (var account in CustomerBankAccounts)
+            {
+                totalBalance += account.Balance;
+            }
+
+            
+            if (loanAmount > totalBalance * 5)
+            {
+                Console.WriteLine($"You can only borrow up to {totalBalance * 5} SEK");
+                Console.ReadKey();
+            }
+            // Show how much customer wants to borrow and how much extra they have to pay in interest
+            else if (loanAmount <= totalBalance * 5)
+            {
+                Console.WriteLine("Choose payback period in months:");
+                decimal paybackInMonths = decimal.Parse(Console.ReadLine());
+                
+                Console.WriteLine($"Total loan cost:");
+                Console.WriteLine($"{loanAmount} + {loanAmount * 0.02m * paybackInMonths}");
+
+
+                // Ask if they still want to take the loan
+                Console.WriteLine("Do you accept the loan?");
+                Console.WriteLine("Yes");
+                Console.WriteLine("No");
+
+                // If yes
+                int choice = int.Parse(Console.ReadLine());
+                switch (choice)
+                {
+                    // Create Loan object
+                    // Add Loan object to Customer Loan list
+                    // Add Loan to system Loan list
+                    case 1:
+                        Loan loan = new Loan(loanAmount, 0.02m, this, paybackInMonths);
+                        CustomerActiveLoans.Add(loan);
+                        BankSystem.AllLoan.Add(loan);
+                        selectedAccount.Balance += loanAmount;
+                        
+                        break;
+
+                    case 2:
+                        break;
+                }
+            }
+
+            
+            //Console.ReadKey();
     }
         public void UpdateCustomerInformation()
         {
