@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace BankApp.Transactions
 {
-    public class Transaction
+    internal class Transaction
     {
         // BankAccounr Receiver, Sender, Value, dateTime
-        public BankAccountBase Receiver {  get; private set; }
-        public BankAccountBase Sender { get; private set; }
-        public decimal TransactionAmount {  get; set; }
+        BankAccountBase Receiver {  get; set; }
+        BankAccountBase Sender { get; set; }
+        public decimal ConvertedAmount {  get; set; }
+        public decimal PreConvertedAmount { get; set; }
+        public Enums.CurrencyTypes CurrencyType { get; set; }
         public DateTime DateOfTransaction { get; set; }
-        // TODO: Probably gonna need to add currency type to the transaction class.
-        // TODO: Implementing a transaction ID would probably be smart.
 
         
 
@@ -31,17 +31,15 @@ namespace BankApp.Transactions
         }
 
         public void ExecuteTransaction()
-        {
-            Sender.Balance -= TransactionAmount;
-            Receiver.Balance += TransactionAmount;
-            BankSystem.TransactionHistory.Add(this);
-            Sender.TransactionList.Add(this);
-            Receiver.TransactionList.Add(this);
+        {          
+                Sender.Balance -= PreConvertedAmount;
+                Receiver.Balance += ConvertedAmount;            
+                BankSystem.TransactionHistory.Add(this);
         }
         public void PrintTransaction()
         {
             // Print: The dateTime you sent amount from sender to receiver
-            Console.WriteLine($"At {DateOfTransaction} this transaction sent {TransactionAmount} from bankaccount \"{Sender.AccountNumber}\" to bankaccount \"{Receiver.AccountNumber}\".");
+            Console.WriteLine($"This transaction sent {ConvertedAmount} from bankaccount {Sender.AccountNumber} to {Receiver.AccountNumber} at {DateOfTransaction}.");
         }
     }
 
