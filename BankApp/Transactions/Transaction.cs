@@ -13,56 +13,33 @@ namespace BankApp.Transactions
         // BankAccounr Receiver, Sender, Value, dateTime
         BankAccountBase Receiver {  get; set; }
         BankAccountBase Sender { get; set; }
-        public decimal TransactionAmount {  get; set; }
+        public decimal ConvertedAmount {  get; set; }
+        public decimal PreConvertedAmount { get; set; }
+        public Enums.CurrencyTypes CurrencyType { get; set; }
         public DateTime DateOfTransaction { get; set; }
 
-        public Transaction(BankAccountBase sender, BankAccountBase receiver, decimal transactionAmount)
+        
+
+        public Transaction(BankAccountBase sender, BankAccountBase receiver, decimal convertedAmount, decimal preConvertedAmount)
         {
             Sender = sender;
             Receiver = receiver;
-            TransactionAmount = transactionAmount;
+            ConvertedAmount = convertedAmount;
+            PreConvertedAmount = preConvertedAmount;
+            CurrencyType = receiver.CurrencyType;
             DateOfTransaction = DateTime.Now;
         }
 
         public void ExecuteTransaction()
-        {
-            // Check to see if Cutomer has enough money.
-            if (Sender.Balance < TransactionAmount) 
-            {
-                Console.WriteLine("Transfer failed. Not enough funds.");
-                return;
-            }
-            // If currency are the same, no exchange needs.
-            if (Sender.CurrencyType == Receiver.CurrencyType)
-            {
-                Sender.Balance -= TransactionAmount;
-                Receiver.Balance += TransactionAmount;
-
-                Console.WriteLine($"Transfer successful! {TransactionAmount} has been sent.");
-            }
-            else 
-            {
-                // If currency is different, start exchange
-                decimal convertedAmount = Helper.ConvertCurrency(
-                    TransactionAmount,  // The amount to convert
-                    Sender.CurrencyType,  
-                    Receiver.CurrencyType
-                    );
-
-                // Update the balance.
-                Sender.Balance -= TransactionAmount;
-                Receiver.Balance += TransactionAmount;
-
-                Console.WriteLine($"Transfer successful! {TransactionAmount} has been sent.");
-                Console.WriteLine($"Converted {TransactionAmount} {Sender.CurrencyType} to {convertedAmount} {Receiver.CurrencyType}.");
-            }
-            // Add transaction to history.
-            BankSystem.TransactionHistory.Add(this);
+        {          
+                Sender.Balance -= PreConvertedAmount;
+                Receiver.Balance += ConvertedAmount;            
+                BankSystem.TransactionHistory.Add(this);
         }
         public void PrintTransaction()
         {
             // Print: The dateTime you sent amount from sender to receiver
-            Console.WriteLine($"This transaction sent {TransactionAmount} from bankaccount {Sender.AccountNumber} to {Receiver.AccountNumber} at {DateOfTransaction}.");
+            Console.WriteLine($"This transaction sent {ConvertedAmount} from bankaccount {Sender.AccountNumber} to {Receiver.AccountNumber} at {DateOfTransaction}.");
         }
     }
 
