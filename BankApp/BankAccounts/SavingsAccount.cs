@@ -16,7 +16,7 @@ namespace BankApp.BankAccounts
 
         public override void PrintAccountInfo()
         {
-            Console.WriteLine($"Savings account, Accountnumber: {AccountNumber}, Balance: {Balance}kr\n ");
+            Console.Write($"Savings account, Accountnumber: {AccountNumber}, Balance: {Balance}kr\n");
 
         }
 
