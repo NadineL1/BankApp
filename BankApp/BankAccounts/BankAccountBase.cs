@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankApp.Transactions;
 
 namespace BankApp.BankAccounts
 {
@@ -13,9 +14,10 @@ namespace BankApp.BankAccounts
 		public readonly int CustomerID;
 		private static int s_nextAccountNumber;
 		public Enums.CurrencyTypes CurrencyType {  get; set; }
+        public List<Transaction> TransactionList { get; set; } = new List<Transaction>();
 
 
-		static BankAccountBase()
+        static BankAccountBase()
 		{
 			Random random = new Random();
 			s_nextAccountNumber = random.Next(10000000, 20000000);
@@ -30,7 +32,24 @@ namespace BankApp.BankAccounts
 		public virtual void PrintAccountInfo()
 		{
 			Console.WriteLine($"Accountnumber: {AccountNumber}, Balance: {Balance}kr");
-		}
+
+        }
+        public void PrintTransactionHistory()
+        {
+            foreach (Transaction transaction in TransactionList)
+            {
+                if (transaction.Sender.AccountNumber == AccountNumber)
+                {
+                    Console.WriteLine($"At {transaction.DateOfTransaction} you sent {transaction.ConvertedAmount}{transaction.CurrencyType} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+
+                }
+                else if (transaction.Receiver.AccountNumber == AccountNumber)
+                {
+                    Console.WriteLine($"At {transaction.DateOfTransaction} you received {transaction.ConvertedAmount}{transaction.CurrencyType} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+                }
+                else { Console.WriteLine("Error, this transaction doesn't match this account."); }
+            }
+        }
 
 	}
 }

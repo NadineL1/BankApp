@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static BankApp.Enums;
 
 namespace BankApp.BankAccounts
 {
@@ -16,7 +15,7 @@ namespace BankApp.BankAccounts
 
         public override void PrintAccountInfo()
         {
-            Console.WriteLine($"Checkings account, Accountnumber: {AccountNumber}, Balance: {Balance}kr\n");
+            Console.WriteLine($"Checkings account, Accountnumber: {AccountNumber}, Balance: {Balance}{CurrencyType}");
         }
 
     }
