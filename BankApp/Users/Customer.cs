@@ -1,7 +1,8 @@
-﻿using BankApp.Transactions;
-using BankApp.BankAccounts;
+﻿using BankApp.BankAccounts;
 using BankApp.Loans;
+using BankApp.Transactions;
 using System.Threading;
+
 
 namespace BankApp.Users
 {
@@ -23,8 +24,8 @@ namespace BankApp.Users
         {
             LockBool = lockbool;
             CustomerBankAccounts = new List<BankAccountBase>() {
-                new CheckingsAccount(userId, bankAccountBalance1),
-                new SavingsAccount(userId, bankAccountBalance2)
+                new CheckingsAccount(userId, Enums.CurrencyTypes.SEK, bankAccountBalance1),
+                new SavingsAccount(userId, Enums.CurrencyTypes.SEK, bankAccountBalance2)
             };
             foreach (BankAccountBase account in CustomerBankAccounts)
             {
@@ -175,14 +176,29 @@ namespace BankApp.Users
                 }
                 else 
                 {
-                    //Console.WriteLine("\nPlease hold, this prossesing transaction will take 15-minutes.");
-                    // Need to make a Thread.sleep?
-                    Transaction transaction = new Transaction(sender, receiver, amount);
-                    transaction.ExecuteTransaction();
-                    // FIX: Needs to add this transaction to transaction history of both sender and receiver.
-                    
-                   
-                    Console.WriteLine($"\nTransfer successful! {amount} has been sent.");
+                    // If currency are the same, no exchange needed.
+                    if (sender.CurrencyType == receiver.CurrencyType)
+                    {
+                        Transaction newTransaction = new Transaction(sender, receiver, amount, amount);
+                        newTransaction.ExecuteTransaction();
+
+                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                    }
+                    else 
+                    {
+                        // If currency is different, start convert.
+                        decimal convertedAmount = Helper.ConvertCurrency(
+                            amount,
+                            sender.CurrencyType,
+                            receiver.CurrencyType
+                            );
+                        // Update the balance.
+                        Transaction newTransaction = new Transaction(sender, receiver, convertedAmount, amount);
+                        newTransaction.ExecuteTransaction();
+
+                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                        Console.WriteLine($"Converted {amount} {sender.CurrencyType} to {convertedAmount} {receiver.CurrencyType}.");
+                    }             
                 }               
             }
             else
@@ -241,7 +257,7 @@ namespace BankApp.Users
                         // Add it to Customer AccountList, BankSystem account list
                         // Write confirmation of the new BankAccount
                         case 1:
-                            CheckingsAccount checkingsaccount = new CheckingsAccount(123, 0);
+                            CheckingsAccount checkingsaccount = new CheckingsAccount(123,Enums.CurrencyTypes.SEK, 0);
                             CustomerBankAccounts.Add(checkingsaccount);
                             BankSystem.AllAccounts.Add(checkingsaccount);
                             Console.WriteLine("Checkings account created successfully!");
@@ -250,7 +266,7 @@ namespace BankApp.Users
                         // Add it to Customer AccountList, BankSystem account list
                         // Write confirmation of the new BankAccount
                         case 2:
-                            SavingsAccount savingsaccount = new SavingsAccount(123, 0);
+                            SavingsAccount savingsaccount = new SavingsAccount(123, Enums.CurrencyTypes.SEK, 0);
                             CustomerBankAccounts.Add(savingsaccount);
                             BankSystem.AllAccounts.Add(savingsaccount);
                             Console.WriteLine("Savings account created successfully!");

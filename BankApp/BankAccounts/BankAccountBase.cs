@@ -12,7 +12,7 @@ namespace BankApp.BankAccounts
 		public decimal Balance { get; set; } = 0;
 		public readonly int CustomerID;
 		private static int s_nextAccountNumber;
-		Enums.CurrencyTypes CurrencyType {  get; set; }
+		public Enums.CurrencyTypes CurrencyType {  get; set; }
 
 
 		static BankAccountBase()
@@ -20,11 +20,12 @@ namespace BankApp.BankAccounts
 			Random random = new Random();
 			s_nextAccountNumber = random.Next(10000000, 20000000);
 		}
-		public BankAccountBase(int customerID/*,Enums.CurrencyTypes currencyTypes*/,decimal balance)
+		public BankAccountBase(int customerID,Enums.CurrencyTypes currencyTypes,decimal balance)
 		{
 			this.AccountNumber = s_nextAccountNumber++;
 			this.Balance = balance;
 			this.CustomerID = customerID;
+			this.CurrencyType = currencyTypes;
 		}
 		public virtual void PrintAccountInfo()
 		{
