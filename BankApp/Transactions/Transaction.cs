@@ -8,17 +8,15 @@ using System.Threading.Tasks;
 
 namespace BankApp.Transactions
 {
-    internal class Transaction
+    public class Transaction
     {
         // BankAccounr Receiver, Sender, Value, dateTime
-        BankAccountBase Receiver {  get; set; }
-        BankAccountBase Sender { get; set; }
+        public BankAccountBase Receiver { get; private set; }
+        public BankAccountBase Sender { get; private set; }
         public decimal ConvertedAmount {  get; set; }
         public decimal PreConvertedAmount { get; set; }
         public Enums.CurrencyTypes CurrencyType { get; set; }
         public DateTime DateOfTransaction { get; set; }
-
-        
 
         public Transaction(BankAccountBase sender, BankAccountBase receiver, decimal convertedAmount, decimal preConvertedAmount)
         {
@@ -32,14 +30,16 @@ namespace BankApp.Transactions
 
         public void ExecuteTransaction()
         {          
-                Sender.Balance -= PreConvertedAmount;
-                Receiver.Balance += ConvertedAmount;            
-                BankSystem.TransactionHistory.Add(this);
+            Sender.Balance -= PreConvertedAmount;
+            Receiver.Balance += ConvertedAmount;            
+            BankSystem.TransactionHistory.Add(this);
+            Sender.TransactionList.Add(this);
+            Receiver.TransactionList.Add(this);
         }
         public void PrintTransaction()
         {
             // Print: The dateTime you sent amount from sender to receiver
-            Console.WriteLine($"This transaction sent {ConvertedAmount} from bankaccount {Sender.AccountNumber} to {Receiver.AccountNumber} at {DateOfTransaction}.");
+            Console.WriteLine($"At {DateOfTransaction} this transaction sent {ConvertedAmount}{CurrencyType} from bankaccount \"{Sender.AccountNumber}\" to bankaccount \"{Receiver.AccountNumber}\".");
         }
     }
 
