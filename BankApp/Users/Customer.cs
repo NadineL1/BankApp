@@ -322,13 +322,40 @@ namespace BankApp.Users
                     Console.WriteLine("2. Savings account");
                     int accountType = int.Parse(Console.ReadLine());
 
+                    // Ask user which currency they want the account to be in.
+                    Console.WriteLine("Choose currency for your new account.");
+                    Console.WriteLine("[1] SEK");
+                    Console.WriteLine("[2] EUR");
+                    Console.WriteLine("[3] USD");
+
+                    int currencyChoice = int.Parse(Console.ReadLine());
+                    Enums.CurrencyTypes chosenCurrency;
+
+                    switch (currencyChoice)
+                    {
+                        case 1:
+                            chosenCurrency = Enums.CurrencyTypes.SEK;
+                            break;
+                        case 2:
+                            chosenCurrency = Enums.CurrencyTypes.EUR;
+                            break;
+                        case 3:
+                            chosenCurrency = Enums.CurrencyTypes.USD;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Defaulting to SEK.");
+                            chosenCurrency = Enums.CurrencyTypes.SEK;
+                            break;
+                    }
+                    Console.WriteLine($"You chose to have the account in {chosenCurrency}");
+
                     // Create a BankAccount object of the correct type
                     switch (accountType)
                     {
                         // Add it to Customer AccountList, BankSystem account list
                         // Write confirmation of the new BankAccount
                         case 1:
-                            CheckingsAccount checkingsaccount = new CheckingsAccount(123,Enums.CurrencyTypes.SEK, 0);
+                            CheckingsAccount checkingsaccount = new CheckingsAccount(123, chosenCurrency, 0);
                             CustomerBankAccounts.Add(checkingsaccount);
                             BankSystem.AllAccounts.Add(checkingsaccount);
                             Console.WriteLine("Checkings account created successfully!");
@@ -337,7 +364,7 @@ namespace BankApp.Users
                         // Add it to Customer AccountList, BankSystem account list
                         // Write confirmation of the new BankAccount
                         case 2:
-                            SavingsAccount savingsaccount = new SavingsAccount(123, Enums.CurrencyTypes.SEK, 0);
+                            SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, 0);
                             CustomerBankAccounts.Add(savingsaccount);
                             BankSystem.AllAccounts.Add(savingsaccount);
                             Console.WriteLine("Savings account created successfully!");
@@ -359,6 +386,7 @@ namespace BankApp.Users
                     break;
 
             }
+            
 
             // (Later check what currency they want the acount in)
 
