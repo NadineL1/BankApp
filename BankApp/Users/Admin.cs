@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankApp.BankAccounts;
 
 namespace BankApp.Users
 {
@@ -58,17 +59,78 @@ namespace BankApp.Users
         public void UnlockCustomerAccount()
         {
             Console.WriteLine("Unlock user method");
-            // List all locked accounts
-            // Write user.Name + UserID
-            // Select one account from the list
-            // Confirm you want to unlock the account
+            Console.WriteLine();
+            Console.WriteLine("Which account would you like to unlock?");
+            // Makes a list of all locked accounts
+            var lockedAccounts = BankSystem.AllCustomers.FindAll(x => x.LockBool == true);
+            int index = 0;
+            // Gives each locked account a selection number and writes info about it.
+            foreach (var lockedAccount in lockedAccounts)
+            {
+                Console.WriteLine($"{index + 1}. Account id: {lockedAccount.UserID}, Name: {lockedAccount.Name}");
+                index++;
+            }
+            Console.WriteLine($"{index + 1}. Quit.");
+            
+            int input = Helper.ListSelection(index + 1);
+            if(input < lockedAccounts.Count)
+            {
+                lockedAccounts[input].LockBool = false;
+                Console.WriteLine($"Unlocked userID: {lockedAccounts[input].UserID}, owned by: {lockedAccounts[input].Name}");
+                
+                Helper.PauseBreak("Returning to adminmenu", 3);
+            }
+            else
+            {
+                Helper.PauseBreak("Returning to admin menu", 3);
+            }
         }
         public void GetCustomerStatistics()
         {
             Console.WriteLine("Get user statistics method");
+            Console.WriteLine();
+            Console.WriteLine("Which user's statistics would you like to view?");
+
             // List all customers
+            int index = 0;
+            foreach(Customer customer in BankSystem.AllCustomers)
+            {
+                Console.WriteLine($"{index + 1}. UserID: {customer.UserID}, Name: {customer.Name}");
+                index++;
+            }
+            Console.WriteLine($"{index + 1}. Quit.");
+
             // Select which customer to show stats of
-            // Call user stats method()
+            int input = Helper.ListSelection(BankSystem.AllCustomers.Count + 1);
+            if (input < BankSystem.AllCustomers.Count)
+            { 
+                decimal customerTotalBalance = 0m;
+                // decimal customerTotalTransactionAmount = 0m;
+
+                // Adds the balancne of all the user's bankaccounts to a total.
+                foreach(BankAccountBase bankAccount in BankSystem.AllCustomers[input].CustomerBankAccounts)
+                {
+                    if (bankAccount.CurrencyType == Enums.CurrencyTypes.SEK)
+                    {
+                        customerTotalBalance += bankAccount.Balance;
+                    }
+                    // If the currencytype of the bankaccount isn't SEK I convert it to SEK before adding it.
+                    else 
+                    {
+                        customerTotalBalance += Helper.ConvertCurrency(bankAccount.Balance, bankAccount.CurrencyType, Enums.CurrencyTypes.SEK);
+                    }
+                }
+                Console.WriteLine($"{BankSystem.AllCustomers[input].Name} has approximately {customerTotalBalance}SEK placed in {BankSystem.AllCustomers[input].CustomerBankAccounts.Count} bankaccounts with us.");
+
+
+                Console.Write("Press any key to continue:");
+                Console.ReadKey();
+                Helper.PauseBreak("Returning to admin menu", 3);
+            }
+            else
+            {
+                Helper.PauseBreak("Returning to admin menu", 3);
+            }
         }
         public void UpdateInterestRates()
         {
