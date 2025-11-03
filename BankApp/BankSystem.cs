@@ -26,8 +26,6 @@ namespace BankApp
         public static List<Transaction> TransactionHistory { get; set; } = new List<Transaction>();
         public static List<Loan> AllLoan { get; set; } = new List<Loan>();
 
-        public static decimal ExchangeEuro { get; set; }
-
         /*
         public static BankSystem()
         {
@@ -50,15 +48,6 @@ namespace BankApp
             ExchangeEuro = 1m;
         }
         */
-        // Tries to go execute all pending transactions
-        public static void ExecuteTransactions()
-        {
-            foreach (Transaction transaction in PendingTransactions)
-            {
-                // Move the money and move the transaction to Transaction history
-                // transaction.ExecuteTransaction();
-            }
-        }
 
         public static void UpdateExchangeRate()
         {
@@ -73,6 +62,30 @@ namespace BankApp
             { (Enums.CurrencyTypes.SEK, Enums.CurrencyTypes.USD), 0.091m },
             { (Enums.CurrencyTypes.USD, Enums.CurrencyTypes.SEK), 11.00m }
         };
+        public static void FifteenMinutesMethod()
+        {
+            Console.WriteLine("The fifteen minute update is called.");
+            // Only executes pendoing transactions if there are pending transactions.
+            if (PendingTransactions.Count != 0)
+            {            
+                // Executes the all pending transactions.
+                foreach (Transaction transaction in PendingTransactions)
+                {
+                    transaction.ExecuteTransaction();
+                }
+                Helper.PauseBreak("Executing transactions", 3);
+            }
+
+            // Update the savings in all savings accounts maybe?
+            // Finds all savings accounts in the allaccounts list
+            /*
+            foreach (var savingsAccount in AllAccounts.FindAll(x => x is SavingsAccount))
+            {
+                // Add interest to all savings accounts
+                //savingsAccount.Balance = savingsAccount.Balance*savingsAccount.Interest
+            }
+            */
+        }
 
     }
 }
