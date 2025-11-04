@@ -27,6 +27,7 @@ namespace BankApp
             "Unlock customer.",
             "Update exchange rates.",
             "Update interest rules for loans.",
+            "Make 15-minutes pass.",
             "Log out."
         };
         public static List<string> CustomerMenu = new List<string>()

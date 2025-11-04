@@ -180,9 +180,9 @@ namespace BankApp.Users
                     if (sender.CurrencyType == receiver.CurrencyType)
                     {
                         Transaction newTransaction = new Transaction(sender, receiver, amount, amount);
-                        newTransaction.ExecuteTransaction();
+                        BankSystem.PendingTransactions.Add(newTransaction);                        
 
-                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                        Console.WriteLine($"\nTransfer request successfully created! {amount} {sender.CurrencyType} will soon be sent.");
                     }
                     else 
                     {
@@ -194,9 +194,9 @@ namespace BankApp.Users
                             );
                         // Update the balance.
                         Transaction newTransaction = new Transaction(sender, receiver, convertedAmount, amount);
-                        newTransaction.ExecuteTransaction();
+                        BankSystem.PendingTransactions.Add(newTransaction);
 
-                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                        Console.WriteLine($"\nTransfer request successfully created! {amount} {sender.CurrencyType} will soon be sent.");
                         Console.WriteLine($"Converted {amount} {sender.CurrencyType} to {convertedAmount} {receiver.CurrencyType}.");
                     }             
                 }               
