@@ -311,8 +311,12 @@ namespace BankApp.Users
             Console.WriteLine("1. Yes");
             Console.WriteLine("2. No");
 
-            int input = int.Parse(Console.ReadLine());
+            int input;
 
+            while (true)
+            { 
+                if (int.TryParse(Console.ReadLine(), out input) && input > 0 && input < 3)
+                {
             switch (input)
             {
                 case 1:
@@ -375,16 +379,15 @@ namespace BankApp.Users
                             Console.WriteLine("Invalid account type selected.");
                             break;
                     }
-                    break;
-
-                case 2:
-                    break;
+                    case 2:
+                        break;
 
 
-                default:
-                    Console.WriteLine("Invalid option.");
-                    break;
+                    default:
+                        Console.WriteLine("Invalid option.");
+                        break;
 
+                }
             }
             
 
@@ -395,80 +398,244 @@ namespace BankApp.Users
         {
             // Foreach Loan in Customer Loan list
             // Write Loan.info
-            // (Later, maybe make the customer select a loan to make repayments)
-
+            Console.Clear();
+            Console.WriteLine("ACTIVE LOANS\n");
             foreach (var loan in CustomerActiveLoans)
             {
                 loan.PrintLoanInfo();
             }
+            //Ask user if they want to repay the loan
+            if (CustomerActiveLoans.Count > 0)
+            {
+                Console.WriteLine("Would you like to repay your loan?");
+                Console.WriteLine("1. Yes");
+                Console.WriteLine("2. No");
+
+                int choice;
+
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice < 3)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input.");
+                    }
+                }
+
+                //If yes, run Repay() Method
+                switch (choice)
+                {
+                    case 1:
+                        RepayLoan();
+                        break;
+
+                    case 2:
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid input");
+                        break;
+
+                }
+
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("You have no active loans.");
+                Console.WriteLine("Press anywhere to go back");
+                Console.ReadKey();
+            }
+        }
+
+        public void RepayLoan()
+        {
+            Console.Clear();
+            Console.WriteLine("Which loan would you like to pay?");
+
+
+            // Prints out the list of active loans
+            Helper.PrintLoanList(CustomerActiveLoans);
+
+            int selectedLoan = Helper.ListSelection(CustomerActiveLoans.Count);
+            Loan loan = CustomerActiveLoans[selectedLoan];
+            
+            //Ask user what account they want to payback with
+            Console.Clear();
+            Console.WriteLine("Select which account you want to pay with");
+            Helper.PrintAccountList(CustomerBankAccounts);
+
+
+            int accountChoice = Helper.ListSelection(CustomerBankAccounts.Count);
+            BankAccountBase selectedAccount = CustomerBankAccounts[accountChoice];
+
+            Console.WriteLine($"Enter the amount to repay (remaining balance: {loan.Balance}):");
+            while (true)
+            { 
+            
+                if (decimal.TryParse(Console.ReadLine(), out decimal amount) && amount > 0)
+                {
+                    if (selectedAccount.Balance >= amount)
+                    {
+                       //Prevents the user from paying more than the active loan
+                        if (amount <= loan.Balance)
+                        { 
+                    
+                            selectedAccount.Balance -= amount;
+                            loan.Balance -= amount;
+
+                            Console.WriteLine($"Successfully paid {amount} SEK towards your loan.");
+
+                                if (loan.Balance <= 0)
+                                {
+                                    Console.WriteLine("Loan fully repaid!");
+                                    CustomerActiveLoans.Remove(loan);
+                                    break;
+                                }
+                        
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Cannot pay more than your active loan");
+                            Console.WriteLine("Please enter a new amount");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Insufficient funds in selected account.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. No repayment made.");
+                    Console.WriteLine("Please enter a new amount");
+                }
+            }
+
+            Console.WriteLine("\nPress any key to return to the menu...");
+
             Console.ReadKey();
         }
         public void LoanRequest()
         {
-            Console.WriteLine("Takes out Loan");
+            Console.Clear();
             // Ask user which account they want the money from the loan to go to
             Console.WriteLine("Which account would you like the loan to be deposited into");
             Helper.PrintAccountList(CustomerBankAccounts);
 
-            int input = int.Parse(Console.ReadLine());
+            int input;
+            
+            while (true)
+            {
+                Console.WriteLine("Enter account number: ");
+                if (int.TryParse(Console.ReadLine(), out input) && input > 0 && input <= CustomerBankAccounts.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid account number. Please try again.");
+                }
+            }
+            
             BankAccountBase selectedAccount = CustomerBankAccounts[input - 1];
+            
             // Ask user the amount they want to borrow
             Console.WriteLine("How much would you like to borrow?");
 
-            decimal loanAmount = decimal.Parse(Console.ReadLine());
-            // If loan amount isn't more than 5x total balance in all of customer accounts
-
+            decimal loanAmount;
             decimal totalBalance = 0;
 
             foreach (var account in CustomerBankAccounts)
             {
                 totalBalance += account.Balance;
             }
-
             
-            if (loanAmount > totalBalance * 5)
+            // If loan amount isn't more than 5x total balance in all of customer accounts
+            while (true)
             {
-                Console.WriteLine($"You can only borrow up to {totalBalance * 5} SEK");
-                Console.ReadKey();
-            }
-            // Show how much customer wants to borrow and how much extra they have to pay in interest
-            else if (loanAmount <= totalBalance * 5)
-            {
-                Console.WriteLine("Choose payback period in months:");
-                decimal paybackInMonths = decimal.Parse(Console.ReadLine());
-                
-                Console.WriteLine($"Total loan cost:");
-                Console.WriteLine($"{loanAmount} + {loanAmount * 0.02m * paybackInMonths}");
-
-
-                // Ask if they still want to take the loan
-                Console.WriteLine("Do you accept the loan?");
-                Console.WriteLine("Yes");
-                Console.WriteLine("No");
-
-                // If yes
-                int choice = int.Parse(Console.ReadLine());
-                switch (choice)
+                if (decimal.TryParse(Console.ReadLine(), out loanAmount) && loanAmount > 0 && loanAmount <= totalBalance * 5)
                 {
-                    // Create Loan object
-                    // Add Loan object to Customer Loan list
-                    // Add Loan to system Loan list
-                    case 1:
-                        Loan loan = new Loan(loanAmount, 0.02m, this, paybackInMonths);
-                        CustomerActiveLoans.Add(loan);
-                        BankSystem.AllLoan.Add(loan);
-                        selectedAccount.Balance += loanAmount;
-                        
-                        break;
-
-                    case 2:
-                        break;
+                    break;
+                }
+                else if (loanAmount > totalBalance * 5)
+                {
+                    Console.WriteLine($"You can only borrow up to {totalBalance * 5} SEK");
+                    Console.WriteLine("Please enter a new amount: ");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid amount.");
+                    Console.WriteLine("Please enter a new amount: ");
                 }
             }
-
+           
+            // Show how much customer wants to borrow and how much extra they have to pay in interest
             
-            //Console.ReadKey();
-    }
+            Console.WriteLine("Choose payback period in months:");
+            decimal paybackInMonths;
+
+            while (true)
+            {
+                if (decimal.TryParse(Console.ReadLine(), out paybackInMonths) && paybackInMonths > 0)
+                {
+                    Console.WriteLine($"Total loan cost:");
+                    Console.WriteLine($"{loanAmount} + {loanAmount * 0.02m * paybackInMonths}");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid amount of months");
+                    Console.WriteLine("Choose payback period in months:");
+                }
+            }
+            
+                // Ask if they still want to take the loan
+                Console.WriteLine("Do you accept the loan?");
+                Console.WriteLine("1. Yes");
+                Console.WriteLine("2. No");
+
+            // If yes
+            int choice;
+
+            while (true)
+            { 
+                if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice < 3)
+                {
+                    switch (choice)
+                    {
+                        // Create Loan object
+                        // Add Loan object to Customer Loan list
+                        // Add Loan to system Loan list
+                        case 1:
+                            Loan loan = new Loan(loanAmount, 0.02m, this, paybackInMonths);
+                            CustomerActiveLoans.Add(loan);
+                            BankSystem.AllLoan.Add(loan);
+                            selectedAccount.Balance += loanAmount;
+
+                            Console.WriteLine("Loan approved!");
+                            Console.ReadKey();
+
+                            break;
+
+                        case 2:
+                            break;
+                    }
+                        break;
+                }
+                else
+                {
+                    Console.WriteLine("Please select Yes or No");
+                }
+            
+            }
+            
+        }
+
         public void UpdateCustomerInformation()
         {
             // Ask what the user wants to change (mail/phone/password)

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BankApp.BankAccounts;
+using BankApp.Loans;
+using BankApp.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BankApp.Users;
-using BankApp.BankAccounts;
 
 namespace BankApp
 {
@@ -92,6 +93,16 @@ namespace BankApp
             }
             // If there is no valid exchange rate found for the given currencies, throw out an error.
             throw new ArgumentException("Error! Error!");                       
+        }
+
+
+        public static void PrintLoanList(List<Loan> loanList)
+        {
+            for (int i = 0; i < loanList.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}]");
+                loanList[i].PrintLoanInfo();
+            }
         }
 
     }
