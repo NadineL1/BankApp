@@ -303,7 +303,7 @@ namespace BankApp.Users
             Console.ReadKey();
             
         }
-        
+
         public void CreateBankAccount()
         {
             // Confirm that the customer want to make an new account
@@ -311,85 +311,82 @@ namespace BankApp.Users
             Console.WriteLine("1. Yes");
             Console.WriteLine("2. No");
 
-            int input;
+            int input = Helper.ListSelection(2) + 1;
 
-            while (true)
-            { 
-                if (int.TryParse(Console.ReadLine(), out input) && input > 0 && input < 3)
+                switch (input)
                 {
-            switch (input)
-            {
-                case 1:
-                    // Which type of bankaccount do they want (check or savings)
-                    Console.WriteLine("What type of account would you like to create?");
-                    Console.WriteLine("1. Checkings account");
-                    Console.WriteLine("2. Savings account");
-                    int accountType = int.Parse(Console.ReadLine());
+                    case 1:
+                        // Which type of bankaccount do they want (check or savings)
+                        Console.WriteLine("What type of account would you like to create?");
+                        Console.WriteLine("1. Checkings account");
+                        Console.WriteLine("2. Savings account");
+                        int accountType = int.Parse(Console.ReadLine());
 
-                    // Ask user which currency they want the account to be in.
-                    Console.WriteLine("Choose currency for your new account.");
-                    Console.WriteLine("[1] SEK");
-                    Console.WriteLine("[2] EUR");
-                    Console.WriteLine("[3] USD");
+                        // Ask user which currency they want the account to be in.
+                        Console.WriteLine("Choose currency for your new account.");
+                        Console.WriteLine("[1] SEK");
+                        Console.WriteLine("[2] EUR");
+                        Console.WriteLine("[3] USD");
 
-                    int currencyChoice = int.Parse(Console.ReadLine());
-                    Enums.CurrencyTypes chosenCurrency;
+                        int currencyChoice = int.Parse(Console.ReadLine());
+                        Enums.CurrencyTypes chosenCurrency;
 
-                    switch (currencyChoice)
-                    {
-                        case 1:
-                            chosenCurrency = Enums.CurrencyTypes.SEK;
-                            break;
-                        case 2:
-                            chosenCurrency = Enums.CurrencyTypes.EUR;
-                            break;
-                        case 3:
-                            chosenCurrency = Enums.CurrencyTypes.USD;
-                            break;
-                        default:
-                            Console.WriteLine("Invalid choice. Defaulting to SEK.");
-                            chosenCurrency = Enums.CurrencyTypes.SEK;
-                            break;
-                    }
-                    Console.WriteLine($"You chose to have the account in {chosenCurrency}");
+                        switch (currencyChoice)
+                        {
+                            case 1:
+                                chosenCurrency = Enums.CurrencyTypes.SEK;
+                                break;
+                            case 2:
+                                chosenCurrency = Enums.CurrencyTypes.EUR;
+                                break;
+                            case 3:
+                                chosenCurrency = Enums.CurrencyTypes.USD;
+                                break;
+                            default:
+                                Console.WriteLine("Invalid choice. Defaulting to SEK.");
+                                chosenCurrency = Enums.CurrencyTypes.SEK;
+                                break;
+                        }
+                        Console.WriteLine($"You chose to have the account in {chosenCurrency}");
 
-                    // Create a BankAccount object of the correct type
-                    switch (accountType)
-                    {
-                        // Add it to Customer AccountList, BankSystem account list
-                        // Write confirmation of the new BankAccount
-                        case 1:
-                            CheckingsAccount checkingsaccount = new CheckingsAccount(123, chosenCurrency, 0);
-                            CustomerBankAccounts.Add(checkingsaccount);
-                            BankSystem.AllAccounts.Add(checkingsaccount);
-                            Console.WriteLine("Checkings account created successfully!");
-                            break;
+                        // Create a BankAccount object of the correct type
+                        switch (accountType)
+                        {
+                            // Add it to Customer AccountList, BankSystem account list
+                            // Write confirmation of the new BankAccount
+                            case 1:
+                                CheckingsAccount checkingsaccount = new CheckingsAccount(123, chosenCurrency, 0);
+                                CustomerBankAccounts.Add(checkingsaccount);
+                                BankSystem.AllAccounts.Add(checkingsaccount);
+                                Console.WriteLine("Checkings account created successfully!");
+                                break;
 
-                        // Add it to Customer AccountList, BankSystem account list
-                        // Write confirmation of the new BankAccount
-                        case 2:
-                            SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, 0);
-                            CustomerBankAccounts.Add(savingsaccount);
-                            BankSystem.AllAccounts.Add(savingsaccount);
-                            Console.WriteLine("Savings account created successfully!");
-                            break;
+                            // Add it to Customer AccountList, BankSystem account list
+                            // Write confirmation of the new BankAccount
+                            case 2:
+                                SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, 0);
+                                CustomerBankAccounts.Add(savingsaccount);
+                                BankSystem.AllAccounts.Add(savingsaccount);
+                                Console.WriteLine("Savings account created successfully!");
+                                break;
 
 
-                        default:
-                            Console.WriteLine("Invalid account type selected.");
-                            break;
-                    }
-                    case 2:
+                            default:
+                                Console.WriteLine("Invalid account type selected.");
+                                break;
+                        }
                         break;
 
+                    case 2:
+                        break;
 
                     default:
                         Console.WriteLine("Invalid option.");
                         break;
 
                 }
-            }
-            
+        
+
 
             // (Later check what currency they want the acount in)
 
