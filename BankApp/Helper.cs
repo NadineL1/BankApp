@@ -81,13 +81,17 @@ namespace BankApp
 
         public static decimal ConvertCurrency(decimal amount, Enums.CurrencyTypes from, Enums.CurrencyTypes to) 
         {
+            // If both currencies are the same (SEK → SEK), no convert is needed.
             if (from == to)
                 return amount;
+            // Try to find the exchange rate between the two currencies in BankSystem.
+            // "TryGetValue" returns 'true' if a valid rate exists, and assigns it to the variable 'rate'.
             if (BankSystem.ExchangeRate.TryGetValue((from, to), out  decimal rate))
             {
+                // Multiply the amount by the exchange rate to get the converted value.
                 return amount * rate;
             }
-
+            // If there is no valid exchange rate found for the given currencies, throw out an error.
             throw new ArgumentException("Error! Error!");                       
         }
 

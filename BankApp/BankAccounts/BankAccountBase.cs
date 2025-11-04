@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankApp.Transactions;
 
 namespace BankApp.BankAccounts
 {
@@ -12,24 +13,43 @@ namespace BankApp.BankAccounts
 		public decimal Balance { get; set; } = 0;
 		public readonly int CustomerID;
 		private static int s_nextAccountNumber;
-		Enums.CurrencyTypes CurrencyType {  get; set; }
+		public Enums.CurrencyTypes CurrencyType {  get; set; }
+        public List<Transaction> TransactionList { get; set; } = new List<Transaction>();
 
 
-		static BankAccountBase()
+        static BankAccountBase()
 		{
 			Random random = new Random();
 			s_nextAccountNumber = random.Next(10000000, 20000000);
 		}
-		public BankAccountBase(int customerID/*,Enums.CurrencyTypes currencyTypes*/,decimal balance)
+		public BankAccountBase(int customerID,Enums.CurrencyTypes currencyTypes,decimal balance)
 		{
 			this.AccountNumber = s_nextAccountNumber++;
 			this.Balance = balance;
 			this.CustomerID = customerID;
+			this.CurrencyType = currencyTypes;
 		}
 		public virtual void PrintAccountInfo()
 		{
 			Console.WriteLine($"Accountnumber: {AccountNumber}, Balance: {Balance}kr");
-		}
+
+        }
+        public void PrintTransactionHistory()
+        {
+            foreach (Transaction transaction in TransactionList)
+            {
+                if (transaction.Sender.AccountNumber == AccountNumber)
+                {
+                    Console.WriteLine($"At {transaction.DateOfTransaction} you sent {transaction.ConvertedAmount}{transaction.CurrencyType} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+
+                }
+                else if (transaction.Receiver.AccountNumber == AccountNumber)
+                {
+                    Console.WriteLine($"At {transaction.DateOfTransaction} you received {transaction.ConvertedAmount}{transaction.CurrencyType} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+                }
+                else { Console.WriteLine("Error, this transaction doesn't match this account."); }
+            }
+        }
 
 	}
 }

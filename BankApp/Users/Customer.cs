@@ -1,7 +1,8 @@
-﻿using BankApp.Transactions;
-using BankApp.BankAccounts;
+﻿using BankApp.BankAccounts;
 using BankApp.Loans;
+using BankApp.Transactions;
 using System.Threading;
+
 
 namespace BankApp.Users
 {
@@ -23,8 +24,8 @@ namespace BankApp.Users
         {
             LockBool = lockbool;
             CustomerBankAccounts = new List<BankAccountBase>() {
-                new CheckingsAccount(userId, bankAccountBalance1),
-                new SavingsAccount(userId, bankAccountBalance2)
+                new CheckingsAccount(userId, Enums.CurrencyTypes.SEK, bankAccountBalance1),
+                new SavingsAccount(userId, Enums.CurrencyTypes.SEK, bankAccountBalance2)
             };
             foreach (BankAccountBase account in CustomerBankAccounts)
             {
@@ -175,14 +176,29 @@ namespace BankApp.Users
                 }
                 else 
                 {
-                    //Console.WriteLine("\nPlease hold, this prossesing transaction will take 15-minutes.");
-                    // Need to make a Thread.sleep?
-                    Transaction transaction = new Transaction(sender, receiver, amount);
-                    transaction.ExecuteTransaction();
-                    // FIX: Needs to add this transaction to transaction history of both sender and receiver.
-                    
-                   
-                    Console.WriteLine($"\nTransfer successful! {amount} has been sent.");
+                    // If currency are the same, no exchange needed.
+                    if (sender.CurrencyType == receiver.CurrencyType)
+                    {
+                        Transaction newTransaction = new Transaction(sender, receiver, amount, amount);
+                        newTransaction.ExecuteTransaction();
+
+                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                    }
+                    else 
+                    {
+                        // If currency is different, start convert.
+                        decimal convertedAmount = Helper.ConvertCurrency(
+                            amount,
+                            sender.CurrencyType,
+                            receiver.CurrencyType
+                            );
+                        // Update the balance.
+                        Transaction newTransaction = new Transaction(sender, receiver, convertedAmount, amount);
+                        newTransaction.ExecuteTransaction();
+
+                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                        Console.WriteLine($"Converted {amount} {sender.CurrencyType} to {convertedAmount} {receiver.CurrencyType}.");
+                    }             
                 }               
             }
             else
@@ -193,14 +209,85 @@ namespace BankApp.Users
         public void CheckTransactionHistory()
         {
             Console.WriteLine("Checks Transaction History");
-            foreach(Transaction transaction in BankSystem.TransactionHistory)
+            Console.WriteLine("All transactions in system:");
+            foreach (Transaction transaction in BankSystem.TransactionHistory) // DEBUG, REMOVE LATER: Prints all accounts in system to make checking easier
             {
                 transaction.PrintTransaction();
             }
-            Console.ReadLine();
+            Console.WriteLine();
+
+            // Actual method starts here
+            // 
+            Console.WriteLine("Which account's transaction history would you like to see?");
+            Helper.PrintAccountList(CustomerBankAccounts);
+            // An ugly append to the selectionlist for additional options.
+            Console.WriteLine($"{CustomerBankAccounts.Count + 1}. All accounts.");
+            Console.WriteLine($"{CustomerBankAccounts.Count + 2}. Quit.");
+            int historyInput = Helper.ListSelection(CustomerBankAccounts.Count + 2);
+
+            if (historyInput < CustomerBankAccounts.Count)
+            {
+                CustomerBankAccounts[historyInput].PrintTransactionHistory();
+                Console.ReadLine();
+            }
+            else if (historyInput == CustomerBankAccounts.Count)
+            {
+                // Makes a new list and stores all transactions from all the user's accounts in it.
+                List<Transaction> allTransactions = new List<Transaction>();
+                foreach (BankAccountBase account in CustomerBankAccounts)
+                {
+                    foreach (Transaction transaction in account.TransactionList)
+                    {
+                        allTransactions.Add(transaction);
+                    }
+                }
+
+                // Sorts the new list based on the date of the transaction.
+                allTransactions.Sort(delegate (Transaction x, Transaction y)
+                {
+                    if (x.DateOfTransaction == null && y.DateOfTransaction == null) return 0;
+                    else if (x.DateOfTransaction == null) return -1;
+                    else if (y.DateOfTransaction == null) return 1;
+                    else return x.DateOfTransaction.CompareTo(y.DateOfTransaction);
+                });
+
+                Console.WriteLine("Hopefully prints all transactions from all accounts sorted by date of transaction.");
+                Transaction previousTransaction = null;
+                foreach (Transaction transaction in allTransactions)
+                {
+                    // Checks if the this transsaction is the same as the previous one to avoid writing the same things twice.
+                    if (transaction != previousTransaction)
+                    {
+                        // Checks if the sender is one of the user's bankaccounts.
+                        BankAccountBase foundAccount = null;
+                        foundAccount = CustomerBankAccounts.Find(x => x.AccountNumber == transaction.Sender.AccountNumber);
+                        if (foundAccount != null)
+                        {
+                            Console.WriteLine($"At {transaction.DateOfTransaction} you sent {transaction.ConvertedAmount}{transaction.CurrencyType} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+                        }
+
+                        // Checks if the receiver is one of the user's bankaccounts.
+                        foundAccount = null;
+                        foundAccount = CustomerBankAccounts.Find(x => x.AccountNumber == transaction.Receiver.AccountNumber);
+                        if (foundAccount != null)
+                        {
+                            Console.WriteLine($"At {transaction.DateOfTransaction} you received {transaction.ConvertedAmount}{transaction.CurrencyType} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+                        }
+                        previousTransaction = transaction;
+                    }
+                }
+                Console.ReadLine();
+            }
+            else
+            {
+                Helper.PauseBreak("Returning to menu", 3);
+            }
+
             // Call list accounts method()
+
             // Select BankAccount from list
             // PrintTransaction foreach TRansaction in BankAccount.Transaction history
+            Console.ReadLine();
         }
         
         public void CheckBankAccounts()
@@ -230,51 +317,68 @@ namespace BankApp.Users
             { 
                 if (int.TryParse(Console.ReadLine(), out input) && input > 0 && input < 3)
                 {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Please select Yes or No");
-                }
-            }
+            switch (input)
+            {
+                case 1:
+                    // Which type of bankaccount do they want (check or savings)
+                    Console.WriteLine("What type of account would you like to create?");
+                    Console.WriteLine("1. Checkings account");
+                    Console.WriteLine("2. Savings account");
+                    int accountType = int.Parse(Console.ReadLine());
 
-                switch (input)
-                {
-                    case 1:
-                        // Which type of bankaccount do they want (check or savings)
-                        Console.WriteLine("What type of account would you like to create?");
-                        Console.WriteLine("1. Checkings account");
-                        Console.WriteLine("2. Savings account");
-                        int accountType = int.Parse(Console.ReadLine());
+                    // Ask user which currency they want the account to be in.
+                    Console.WriteLine("Choose currency for your new account.");
+                    Console.WriteLine("[1] SEK");
+                    Console.WriteLine("[2] EUR");
+                    Console.WriteLine("[3] USD");
 
-                            // Create a BankAccount object of the correct type
-                            switch (accountType)
-                            {
-                                // Add it to Customer AccountList, BankSystem account list
-                                // Write confirmation of the new BankAccount
-                                case 1:
-                                    CheckingsAccount checkingsaccount = new CheckingsAccount(123, 0);
-                                    CustomerBankAccounts.Add(checkingsaccount);
-                                    BankSystem.AllAccounts.Add(checkingsaccount);
-                                    Console.WriteLine("Checkings account created successfully!");
-                                    break;
+                    int currencyChoice = int.Parse(Console.ReadLine());
+                    Enums.CurrencyTypes chosenCurrency;
 
-                                // Add it to Customer AccountList, BankSystem account list
-                                // Write confirmation of the new BankAccount
-                                case 2:
-                                    SavingsAccount savingsaccount = new SavingsAccount(123, 0);
-                                    CustomerBankAccounts.Add(savingsaccount);
-                                    BankSystem.AllAccounts.Add(savingsaccount);
-                                    Console.WriteLine("Savings account created successfully!");
-                                    break;
+                    switch (currencyChoice)
+                    {
+                        case 1:
+                            chosenCurrency = Enums.CurrencyTypes.SEK;
+                            break;
+                        case 2:
+                            chosenCurrency = Enums.CurrencyTypes.EUR;
+                            break;
+                        case 3:
+                            chosenCurrency = Enums.CurrencyTypes.USD;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Defaulting to SEK.");
+                            chosenCurrency = Enums.CurrencyTypes.SEK;
+                            break;
+                    }
+                    Console.WriteLine($"You chose to have the account in {chosenCurrency}");
+
+                    // Create a BankAccount object of the correct type
+                    switch (accountType)
+                    {
+                        // Add it to Customer AccountList, BankSystem account list
+                        // Write confirmation of the new BankAccount
+                        case 1:
+                            CheckingsAccount checkingsaccount = new CheckingsAccount(123, chosenCurrency, 0);
+                            CustomerBankAccounts.Add(checkingsaccount);
+                            BankSystem.AllAccounts.Add(checkingsaccount);
+                            Console.WriteLine("Checkings account created successfully!");
+                            break;
+
+                        // Add it to Customer AccountList, BankSystem account list
+                        // Write confirmation of the new BankAccount
+                        case 2:
+                            SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, 0);
+                            CustomerBankAccounts.Add(savingsaccount);
+                            BankSystem.AllAccounts.Add(savingsaccount);
+                            Console.WriteLine("Savings account created successfully!");
+                            break;
 
 
-                                default:
-                                    Console.WriteLine("Invalid account type selected.");
-                                    break;
-                            }
-                        break;
-
+                        default:
+                            Console.WriteLine("Invalid account type selected.");
+                            break;
+                    }
                     case 2:
                         break;
 
@@ -284,6 +388,8 @@ namespace BankApp.Users
                         break;
 
                 }
+            }
+            
 
             // (Later check what currency they want the acount in)
 

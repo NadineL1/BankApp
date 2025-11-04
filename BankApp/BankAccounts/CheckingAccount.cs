@@ -8,14 +8,14 @@ namespace BankApp.BankAccounts
 {
     internal class CheckingsAccount : BankAccountBase
     {
-        public CheckingsAccount(int customerID, decimal balance) : base(customerID, balance)
+        public CheckingsAccount(int customerID, Enums.CurrencyTypes currencyTypes, decimal balance) : base(customerID, currencyTypes, balance)
         {
 
         }
 
         public override void PrintAccountInfo()
         {
-            Console.WriteLine($"Checkings account, Accountnumber: {AccountNumber}, Balance: {Balance}kr\n");
+            Console.WriteLine($"Checkings account, Accountnumber: {AccountNumber}, Balance: {Balance}{CurrencyType}");
         }
 
     }
