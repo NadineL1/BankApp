@@ -142,6 +142,42 @@ namespace BankApp.Users
         public void Exchangerates()
         {
             Console.WriteLine("Update exchangerates method");
+
+            Console.WriteLine("Which exchangerate do you want to update?");
+            Console.WriteLine($"1. SEK per EUR - We are currently paying {BankSystem.ExchangeRate.Values.ElementAt(1)} SEK per EUR, or {BankSystem.ExchangeRate.Values.ElementAt(0)} EUR per SEK.");
+            Console.WriteLine($"2. SEK per USD - We are currently paying {BankSystem.ExchangeRate.Values.ElementAt(3)} SEK per USD, or {BankSystem.ExchangeRate.Values.ElementAt(2)} USD per SEK.");
+            Console.WriteLine("3. Abort.");
+
+            int input = Helper.ListSelection(3) + 1;
+            // Exits the method if the user chooses the abort option. 
+            if (input < 1 || input >= 3) { Helper.PauseBreak("Returning to adminmenu", 3); return; }
+            
+            // Uses the input integer to assign a enum with the selected currency type.
+            Enums.CurrencyTypes selectedCurrencyType = (Enums.CurrencyTypes)input;
+
+            Console.WriteLine($"How many SEK should equal one {selectedCurrencyType}?");
+            if (decimal.TryParse(Console.ReadLine(), out decimal valueInput) && valueInput > 0m)
+            {
+                // Fetches the exchange value of the current exchange rate in order to show it to the user.
+                BankSystem.ExchangeRate.TryGetValue((selectedCurrencyType, Enums.CurrencyTypes.SEK), out decimal currentExchangeRate);
+                Console.WriteLine($"Are you sure you want to change the currency conversion from {currentExchangeRate} SEK per one {selectedCurrencyType}, to {valueInput} SEK per one {selectedCurrencyType}?");
+                Helper.PrintSelectionList(SelectionLists.YesNo);
+                if (Helper.ListSelection(SelectionLists.YesNo.Count) == 0)
+                {
+                    // If the user is happy with the proposed new exchangerate value we call the method in BankSystem that actually updates the exchangerates.
+                    BankSystem.UpdateExchangeRate(selectedCurrencyType, valueInput);
+                }
+                else
+                {
+                    Console.WriteLine("Aborting the operation. The exchangerates have not been changed.");
+                    Helper.PauseBreak("Returning to adminmenu", 3);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. The exchangerates have not been changed.");
+                Helper.PauseBreak("Returning to adminmenu", 3);
+            }
             // Enter new exchangerate for Euro
             // Update euro exchangerate with new value
         }
