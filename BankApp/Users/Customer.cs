@@ -355,7 +355,7 @@ namespace BankApp.Users
                             // Add it to Customer AccountList, BankSystem account list
                             // Write confirmation of the new BankAccount
                             case 1:
-                                CheckingsAccount checkingsaccount = new CheckingsAccount(123, chosenCurrency, 0);
+                                CheckingsAccount checkingsaccount = new CheckingsAccount(this.UserID, chosenCurrency, 0);
                                 CustomerBankAccounts.Add(checkingsaccount);
                                 BankSystem.AllAccounts.Add(checkingsaccount);
                                 Console.WriteLine("Checkings account created successfully!");
@@ -364,7 +364,7 @@ namespace BankApp.Users
                             // Add it to Customer AccountList, BankSystem account list
                             // Write confirmation of the new BankAccount
                             case 2:
-                                SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, 0);
+                                SavingsAccount savingsaccount = new SavingsAccount(this.UserID, chosenCurrency, 0);
                                 CustomerBankAccounts.Add(savingsaccount);
                                 BankSystem.AllAccounts.Add(savingsaccount);
                                 Console.WriteLine("Savings account created successfully!");
@@ -404,7 +404,7 @@ namespace BankApp.Users
             //Ask user if they want to repay the loan
             if (CustomerActiveLoans.Count > 0)
             {
-                Console.WriteLine("Would you like to repay your loan?");
+                Console.WriteLine("\nWould you like to repay your loan?");
                 Console.WriteLine("1. Yes");
                 Console.WriteLine("2. No");
 
@@ -462,14 +462,14 @@ namespace BankApp.Users
             
             //Ask user what account they want to payback with
             Console.Clear();
-            Console.WriteLine("Select which account you want to pay with");
+            Console.WriteLine("Select which account you want to pay with\n");
             Helper.PrintAccountList(CustomerBankAccounts);
 
 
             int accountChoice = Helper.ListSelection(CustomerBankAccounts.Count);
             BankAccountBase selectedAccount = CustomerBankAccounts[accountChoice];
 
-            Console.WriteLine($"Enter the amount to repay (remaining balance: {loan.Balance}):");
+            Console.WriteLine($"Enter the amount to repay (remaining balance: {loan.TotalLoanCost}):");
             while (true)
             { 
             
@@ -478,15 +478,15 @@ namespace BankApp.Users
                     if (selectedAccount.Balance >= amount)
                     {
                        //Prevents the user from paying more than the active loan
-                        if (amount <= loan.Balance)
+                        if (amount <= loan.TotalLoanCost)
                         { 
                     
                             selectedAccount.Balance -= amount;
-                            loan.Balance -= amount;
+                            loan.TotalLoanCost -= amount;
 
                             Console.WriteLine($"Successfully paid {amount} SEK towards your loan.");
 
-                                if (loan.Balance <= 0)
+                                if (loan.TotalLoanCost <= 0)
                                 {
                                     Console.WriteLine("Loan fully repaid!");
                                     CustomerActiveLoans.Remove(loan);
@@ -521,14 +521,14 @@ namespace BankApp.Users
         {
             Console.Clear();
             // Ask user which account they want the money from the loan to go to
-            Console.WriteLine("Which account would you like the loan to be deposited into");
+            Console.WriteLine("Which account would you like the loan to be deposited into\n");
             Helper.PrintAccountList(CustomerBankAccounts);
 
             int input;
             
             while (true)
             {
-                Console.WriteLine("Enter account number: ");
+                Console.WriteLine($"\nSelect account (1 - {CustomerBankAccounts.Count}): ");
                 if (int.TryParse(Console.ReadLine(), out input) && input > 0 && input <= CustomerBankAccounts.Count)
                 {
                     break;
@@ -580,7 +580,7 @@ namespace BankApp.Users
             {
                 if (decimal.TryParse(Console.ReadLine(), out paybackInMonths) && paybackInMonths > 0)
                 {
-                    Console.WriteLine($"Total loan cost:");
+                    Console.WriteLine($"\nTotal loan cost:");
                     Console.WriteLine($"{loanAmount} + {loanAmount * 0.02m * paybackInMonths}");
                     break;
                 }
@@ -610,6 +610,7 @@ namespace BankApp.Users
                         // Add Loan to system Loan list
                         case 1:
                             Loan loan = new Loan(loanAmount, 0.02m, this, paybackInMonths);
+                            loan.TotalLoanCost = loanAmount + (loanAmount * 0.02m * paybackInMonths);
                             CustomerActiveLoans.Add(loan);
                             BankSystem.AllLoan.Add(loan);
                             selectedAccount.Balance += loanAmount;
