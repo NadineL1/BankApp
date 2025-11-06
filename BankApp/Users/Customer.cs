@@ -2,6 +2,7 @@
 using BankApp.Loans;
 using BankApp.Transactions;
 using System.Threading;
+using Spectre.Console;
 
 
 namespace BankApp.Users
@@ -221,16 +222,57 @@ namespace BankApp.Users
         
         public void CheckBankAccounts()
         {
-            Console.Clear();
-            Console.WriteLine("Your Accounts:\n");
-            foreach (var account in CustomerBankAccounts)
+            Console.Clear();          
+            Console.WriteLine();
+
+            // If customer has no bank account, show a message and return to menu.
+            if (CustomerBankAccounts.Count == 0) 
             {
-                account.PrintAccountInfo();
+                AnsiConsole.MarkupLine("[red]You currently have no bank accounts at the Five bank.[/]");
+                Console.WriteLine("\nPress any key to return to menu.");
+                Console.ReadKey();
+                return;
             }
-            
-            Console.WriteLine("\nPress any key to return to menu.");
+
+            // Create a new objekt with Spectre (table). This one will help us use columns, rows and style.
+            var table = new Table();
+            // Titel design.
+            table.Border = TableBorder.Rounded;
+            table.BorderColor(Color.Gold1);
+            table.Title("[bold yellow]Your bank accounts[/]");
+
+            // Add Columns with colour, titel and position.
+            table.AddColumn(new TableColumn("[bold cyan]Account type[/]").Centered());
+            table.AddColumn(new TableColumn("[bold green]Account Number[/]").Centered());
+            table.AddColumn(new TableColumn("[bold yellow]Currency[/]").Centered());
+            table.AddColumn(new TableColumn("[bold magenta]Balance[/]").RightAligned());
+
+            // Look through Accounts.
+            foreach (var account in CustomerBankAccounts) 
+            {  // If the Balance is less than 100, it will show in red, else it will be green colour.
+                var balanceColour = account.Balance < 100 ? "red" : "green";
+                table.AddRow( // Add 4 new rows.
+                    $"[cyan]{account.GetType().Name}[/]", // Shows the type of account (CheckingAccount or SavingsAccount).
+                    $"[white]{account.AccountNumber}[/]",
+                    $"[yellow]{account.CurrencyType}[/]",
+                    $"[{balanceColour}]{account.Balance:F2}[/]" // Shows the balance with two decimals (F2) and colour it (red or green) based on value. 
+                    );
+            }
+            // Show table.
+            AnsiConsole.Write(table);
+
+            Console.WriteLine("\nPress any key to return to the menu.");
             Console.ReadKey();
+
+            //Console.Clear();
+            //Console.WriteLine("Your Accounts:\n");
+            //foreach (var account in CustomerBankAccounts)
+            //{
+            //    account.PrintAccountInfo();
+            //}
             
+            //Console.WriteLine("\nPress any key to return to menu.");
+            //Console.ReadKey();            
         }
         
         public void CreateBankAccount()

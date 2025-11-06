@@ -29,7 +29,7 @@ namespace BankApp.BankAccounts
 		}
 		public virtual void PrintAccountInfo()
 		{
-			Console.WriteLine($"Accountnumber: {AccountNumber}, Balance: {Balance}kr");
+			//Console.WriteLine($"Accountnumber: {AccountNumber}, Balance: {Balance}kr");
 		}
 
 	}

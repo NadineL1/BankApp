@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace BankApp
 {
     internal static class Menu
@@ -43,6 +44,7 @@ namespace BankApp
                 Console.WriteLine("[2] Log in as Admin.");
                 Console.WriteLine("[3] Quit program.");
                 Console.Write("\nYour choice: ");
+                
 
                 string choice = Console.ReadLine();
 
