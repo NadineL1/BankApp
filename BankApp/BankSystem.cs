@@ -16,13 +16,13 @@ namespace BankApp
         public static List <SavingsAccount> Savings { get; set; } = new List<SavingsAccount> ();
         public static List<Customer> AllCustomers { get; set; } = new List<Customer>()
         {
-            new Customer(2, "John Doe", "blehblah@msn.com", "test1", "0761234567", false, 20000m, 10m),
-            new Customer(3, "Anna Deer", "defaultemail@hotmail.com", "test2", "0769876543", false, 30000m, 10000),
-            new Customer(4, "Tina Stag", "destroyerofworlds@gmail.com", "test3", "0761011010", false, 50000m, 13337m)
+            new Customer(1001, "John Doe", "blehblah@msn.com", "test1", "0761234567", false, 20000m, 10m),
+            new Customer(1002, "Anna Deer", "defaultemail@hotmail.com", "test2", "0769876543", false, 30000m, 10000),
+            new Customer(1003, "Tina Stag", "destroyerofworlds@gmail.com", "test3", "0761011010", false, 50000m, 13337m)
         };
 
-        public static Admin Admin { get; set; } = new Admin(1, "Adam Admin", "blandsystemmail@thisbank.com", "admin1", "0769998877");
-        public static List<Transaction> PendingTransactions { get; set; } = new List<Transaction>();
+        public static Admin Admin { get; set; } = new Admin(0001, "Adam Admin", "blandsystemmail@thisbank.com", "admin1", "0769998877");
+        public static Queue<Transaction> PendingTransactions { get; set; } = new Queue<Transaction>();
         public static List<Transaction> TransactionHistory { get; set; } = new List<Transaction>();
         public static List<Loan> AllLoan { get; set; } = new List<Loan>();
 
@@ -67,18 +67,18 @@ namespace BankApp
         public static void FifteenMinutesMethod()
         {
             Console.WriteLine("The fifteen minute update is called.");
-            // Only executes pendoing transactions if there are pending transactions.
+            // Only executes pending transactions if there are pending transactions.
             if (PendingTransactions.Count != 0)
             {
-                // Executes the all pending transactions.
-                foreach (Transaction transaction in PendingTransactions)
+                // Executes the all pending transactions and removes them from the queue.
+                for(int i = 0; i < PendingTransactions.Count; i++)
                 {
-                    transaction.ExecuteTransaction();
+                    PendingTransactions.Dequeue().ExecuteTransaction();
                 }
                 Helper.PauseBreak("Executing transactions", 3);
             }
         }
-        // async method that calculate your savings with interest and increase the value of your savings account
+        // async method that calculates your savings with interest and increase the value of your savings account
         internal static async Task<decimal> SavingMoney(decimal balance, decimal interest, int accountID)
         {
             await Task.Delay(TimeSpan.FromSeconds(20));

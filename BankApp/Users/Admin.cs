@@ -18,11 +18,13 @@ namespace BankApp.Users
         public void CreateCustomer()
         {
             // Confirm admin wants to make a new customer
-            Console.WriteLine("Do you want to create a new user? (yes/no)");
-            string? answerConfirm = Console.ReadLine();
-            if (answerConfirm.ToLower() != "yes")
+            Console.WriteLine("Do you want to create a new customer?");
+            Helper.PrintSelectionList(SelectionLists.YesNo);
+            int confirmInput = Helper.ListSelection(SelectionLists.YesNo.Count);
+            if (confirmInput == 1)
             {
-                Console.WriteLine("Exiting create user.");
+                Console.WriteLine("Exiting create customer.");
+                Helper.PauseBreak("Returning to adminmenu", 3);
                 return;
             }
 
@@ -40,16 +42,18 @@ namespace BankApp.Users
             string? newPassword = Console.ReadLine();
 
             // Print entered info and ask if it looks good
-            Console.WriteLine($"Create a new user with the name: {newName}, e-mail: {newMail}, phonenumber: {newPhonenumber}, and password: {newPassword}? (yes/no)");
-            answerConfirm = Console.ReadLine();
-            if (answerConfirm.ToLower() != "yes")
+            Console.WriteLine($"Create a new customer with the name: {newName}, e-mail: {newMail}, phonenumber: {newPhonenumber}, and password: {newPassword}?");
+            Helper.PrintSelectionList(SelectionLists.YesNo);
+            confirmInput = Helper.ListSelection(SelectionLists.YesNo.Count);
+            if (confirmInput == 1)
             {
-                Console.WriteLine("Dropping create user and going back to adminmenu");
+                Console.WriteLine("Dropping create customer. A new customer have not been ");
+                Helper.PauseBreak("Returning to adminmenu", 3);
                 return;
             }
             // Create new customer object
-            Customer newCustomer = new Customer(5 ,newName, newMail, newPassword, newPhonenumber, false);
-            // Add new customer object to system user list
+            Customer newCustomer = new Customer((1000+BankSystem.AllCustomers.Count+1) ,newName, newMail, newPassword, newPhonenumber, false);
+            // Add new customer object to system customer list
             BankSystem.AllCustomers.Add(newCustomer);
 
             // Ask if admin wants to add default bankaccounts (1 saving account and 1 checking account)
@@ -60,8 +64,6 @@ namespace BankApp.Users
         }
         public void UnlockCustomerAccount()
         {
-            Console.WriteLine("Unlock user method");
-            Console.WriteLine();
             Console.WriteLine("Which account would you like to unlock?");
             // Makes a list of all locked accounts
             var lockedAccounts = BankSystem.AllCustomers.FindAll(x => x.LockBool == true);
@@ -89,8 +91,6 @@ namespace BankApp.Users
         }
         public void GetCustomerStatistics()
         {
-            Console.WriteLine("Get user statistics method");
-            Console.WriteLine();
             Console.WriteLine("Which user's statistics would you like to view?");
 
             // List all customers
@@ -143,8 +143,6 @@ namespace BankApp.Users
         }
         public void Exchangerates()
         {
-            Console.WriteLine("Update exchangerates method");
-
             Console.WriteLine("Which exchangerate do you want to update?");
             Console.WriteLine($"1. SEK per EUR - We are currently paying {BankSystem.ExchangeRate.Values.ElementAt(1)} SEK per EUR, or {BankSystem.ExchangeRate.Values.ElementAt(0)} EUR per SEK.");
             Console.WriteLine($"2. SEK per USD - We are currently paying {BankSystem.ExchangeRate.Values.ElementAt(3)} SEK per USD, or {BankSystem.ExchangeRate.Values.ElementAt(2)} USD per SEK.");
@@ -180,8 +178,6 @@ namespace BankApp.Users
                 Console.WriteLine("Invalid input. The exchangerates have not been changed.");
                 Helper.PauseBreak("Returning to adminmenu", 3);
             }
-            // Enter new exchangerate for Euro
-            // Update euro exchangerate with new value
         }
 
     }

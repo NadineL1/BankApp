@@ -23,10 +23,6 @@ namespace BankApp.Users
             Password = password;
             PhoneNumber = phonenumber;
             IsAdmin = isAdmin;
-
-
-        }
-
-        
+        }        
     }
 }

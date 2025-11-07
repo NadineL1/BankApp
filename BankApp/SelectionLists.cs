@@ -32,7 +32,7 @@ namespace BankApp
         };
         public static List<string> CustomerMenu = new List<string>()
         {
-            "Withdraw/deposit money.", // (extra features)
+            "Withdraw/deposit money.",
             "Make transaction.",
             "Check transaction history.",
             "Check bank accounts.",
