@@ -70,8 +70,9 @@ namespace BankApp
             // Only executes pending transactions if there are pending transactions.
             if (PendingTransactions.Count != 0)
             {
+                int pendingTransactionCount = PendingTransactions.Count;
                 // Executes the all pending transactions and removes them from the queue.
-                for(int i = 0; i < PendingTransactions.Count; i++)
+                for(int i = 0; i < pendingTransactionCount; i++)
                 {
                     PendingTransactions.Dequeue().ExecuteTransaction();
                 }
