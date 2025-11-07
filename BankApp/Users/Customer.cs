@@ -2,6 +2,7 @@
 using BankApp.Loans;
 using BankApp.Transactions;
 using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace BankApp.Users
@@ -304,7 +305,7 @@ namespace BankApp.Users
             
         }
 
-        public void CreateBankAccount()
+        public async Task CreateBankAccount()
         {
             // Confirm that the customer want to make an new account
             Console.WriteLine("Are you sure you want to create a new account?");
@@ -386,8 +387,7 @@ namespace BankApp.Users
                                 SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, startBalance);
                                 CustomerBankAccounts.Add(savingsaccount);
                                 BankSystem.AllAccounts.Add(savingsaccount);
-                                 
-                                // Call the saving money function here!! :) 
+                                savingsaccount.Balance = await BankSystem.SavingMoney(savingsaccount.Balance, SavingsAccount.InterestRate, savingsaccount.AccountNumber);
                                 Console.ReadKey();
                                 break;
 

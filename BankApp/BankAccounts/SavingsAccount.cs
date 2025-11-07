@@ -10,7 +10,7 @@ namespace BankApp.BankAccounts
     {
         public string AccountType { get; set; } = "savings";
         // interestrate gets a magic number of + 50 %, so 1,5 * balance
-        public decimal InterestRate { get; set; } = 1.5M;
+        public static decimal InterestRate { get; set; } = 1.5M;
         
         public SavingsAccount(int customerID, Enums.CurrencyTypes currencyTypes, decimal balance) : base(customerID, currencyTypes, balance)
         {

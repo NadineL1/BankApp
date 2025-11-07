@@ -76,10 +76,15 @@ namespace BankApp
                 Helper.PauseBreak("Executing transactions", 3);
             }
         }
-        // method that calculate your savings with interest and increase the value of your savings account
-        public static void SavingMoney()
-        { 
-            
+        // async method that calculate your savings with interest and increase the value of your savings account
+        internal static async Task<decimal> SavingMoney(decimal balance, decimal interest, int accountID)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(20));
+            balance *= interest;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Your savingsaccount nr {accountID} now have {balance}kr balance! ");
+            Console.ReadKey();
+            return balance;
         }
     }
 }

@@ -241,7 +241,6 @@ namespace BankApp
             while (customermenu)
             {
                 // Print overview of customer's accounts
-
                 // Show list of options
                 /*
                     Withdraw/deposit money( extra feature )
