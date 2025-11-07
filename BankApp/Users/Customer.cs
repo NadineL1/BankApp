@@ -40,7 +40,8 @@ namespace BankApp.Users
         public void DepositWithdraw()
         {
             Console.Clear();
-            Console.WriteLine("What would you like to to?");
+            Console.WriteLine("DEPOSIT / WITHDRAW\n");
+            Console.WriteLine("What would you like to do?");
             Console.WriteLine("1. Deposit");
             Console.WriteLine("2. Withdraw");
 
@@ -63,7 +64,7 @@ namespace BankApp.Users
             else
             {
                 Console.WriteLine("Invalid input");
-                Console.WriteLine("Press anywhere to exit");
+                Console.WriteLine("Press any key to return to the menu.");
                 Console.ReadKey();
             }
         }
@@ -124,7 +125,7 @@ namespace BankApp.Users
 
             // Check if customer has that much money in bankaccount
             // If true
-            // Subtract asked amount from selected account.Saldo
+            // Subtract asked amount from selected account.Balance
             // Write confirmation of withdrawal in console
             if (decimal.TryParse(Console.ReadLine(), out decimal withdrawalAmount) && withdrawalAmount > 0 && withdrawalAmount <= selectedAccount.Balance)
             {
@@ -143,8 +144,7 @@ namespace BankApp.Users
             {
                 Console.WriteLine("Invalid amount.");
                 Console.WriteLine("Would you like to take out a loan?\n");
-                Console.WriteLine("1. Yes");
-                Console.WriteLine("2. No");
+                Helper.PrintSelectionList(SelectionLists.YesNo);
 
                 int choice;
 
@@ -431,15 +431,14 @@ namespace BankApp.Users
             // Show table.
             AnsiConsole.Write(table);
             Console.WriteLine("\nPress any key to return to the menu.");
-            Console.ReadKey();                    
+            Console.ReadKey();
         }
 
         public async Task CreateBankAccount()
         {
             // Confirm that the customer want to make an new account
             Console.WriteLine("Are you sure you want to create a new account?");
-            Console.WriteLine("1. Yes");
-            Console.WriteLine("2. No");
+            Helper.PrintSelectionList(SelectionLists.YesNo);
 
             int input = Helper.ListSelection(2) + 1;
 
@@ -535,6 +534,7 @@ namespace BankApp.Users
 
                 }
         }
+
         public void CheckLoans()
         {
             // Foreach Loan in Customer Loan list
@@ -549,8 +549,7 @@ namespace BankApp.Users
             if (CustomerActiveLoans.Count > 0)
             {
                 Console.WriteLine("\nWould you like to repay your loan?");
-                Console.WriteLine("1. Yes");
-                Console.WriteLine("2. No");
+                Helper.PrintSelectionList(SelectionLists.YesNo);
 
                 int choice;
 
@@ -597,7 +596,6 @@ namespace BankApp.Users
             Console.Clear();
             Console.WriteLine("Which loan would you like to pay?");
 
-
             // Prints out the list of active loans
             Helper.PrintLoanList(CustomerActiveLoans);
 
@@ -608,7 +606,6 @@ namespace BankApp.Users
             Console.Clear();
             Console.WriteLine("Select which account you want to pay with\n");
             Helper.PrintAccountList(CustomerBankAccounts);
-
 
             int accountChoice = Helper.ListSelection(CustomerBankAccounts.Count);
             BankAccountBase selectedAccount = CustomerBankAccounts[accountChoice];
@@ -716,7 +713,6 @@ namespace BankApp.Users
             }
            
             // Show how much customer wants to borrow and how much extra they have to pay in interest
-            
             Console.WriteLine("Choose payback period in months:");
             decimal paybackInMonths;
 
@@ -735,10 +731,9 @@ namespace BankApp.Users
                 }
             }
             
-                // Ask if they still want to take the loan
-                Console.WriteLine("Do you accept the loan?");
-                Console.WriteLine("1. Yes");
-                Console.WriteLine("2. No");
+            // Ask if they still want to take the loan
+            Console.WriteLine("\nDo you accept the loan?");
+            Helper.PrintSelectionList(SelectionLists.YesNo);
 
             // If yes
             int choice;
@@ -780,17 +775,20 @@ namespace BankApp.Users
 
         public void UpdateCustomerInformation()
         {
+            Console.Clear();
+            Console.WriteLine("CHANGE ACCOUNT INFO\n");
+
             // Ask what the user wants to change (mail/phone/password)
-                // Ask the user to enter new value
+            Console.WriteLine("What would you like to change?");
+            Console.WriteLine($"1. Email (current: {this.Email})\n2. Phonenumber (current: {this.PhoneNumber})\n3. Password");
+            string choice = Console.ReadLine();
+                
+            // Ask the user to enter new value
                 // Ask the user to enter the value again
                     // If they match
                         // Update specified info
                     // Else
                         // Ask if they want to try again or go back to customer menu
-
-            Console.WriteLine("What would you like to change?");
-            Console.WriteLine($"1. Email (current: {this.Email})\n2. Phonenumber (current: {this.PhoneNumber})\n3. Password");
-            string choice = Console.ReadLine();
 
             switch (choice)
             {
@@ -877,10 +875,7 @@ namespace BankApp.Users
 
             }
 
-
         }
-
-
 
     }
 }
