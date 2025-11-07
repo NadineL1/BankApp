@@ -29,14 +29,6 @@ namespace BankApp
         private static decimal InitialSEKperEUR { get; set; } = 11.36m;
         private static decimal InitialSEKperUSD { get; set; } = 11.00m;
 
-        public static void ExecuteTransactions()
-        {
-            foreach (Transaction transaction in PendingTransactions)
-            {
-                // Move the money and move the transaction to Transaction history
-                // transaction.ExecuteTransaction();
-            }
-        }
 
         public static void UpdateExchangeRate(Enums.CurrencyTypes currencyType, decimal newExchangeRate)
         {
@@ -72,5 +64,30 @@ namespace BankApp
             { (Enums.CurrencyTypes.SEK, Enums.CurrencyTypes.USD), decimal.Round(1m/InitialSEKperUSD, 4) },
             { (Enums.CurrencyTypes.USD, Enums.CurrencyTypes.SEK), InitialSEKperUSD }
         };
+        public static void FifteenMinutesMethod()
+        {
+            Console.WriteLine("The fifteen minute update is called.");
+            // Only executes pendoing transactions if there are pending transactions.
+            if (PendingTransactions.Count != 0)
+            {            
+                // Executes the all pending transactions.
+                foreach (Transaction transaction in PendingTransactions)
+                {
+                    transaction.ExecuteTransaction();
+                }
+                Helper.PauseBreak("Executing transactions", 3);
+            }
+
+            // Update the savings in all savings accounts maybe?
+            // Finds all savings accounts in the allaccounts list
+            /*
+            foreach (var savingsAccount in AllAccounts.FindAll(x => x is SavingsAccount))
+            {
+                // Add interest to all savings accounts
+                //savingsAccount.Balance = savingsAccount.Balance*savingsAccount.Interest
+            }
+            */
+        }
+
     }
 }

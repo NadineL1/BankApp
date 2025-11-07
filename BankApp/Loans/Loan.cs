@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankApp.BankAccounts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,12 +27,6 @@ namespace BankApp.Loans
         }
 
 
-        public void InterestRateTick()
-        {
-            // Increments balance by interest
-            
-            
-        }
 
         public void PrintLoanInfo()
         {
@@ -39,5 +34,7 @@ namespace BankApp.Loans
             Console.WriteLine($"Interest: {Balance * Interest * AmountOfMonths}");
             Console.WriteLine($"Total loan cost: {Balance + Balance * Interest * AmountOfMonths}\n\n");
         }
+
+       
     }
 }
