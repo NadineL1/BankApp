@@ -10,7 +10,6 @@ namespace BankApp.Transactions
 {
     public class Transaction
     {
-        // BankAccounr Receiver, Sender, Value, dateTime
         public BankAccountBase Receiver { get; private set; }
         public BankAccountBase Sender { get; private set; }
         public decimal ConvertedAmount {  get; set; }
@@ -38,7 +37,6 @@ namespace BankApp.Transactions
         }
         public void PrintTransaction()
         {
-            // Print: The dateTime you sent amount from sender to receiver
             Console.WriteLine($"At {DateOfTransaction} this transaction sent {ConvertedAmount}{CurrencyType} from bankaccount \"{Sender.AccountNumber}\" to bankaccount \"{Receiver.AccountNumber}\".");
         }
     }
