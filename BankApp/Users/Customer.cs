@@ -355,9 +355,9 @@ namespace BankApp.Users
 
                         // Ask user which currency they want the account to be in.
                         Console.WriteLine("Choose currency for your new account.");
-                        Console.WriteLine("[1] SEK");
-                        Console.WriteLine("[2] EUR");
-                        Console.WriteLine("[3] USD");
+                        Console.WriteLine("1. SEK");
+                        Console.WriteLine("2. EUR");
+                        Console.WriteLine("3. USD");
 
                         int currencyChoice = int.Parse(Console.ReadLine());
                         Enums.CurrencyTypes chosenCurrency;
@@ -401,7 +401,6 @@ namespace BankApp.Users
                                 Console.WriteLine("Savings account created successfully!");
                                 break;
 
-
                             default:
                                 Console.WriteLine("Invalid account type selected.");
                                 break;
@@ -416,11 +415,6 @@ namespace BankApp.Users
                         break;
 
                 }
-        
-
-
-            // (Later check what currency they want the acount in)
-
         }
         public void CheckLoans()
         {
