@@ -183,7 +183,6 @@ namespace BankApp.Users
 
         public void StartTransaction()
         {
-            Console.WriteLine("Starts Transaction"); // DEBUG: REMOVE LATER
             Console.WriteLine("Which account would like to make the transfer from?");
             // Creates a new list with all checking accounts the customer has in their name.
             List<BankAccountBase> checkingList = CustomerBankAccounts.FindAll(account => account is CheckingsAccount);
@@ -224,7 +223,9 @@ namespace BankApp.Users
                     // Ask user to enter bank number
                     Console.WriteLine("Please enter the bank number of the receiving account");
                     // Prints all accounts so that we devs can see the account numbers.
-                    Helper.PrintAccountList(BankSystem.AllAccounts); // DEBUG: REMOVE LATER
+                    Console.WriteLine("(We are only printing all bankaccounts so that it is easy to enter a valid bankaccount number.)");
+                    Console.WriteLine("(This would be really bad in an actual app)");
+                    Helper.PrintAccountList(BankSystem.AllAccounts); // I decided to keep it for ease of use in the program.
                     Console.WriteLine();
 
                     // Makes sure that the user enters a positive integer
@@ -255,7 +256,6 @@ namespace BankApp.Users
                         // Calls maketransaction if they found a matching account number.
                         else if(receiverAccount != null)
                         {
-                            Console.WriteLine("Account found"); // DEBUG: REMOVE LATER
                             selectBankNumberLoop = false;
                             MakeTransaction(senderAccount, receiverAccount);
                         }
@@ -287,7 +287,7 @@ namespace BankApp.Users
                     if (sender.CurrencyType == receiver.CurrencyType)
                     {
                         Transaction newTransaction = new Transaction(sender, receiver, amount, amount);
-                        BankSystem.PendingTransactions.Add(newTransaction);                        
+                        BankSystem.PendingTransactions.Enqueue(newTransaction);                        
 
                         Console.WriteLine($"\nTransfer request successfully created! {amount} {sender.CurrencyType} will soon be sent.");
                     }
@@ -301,7 +301,7 @@ namespace BankApp.Users
                             );
                         // Update the balance.
                         Transaction newTransaction = new Transaction(sender, receiver, convertedAmount, amount);
-                        BankSystem.PendingTransactions.Add(newTransaction);
+                        BankSystem.PendingTransactions.Enqueue(newTransaction);
 
                         Console.WriteLine($"\nTransfer request successfully created! {amount} {sender.CurrencyType} will soon be sent.");
                         Console.WriteLine($"Converted {amount} {sender.CurrencyType} to {convertedAmount} {receiver.CurrencyType}.");
@@ -316,15 +316,8 @@ namespace BankApp.Users
         public void CheckTransactionHistory()
         {
             Console.WriteLine("Checks Transaction History");
-            Console.WriteLine("All transactions in system:");
-            foreach (Transaction transaction in BankSystem.TransactionHistory) // DEBUG, REMOVE LATER: Prints all accounts in system to make checking easier
-            {
-                transaction.PrintTransaction();
-            }
-            Console.WriteLine();
 
             // Actual method starts here
-            // 
             Console.WriteLine("Which account's transaction history would you like to see?");
             Helper.PrintAccountList(CustomerBankAccounts);
             // An ugly append to the selectionlist for additional options.
