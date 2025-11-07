@@ -18,6 +18,8 @@ namespace BankApp.Loans
 
         public decimal AmountOfMonths { get; set; }
 
+        public decimal TotalLoanCost { get; set; }
+
         public Loan(decimal balance, decimal interest, Users.Customer customer, decimal amountofmonths)
         {
             Balance = balance;
@@ -32,7 +34,8 @@ namespace BankApp.Loans
         {
             Console.WriteLine($"Loan ammount: {Balance}");
             Console.WriteLine($"Interest: {Balance * Interest * AmountOfMonths}");
-            Console.WriteLine($"Total loan cost: {Balance + Balance * Interest * AmountOfMonths}\n\n");
+            //Console.WriteLine($"Total loan cost: {Balance + Balance * Interest * AmountOfMonths}\n\n");
+            Console.WriteLine($"Total loan cost (remaining): {TotalLoanCost}\n");
         }
 
        
