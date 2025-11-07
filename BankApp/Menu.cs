@@ -227,6 +227,7 @@ namespace BankApp
                         "Make loan request",
                         "Check your loan request",
                         "Update profile information",
+                        "Fiften minutes pass",
                         "Log out"
                     }));
                 switch (choice)
@@ -254,6 +255,9 @@ namespace BankApp
                         break;
                     case "Update profile information":
                         customer.UpdateCustomerInformation();
+                        break;
+                    case "Fiften minutes pass":
+                        BankSystem.FifteenMinutesMethod();
                         break;
                     case "Log out":
                         AnsiConsole.MarkupLine("\n[green]Thank you for visiting The Five Bank![/]");
