@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Spectre.Console;
 
 
 namespace BankApp
@@ -17,25 +18,6 @@ namespace BankApp
             bool isRunning = true;
             while (isRunning)
             { 
-                // ASk if user wants to quit program
-                // Ask if user admin
-                // Take user input for userID
-                // Take user input for password
-
-                // if inputAdminBool true
-                // check list of admins acc
-                // Check input username + account
-                // if match
-                // Send matching admin object to admin menu
-                // else ask for input again
-                // Else
-                // Check input username + account against list of customer accounts
-                // if match
-                // Send matching customer object to customer menu
-                // else if 3rd attempt to login to one user
-                // Set account lock bool on that user object
-                // else ask for login details again
-
                 Console.Clear();
                 Logo.BankLogo();
                 Console.WriteLine("Welcome to The Five Bank!");
@@ -45,7 +27,6 @@ namespace BankApp
                 Console.WriteLine("[3] Quit program.");
                 Console.Write("\nYour choice: ");
                 
-
                 string choice = Console.ReadLine();
 
                 //LOGIN AS CUSTOMER
@@ -104,20 +85,18 @@ namespace BankApp
                         bool logIn = false; //changes to true when successful login.
                         while (attempts < 3 && !logIn && lockCheck != true)
                         {
-                            Console.Write("Enter your password: ");
-                            string? inputPassword = Console.ReadLine();
+                            // Create a prompt object that asks the user for input. The answer will be returned as string.
+                            var inputPassword = AnsiConsole.Prompt(new TextPrompt<string>("Enter password:") 
+                                .Secret()); // turns the prompt into a secret input.                           
                             attempts++;
 
                             // Checks if the stored customer's password matches user input
                             if (loginCustomer.Password == inputPassword)
                             {
-                                Console.WriteLine("\nSuccess! You are now logged in as customer!");                                
-                                
+                                Console.WriteLine("\nSuccess! You are now logged in as customer!");
+                                Thread.Sleep(700); // A little break before we clear in 0,7 sec.
+                                Console.Clear(); // Clears the logo from the loginmenu.
 
-                              
-
-                                // ANROPA CustomerMenu-metoden !!
-                                // Sends the found customer object into the customer menu
                                 CustomerMenu(loginCustomer);
                                 logIn = true;
                             }
@@ -141,14 +120,16 @@ namespace BankApp
                         Console.Write("Enter your username: ");
                         string? username = Console.ReadLine();
 
-                        Console.Write("Enter your password: ");
-                        string? password = Console.ReadLine();
-
+                        // Use spectre.console for hidden password input.
+                        var password = AnsiConsole.Prompt(new TextPrompt<string>("Enter your password:")
+                            .Secret());
 
                         // Checks if username and password matches system admin
                         if (username.ToLower() == BankSystem.Admin.Name.ToLower() && password == BankSystem.Admin.Password)
                         {
                             Console.WriteLine("\nSuccess! You are now logged in as admin!");
+                            Thread.Sleep(700); // A little break before we clear in 0,7 sec.
+                            Console.Clear(); // Clears the logo from loginmenu.
                             AdminMenu(BankSystem.Admin);
                         }
                         else
@@ -175,65 +156,46 @@ namespace BankApp
             bool adminMenu = true;
             while (adminMenu)
             {
-                // Show list of options
-                /*
-                    Create user method
-                    Check customer stats
-                    Unlock user (Extra user)
-                    Update currency
-                    Interest rules( additional task)
-                    Log out
-                 */
-                // Ask user for input on which menu option they want
-                // Switch case
-                // Call to method matching the selected option
+                AnsiConsole.Clear();
+                Logo.BankLogo();
+                Console.WriteLine();
 
-                Console.WriteLine("Welcome Admin!");
-                Console.WriteLine("What would you like to do?");
-                Console.WriteLine("[1] Create a customer.");
-                Console.WriteLine("[2] Check customer stats.");
-                Console.WriteLine("[3] Unlock customer.");
-                Console.WriteLine("[4] Update exchange rates.");
-                Console.WriteLine("[5] Update interest rules for loans.");
-                Console.WriteLine("[6] Log out.");
-
-                string input = Console.ReadLine();
-
-                switch (input)
+                AnsiConsole.MarkupLine("[bold yellow]Welcome Admin to [underline]The Five Bank[/]![/]");
+                // Create the menu with navigation.
+                var choice = AnsiConsole.Prompt(new SelectionPrompt<string>() // Creates a listmenu with a string.
+                    .Title("[bold gold1]What would you like to do today?[/]")
+                    .PageSize(8) // How many options in menu you can see.
+                    .HighlightStyle(new Style(Color.Gold1)) // Highlight's with colour what user is choosing in menu.
+                    .AddChoices(new[] // the menu option.
+                    {
+                        "Create a customer",
+                        "Check customer statistics",
+                        "Unlock customer account",
+                        "Update exchange rates",
+                        "Update loan interest rules",
+                        "Log out"
+                    }));
+                switch (choice) 
                 {
-                    case "1":
-                        Console.WriteLine("Create customer.");
-                        // call to customer
+                    case "Create a customer":
                         admin.CreateCustomer();
                         break;
-                    case "2":
-                        Console.WriteLine("Customer statistics:");
-                        // call method for printing statistics
+                    case "Check customer statistics":
                         admin.GetCustomerStatistics();
                         break;
-                    case "3":
-                        Console.WriteLine("Unlock customer");
-                        // method for unlockingg
+                    case "Unlock customer account":
                         admin.UnlockCustomerAccount();
                         break;
-                    case "4":
-                        Console.WriteLine("Update exchange rates");
-                        // call to exchange rates method 
+                    case "Update exchange rates":
                         admin.Exchangerates();
                         break;
-                    case "5":
-                        Console.WriteLine("Update interest rules");
-                        // update interest rules, loans
+                    case "Update loan interest rules":
                         admin.UpdateInterestRates();
                         break;
-                    case "6":
-                        Console.WriteLine("Log out? Thank you for today.");
-                        Console.WriteLine("Press any key to exit.");
-                        Console.ReadKey();
+                    case "Log out":
+                        AnsiConsole.MarkupLine("\n[green]Logging out. Thank you for today![/]");
+                        Helper.PauseBreak("Returning to start screen", 3);
                         adminMenu = false;
-                        break;
-                    default:
-                        Console.WriteLine("Something went wrong.Try again with a different number choice.");
                         break;
                 }
             }
@@ -244,106 +206,64 @@ namespace BankApp
             bool customermenu = true;
             while (customermenu)
             {
-                // Print overview of customer's accounts
+                AnsiConsole.Clear();
+                Logo.BankLogo();
+                Console.WriteLine();
 
-                // Show list of options
-                /*
-                    Withdraw/deposit money( extra feature )
-                    Make transaction
-                    Check transaction history
-                    Check bank accounts
-                    Create bank account
-                    Make loan request
-                    Check loans
-                        Pick a loan
-                             Repay loan
-                    Update profile information
-                    Log out
-                 */
-                // Ask user for input on which menu option they want
-                // Switch case
-                // Call to method matching the selected option
-
-                Console.Clear();
-                Console.WriteLine("Welcome customer!");
-                Console.WriteLine("What would you like to do?");
-                Console.WriteLine("\n[1] Withdraw/deposit money."); // (extra features)
-                Console.WriteLine("[2] Make transaction.");
-                Console.WriteLine("[3] Check transaction history.");
-                Console.WriteLine("[4] Check bank accounts.");
-                Console.WriteLine("[5] Create bank accounts.");
-                Console.WriteLine("[6] Make loan request.");
-                Console.WriteLine("[7] Check loans.");
-                Console.WriteLine("[8] Update profile information.");
-                Console.WriteLine("[9] Log out.");
-                Console.Write("\nYour choice: ");
-
-                string input = Console.ReadLine();
-
-                switch (input)
+                AnsiConsole.MarkupLine("[bold yellow]Welcome to [underline]The Five Bank[/]![/]");
+                
+                // Create the menu with navigation.
+                var choice = AnsiConsole.Prompt(new SelectionPrompt<string>() // Creates a listmenu with a string.
+                    .Title("[bold gold1]What would you like to do today?[/]")
+                    .PageSize(10) // How many options in menu you can see.
+                    .HighlightStyle(new Style(Color.Gold1)) // Highlight's with colour what user is choosing in menu.
+                    .AddChoices(new[] // the menu option.
+                    {
+                        "Withdraw / Deposit money",
+                        "Make transaction",
+                        "Check transaction history",
+                        "Check bank accounts",
+                        "Create new bank account",
+                        "Make loan request",
+                        "Check your loan request",
+                        "Update profile information",
+                        "Log out"
+                    }));
+                switch (choice)
                 {
-                    case "1":
-                        Console.WriteLine("Withdraw/Deposit");
-                        // Call to Withdraw() from Customer
+                    case "Withdraw / Deposit money":
+                        customer.Withdraw();
                         break;
-                    case "2":
-                        // Commented out test code to try proper implementation
-                        /*
-                        Console.WriteLine("Make transaction.");
-                        // Temporarily test accounts (Costumer ID, starting amount)
-                        BankAccountBase sender = new BankAccountBase(1, 5000);
-                        BankAccountBase receiver = new BankAccountBase(2, 500);
-                        // Call to method
-                        customer.MakeTransaction(sender, receiver);
-                        */
-
+                    case "Make transaction":
                         customer.StartTransaction();
                         break;
-                    case "3":
+                    case "Check transaction history":
                         customer.CheckTransactionHistory();
-                        // Call to CheckTransactionHistory() from Customer.
                         break;
-                    case "4":
-                        Console.WriteLine("Check bank accounts.");
-                        // Call to CheckingAccount
+                    case "Check bank accounts":
                         customer.CheckBankAccounts();
                         break;
-                    case "5":
-                        Console.WriteLine("Create bank account");
-                        // Call to CreateBankAccount() from Customer
+                    case "Create new bank account":
                         customer.CreateBankAccount();
                         break;
-                    case "6":
-                        Console.WriteLine("Make loan request.");
-                        // Call to LoanRequest() from customer.
+                    case "Make loan request":
+                        customer.LoanRequest();
                         break;
-                    case "7":
-                        Console.WriteLine("check loans.");
-                        // Call to CheckLoans() from Customer.
+                    case "Check your loan request":
+                        customer.CheckLoans();
                         break;
-                    case "8":
-                        Console.WriteLine("Update profile information.");
-                        // Call to UpdateCustomerInformation() from Customer.
+                    case "Update profile information":
                         customer.UpdateCustomerInformation();
                         break;
-                    case "9":
-                        Console.WriteLine("Thank you for visiting 'The Five Bank'. Hope to see you again!");
-                        Console.WriteLine("Press any key to exit.");
-                        Console.ReadKey();
+                    case "Log out":
+                        AnsiConsole.MarkupLine("\n[green]Thank you for visiting The Five Bank![/]");
+                        Helper.PauseBreak("Returning to start screen", 3);
                         customermenu = false;
                         break;
-                    default:
-                        Console.WriteLine("\nInvalid choice. Please restart the program and try again.");
-                        break;
-                }
-
+                }             
             }
-
         }
-
-
     }
-
 }
 
 

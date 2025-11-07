@@ -260,19 +260,8 @@ namespace BankApp.Users
             }
             // Show table.
             AnsiConsole.Write(table);
-
             Console.WriteLine("\nPress any key to return to the menu.");
-            Console.ReadKey();
-
-            //Console.Clear();
-            //Console.WriteLine("Your Accounts:\n");
-            //foreach (var account in CustomerBankAccounts)
-            //{
-            //    account.PrintAccountInfo();
-            //}
-            
-            //Console.WriteLine("\nPress any key to return to menu.");
-            //Console.ReadKey();            
+            Console.ReadKey();                    
         }
         
         public void CreateBankAccount()
