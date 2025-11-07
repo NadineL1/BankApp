@@ -190,43 +190,41 @@ namespace BankApp
 
                 Console.WriteLine("Welcome Admin!");
                 Console.WriteLine("What would you like to do?");
-                Console.WriteLine("[1] Create a customer.");
-                Console.WriteLine("[2] Check customer stats.");
-                Console.WriteLine("[3] Unlock customer.");
-                Console.WriteLine("[4] Update exchange rates.");
-                Console.WriteLine("[5] Update interest rules for loans.");
-                Console.WriteLine("[6] Log out.");
-
-                string input = Console.ReadLine();
+                Helper.PrintSelectionList(SelectionLists.AdminMenu);
+                int input = Helper.ListSelection(SelectionLists.AdminMenu.Count);
 
                 switch (input)
                 {
-                    case "1":
+                    case 0:
                         Console.WriteLine("Create customer.");
                         // call to customer
                         admin.CreateCustomer();
                         break;
-                    case "2":
+                    case 1:
                         Console.WriteLine("Customer statistics:");
                         // call method for printing statistics
                         admin.GetCustomerStatistics();
                         break;
-                    case "3":
+                    case 2:
                         Console.WriteLine("Unlock customer");
                         // method for unlockingg
                         admin.UnlockCustomerAccount();
                         break;
-                    case "4":
+                    case 3:
                         Console.WriteLine("Update exchange rates");
                         // call to exchange rates method 
                         admin.Exchangerates();
                         break;
-                    case "5":
+                    case 4:
                         Console.WriteLine("Update interest rules");
                         // update interest rules, loans
                         admin.UpdateInterestRates();
                         break;
-                    case "6":
+                    case 5:
+                        Console.WriteLine("Time passes.");
+                        BankSystem.FifteenMinutesMethod();
+                        break;
+                    case 6:
                         Console.WriteLine("Log out? Thank you for today.");
                         Console.WriteLine("Press any key to exit.");
                         Console.ReadKey();
@@ -316,10 +314,12 @@ namespace BankApp
                     case "6":
                         Console.WriteLine("Make loan request.");
                         // Call to LoanRequest() from customer.
+                        customer.LoanRequest();
                         break;
                     case "7":
-                        Console.WriteLine("check loans.");
+                        Console.WriteLine("Check loans");
                         // Call to CheckLoans() from Customer.
+                        customer.CheckLoans();
                         break;
                     case "8":
                         Console.WriteLine("Update profile information.");

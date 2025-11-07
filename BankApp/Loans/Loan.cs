@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankApp.BankAccounts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,18 +10,31 @@ namespace BankApp.Loans
 {
     internal class Loan
     {
-        // public decial Balance 
+        public decimal Balance { get; set; }
 
-        // public decimal Interest
+        public decimal Interest { get; set; } = 0.02m;   //2% Interest
         
-        // public Customer customer
+        public Users.Customer Customer { get; set; }
 
-        public Loan() { }
+        public decimal AmountOfMonths { get; set; }
 
-
-        public void InterestRateTick()
+        public Loan(decimal balance, decimal interest, Users.Customer customer, decimal amountofmonths)
         {
-            // Increments balance by interest
+            Balance = balance;
+            Interest = interest;
+            Customer = customer;
+            AmountOfMonths = amountofmonths;
         }
+
+
+
+        public void PrintLoanInfo()
+        {
+            Console.WriteLine($"Loan ammount: {Balance}");
+            Console.WriteLine($"Interest: {Balance * Interest * AmountOfMonths}");
+            Console.WriteLine($"Total loan cost: {Balance + Balance * Interest * AmountOfMonths}\n\n");
+        }
+
+       
     }
 }
