@@ -12,8 +12,8 @@ namespace BankApp
 {
     internal static class BankSystem
     {
-        // Creates a default list of customers
         public static List<BankAccountBase> AllAccounts { get; set; } = new List<BankAccountBase>();
+        public static List <SavingsAccount> Savings { get; set; } = new List<SavingsAccount> ();
         public static List<Customer> AllCustomers { get; set; } = new List<Customer>()
         {
             new Customer(2, "John Doe", "blehblah@msn.com", "test1", "0761234567", false, 20000m, 10m),
@@ -69,7 +69,7 @@ namespace BankApp
             Console.WriteLine("The fifteen minute update is called.");
             // Only executes pendoing transactions if there are pending transactions.
             if (PendingTransactions.Count != 0)
-            {            
+            {
                 // Executes the all pending transactions.
                 foreach (Transaction transaction in PendingTransactions)
                 {
@@ -77,17 +77,16 @@ namespace BankApp
                 }
                 Helper.PauseBreak("Executing transactions", 3);
             }
-
-            // Update the savings in all savings accounts maybe?
-            // Finds all savings accounts in the allaccounts list
-            /*
-            foreach (var savingsAccount in AllAccounts.FindAll(x => x is SavingsAccount))
-            {
-                // Add interest to all savings accounts
-                //savingsAccount.Balance = savingsAccount.Balance*savingsAccount.Interest
-            }
-            */
         }
-
+        // async method that calculate your savings with interest and increase the value of your savings account
+        internal static async Task<decimal> SavingMoney(decimal balance, decimal interest, int accountID)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(20));
+            balance *= interest;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Your savingsaccount nr {accountID} now have {balance}kr balance! ");
+            Console.ReadKey();
+            return balance;
+        }
     }
 }

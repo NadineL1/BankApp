@@ -55,6 +55,8 @@ namespace BankApp.Users
             // Ask if admin wants to add default bankaccounts (1 saving account and 1 checking account)
             // newCustomer.BankAccounts.Add(new CheckingAccount)
             // newCustomer.BankAccounts.Add(new SavingAccount)
+  
+            
         }
         public void UnlockCustomerAccount()
         {

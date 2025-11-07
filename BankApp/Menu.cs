@@ -232,7 +232,7 @@ namespace BankApp
                 switch (choice)
                 {
                     case "Withdraw / Deposit money":
-                        customer.Withdraw();
+                        customer.DepositWithdraw();
                         break;
                     case "Make transaction":
                         customer.StartTransaction();
