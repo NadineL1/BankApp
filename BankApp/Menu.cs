@@ -173,6 +173,7 @@ namespace BankApp
                         "Unlock customer account",
                         "Update exchange rates",
                         "Update loan interest rules",
+                        "Fiften minutes pass",
                         "Log out"
                     }));
                 switch (choice) 
@@ -191,6 +192,9 @@ namespace BankApp
                         break;
                     case "Update loan interest rules":
                         admin.UpdateInterestRates();
+                        break;
+                    case "Fiften minutes pass":
+                        BankSystem.FifteenMinutesMethod();
                         break;
                     case "Log out":
                         AnsiConsole.MarkupLine("\n[green]Logging out. Thank you for today![/]");
@@ -226,8 +230,7 @@ namespace BankApp
                         "Create new bank account",
                         "Make loan request",
                         "Check your loan request",
-                        "Update profile information",
-                        "Fiften minutes pass",
+                        "Update profile information",                        
                         "Log out"
                     }));
                 switch (choice)
@@ -255,10 +258,7 @@ namespace BankApp
                         break;
                     case "Update profile information":
                         customer.UpdateCustomerInformation();
-                        break;
-                    case "Fiften minutes pass":
-                        BankSystem.FifteenMinutesMethod();
-                        break;
+                        break;                    
                     case "Log out":
                         AnsiConsole.MarkupLine("\n[green]Thank you for visiting The Five Bank![/]");
                         Helper.PauseBreak("Returning to start screen", 3);
