@@ -437,19 +437,8 @@ namespace BankApp.Users
             }
             // Show table.
             AnsiConsole.Write(table);
-
             Console.WriteLine("\nPress any key to return to the menu.");
-            Console.ReadKey();
-
-            //Console.Clear();
-            //Console.WriteLine("Your Accounts:\n");
-            //foreach (var account in CustomerBankAccounts)
-            //{
-            //    account.PrintAccountInfo();
-            //}
-            
-            //Console.WriteLine("\nPress any key to return to menu.");
-            //Console.ReadKey();            
+            Console.ReadKey();                    
         }
 
         public async Task CreateBankAccount()
@@ -472,9 +461,9 @@ namespace BankApp.Users
 
                         // Ask user which currency they want the account to be in.
                         Console.WriteLine("Choose currency for your new account.");
-                        Console.WriteLine("[1] SEK");
-                        Console.WriteLine("[2] EUR");
-                        Console.WriteLine("[3] USD");
+                        Console.WriteLine("1. SEK");
+                        Console.WriteLine("2. EUR");
+                        Console.WriteLine("3. USD");
 
                         int currencyChoice = int.Parse(Console.ReadLine());
                         Enums.CurrencyTypes chosenCurrency;
@@ -538,7 +527,6 @@ namespace BankApp.Users
                                 Console.ReadKey();
                                 break;
 
-
                             default:
                                 Console.WriteLine("Invalid account type selected.");
                                 break;
@@ -553,11 +541,6 @@ namespace BankApp.Users
                         break;
 
                 }
-        
-
-
-            // (Later check what currency they want the acount in)
-
         }
         public void CheckLoans()
         {
