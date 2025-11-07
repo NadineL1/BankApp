@@ -282,6 +282,7 @@ namespace BankApp
                     case "1":
                         Console.WriteLine("Withdraw/Deposit");
                         // Call to Withdraw() from Customer
+                        customer.DepositWithdraw();
                         break;
                     case "2":
                         // Commented out test code to try proper implementation

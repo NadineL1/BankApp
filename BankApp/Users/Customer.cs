@@ -36,46 +36,151 @@ namespace BankApp.Users
             CustomerActiveLoans = new List<Loan>();
         }
 
-        public void Withdraw()
+
+        public void DepositWithdraw()
         {
-            Console.WriteLine("Withdraws money");
+            Console.Clear();
+            Console.WriteLine("What would you like to to?");
+            Console.WriteLine("1. Deposit");
+            Console.WriteLine("2. Withdraw");
+
+            int choice;
+
+            if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice < 3)
+            {
+                switch (choice)
+                {
+
+                    case 1:
+                        Deposit();
+                        break;
+
+                    case 2:
+                        Withdraw();
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input");
+                Console.WriteLine("Press anywhere to exit");
+                Console.ReadKey();
+            }
+        }
+
+
+        public void Deposit()
+        {
+            Console.Clear();
+            // Ask user which bankaccount to make the deposit to
+            Console.WriteLine("Which account would you like to deposit to?\n");
             // Call list accounts method()
-            // Ask user which bankaccount to make the withdrawal from
-                // Ask user for how much to withdraw
-                    // Check if customer has that much money in bankaccount
-                        // If true
-                        // Subtract asked amount from selected account.Saldo
-                        // Write confirmation of withdrawal in console
-                    // Else
-                        // Tell the user they don't have enough money in that account
-                        // Ask user if they want to take out a loan
-                            // If yes
-                            // Go to MakeLoan()
+            Helper.PrintAccountList(CustomerBankAccounts);
 
-            
-            //Console.WriteLine("Choose an account to withdrawal from:\n");
-            //List<BankAccountBase> CustomerBankAccounts;
-            //string choice = Console.ReadLine();
+            int accountChoice = Helper.ListSelection(CustomerBankAccounts.Count);
+            BankAccountBase selectedAccount = CustomerBankAccounts[accountChoice];
 
-            //if (choice == "1")
-            //{
-            //    Console.WriteLine("Withdrawal amount:\n");
-            //    decimal withdrawal = decimal.Parse(Console.ReadLine());
-
-            //    if (BankAccountBase.balance >= withdrawal)
-            //    {
-            //        BankAccountBase.balance -- withdrawal;
-            //        Console.WriteLine("Withdrawal confirmed!");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Error");
-            //    }
-            //}
+            // Ask user for how much to deposit
+            Console.WriteLine("\nPlease enter deposit amount: ");
 
 
+            // Check if the deposit is greater than 0
+            // If true
+            // Add deposit amount to selected account.Balance
+            // Write confirmation of deposit in console
+            if (decimal.TryParse(Console.ReadLine(), out decimal depositAmount) && depositAmount > 0)
+            {
+                selectedAccount.Balance += depositAmount;
+                Console.WriteLine($"You deposited {depositAmount}{selectedAccount.CurrencyType} (Balance: {selectedAccount.Balance}{selectedAccount.CurrencyType})");
+                Console.ReadKey();
+
+            }
+            // Else
+            // Tell the user they don't have enough money in that account
+            else
+            {
+                Console.WriteLine("Invalid amount.");
+                Console.ReadKey();
+
+            }
 
         }
+
+
+        public void Withdraw()
+        {
+            Console.Clear();
+            // Ask user which bankaccount to make the withdrawal from
+            Console.WriteLine("Which account would you like to withdraw from?\n");
+            // Call list accounts method()
+            Helper.PrintAccountList(CustomerBankAccounts);
+
+            int accountChoice = Helper.ListSelection(CustomerBankAccounts.Count);
+            BankAccountBase selectedAccount = CustomerBankAccounts[accountChoice];
+
+            // Ask user for how much to withdraw
+            Console.WriteLine("\nPlease enter withdrawal amount: ");
+
+
+            // Check if customer has that much money in bankaccount
+            // If true
+            // Subtract asked amount from selected account.Saldo
+            // Write confirmation of withdrawal in console
+            if (decimal.TryParse(Console.ReadLine(), out decimal withdrawalAmount) && withdrawalAmount > 0 && withdrawalAmount <= selectedAccount.Balance)
+            {
+                selectedAccount.Balance -= withdrawalAmount;
+                Console.WriteLine($"You withdrew {withdrawalAmount}{selectedAccount.CurrencyType} (Remaining: {selectedAccount.Balance}{selectedAccount.CurrencyType})");
+                Console.ReadKey();
+
+
+            }
+            // Else
+            // Tell the user they don't have enough money in that account
+            // Ask user if they want to take out a loan
+            // If yes
+            // Go to LoanRequest()
+            else
+            {
+                Console.WriteLine("Invalid amount.");
+                Console.WriteLine("Would you like to take out a loan?\n");
+                Console.WriteLine("1. Yes");
+                Console.WriteLine("2. No");
+
+                int choice;
+
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice < 3)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input.");
+                    }
+
+
+                }
+                switch (choice)
+                {
+                    case 1:
+                        LoanRequest();
+                        break;
+
+                    case 2:
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid input");
+                        break;
+
+                }
+
+            }
+
+        }
+
+
         public void StartTransaction()
         {
             Console.WriteLine("Starts Transaction"); // DEBUG: REMOVE LATER
