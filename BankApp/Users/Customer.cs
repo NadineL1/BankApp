@@ -2,6 +2,7 @@
 using BankApp.Loans;
 using BankApp.Transactions;
 using System.Threading;
+using System.Threading.Tasks;
 using Spectre.Console;
 
 
@@ -346,7 +347,7 @@ namespace BankApp.Users
             //Console.ReadKey();            
         }
 
-        public void CreateBankAccount()
+        public async Task CreateBankAccount()
         {
             // Confirm that the customer want to make an new account
             Console.WriteLine("Are you sure you want to create a new account?");
@@ -401,15 +402,35 @@ namespace BankApp.Users
                                 CustomerBankAccounts.Add(checkingsaccount);
                                 BankSystem.AllAccounts.Add(checkingsaccount);
                                 Console.WriteLine("Checkings account created successfully!");
+                                Console.ReadKey();
                                 break;
 
                             // Add it to Customer AccountList, BankSystem account list
                             // Write confirmation of the new BankAccount
                             case 2:
-                                SavingsAccount savingsaccount = new SavingsAccount(this.UserID, chosenCurrency, 0);
+                                Console.WriteLine("How much money would you like to start your savings with?");
+                                    
+                                string? sBalance = Console.ReadLine();
+                                decimal startBalance = 0;
+                                bool correctInput = false;
+                                while (!correctInput)
+                                {
+                                    if (decimal.TryParse(sBalance, out startBalance))
+                                    {
+                                        Console.WriteLine($"Savings account created successfully! Balance {startBalance}kr will be increased by our interest rate of 50% every 20 seconds.");
+                                        correctInput = true;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Incorrect input, please write with only digits how much money you want to put into your savings.");
+                                        sBalance = Console.ReadLine();
+                                }
+                                }
+                                SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, startBalance);
                                 CustomerBankAccounts.Add(savingsaccount);
                                 BankSystem.AllAccounts.Add(savingsaccount);
-                                Console.WriteLine("Savings account created successfully!");
+                                savingsaccount.Balance = await BankSystem.SavingMoney(savingsaccount.Balance, SavingsAccount.InterestRate, savingsaccount.AccountNumber);
+                                Console.ReadKey();
                                 break;
 
 

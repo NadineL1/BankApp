@@ -243,7 +243,6 @@ namespace BankApp
             while (customermenu)
             {
                 // Print overview of customer's accounts
-
                 // Show list of options
                 /*
                     Withdraw/deposit money( extra feature )
@@ -269,7 +268,7 @@ namespace BankApp
                 Console.WriteLine("[2] Make transaction.");
                 Console.WriteLine("[3] Check transaction history.");
                 Console.WriteLine("[4] Check bank accounts.");
-                Console.WriteLine("[5] Create bank accounts.");
+                Console.WriteLine("[5] Create bank account.");
                 Console.WriteLine("[6] Make loan request.");
                 Console.WriteLine("[7] Check loans.");
                 Console.WriteLine("[8] Update profile information.");
