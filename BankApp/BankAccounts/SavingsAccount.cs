@@ -8,9 +8,10 @@ namespace BankApp.BankAccounts
 {
     internal class SavingsAccount : BankAccountBase
     {
-        // interestrate gets a magic number of + 50 % 
+        public string AccountType { get; set; } = "savings";
+        // interestrate gets a magic number of + 50 %, so 1,5 * balance
         public decimal InterestRate { get; set; } = 1.5M;
-       
+        
         public SavingsAccount(int customerID, Enums.CurrencyTypes currencyTypes, decimal balance) : base(customerID, currencyTypes, balance)
         {
            
@@ -18,7 +19,7 @@ namespace BankApp.BankAccounts
 
         public override void PrintAccountInfo()
         {
-            Console.WriteLine($"Savings account, Accountnumber: {AccountNumber}, Balance: {Balance}{CurrencyType}");
+            Console.WriteLine($"{AccountType} account, Accountnumber: {AccountNumber}, Balance: {Balance}{CurrencyType}, Interest rate: {InterestRate}");
         }
  
     }

@@ -81,16 +81,5 @@ namespace BankApp
         { 
             
         }
-
-
-            // Update the savings in all savings accounts maybe?
-            // Finds all savings accounts in the allaccounts list
-            /*
-            foreach (var savingsAccount in AllAccounts.FindAll(x => x is SavingsAccount))
-            {
-                // Add interest to all savings accounts
-                //savingsAccount.Balance = savingsAccount.Balance*savingsAccount.Interest
-            */
-
     }
 }

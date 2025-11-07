@@ -10,7 +10,6 @@ namespace BankApp.Users
     {
         public bool LockBool { get; set; } = false;
         public List<BankAccountBase> CustomerBankAccounts { get; set; }
-        public List <SavingsAccount> Savings { get; set; }
         public List<Loan> CustomerActiveLoans { get; set; }
 
         public Customer(int userId, string name, string email, string password, string phoneNumber, bool lockbool) : base(userId, name, email, password, phoneNumber, false)
@@ -18,7 +17,6 @@ namespace BankApp.Users
             LockBool = lockbool;
             CustomerBankAccounts = new List<BankAccountBase>();
             CustomerActiveLoans = new List<Loan>();
-            Savings = new List<SavingsAccount>();
         }
         // Overloads the constructor so that it can also take two additioanl decimal values
         // These values are then used as the balance for a checking account and a savings account made with this customers userID.
@@ -369,14 +367,14 @@ namespace BankApp.Users
                             case 2:
                                 Console.WriteLine("How much money would you like to start your savings with?");
                                     
-                                string sBalance = Console.ReadLine();
+                                string? sBalance = Console.ReadLine();
                                 decimal startBalance = 0;
                                 bool correctInput = false;
                                 while (!correctInput)
                                 {
                                     if (decimal.TryParse(sBalance, out startBalance))
                                     {
-                                        Console.WriteLine($"Savings account created successfully! Balance {startBalance} will be increased by our interest rate of 50% every 20 seconds.");
+                                        Console.WriteLine($"Savings account created successfully! Balance {startBalance}kr will be increased by our interest rate of 50% every 20 seconds.");
                                         correctInput = true;
                                     }
                                     else
