@@ -26,53 +26,68 @@ namespace BankApp
         public static List<Transaction> TransactionHistory { get; set; } = new List<Transaction>();
         public static List<Loan> AllLoan { get; set; } = new List<Loan>();
 
-        public static decimal ExchangeEuro { get; set; }
+        private static decimal InitialSEKperEUR { get; set; } = 11.36m;
+        private static decimal InitialSEKperUSD { get; set; } = 11.00m;
 
-        /*
-        public static BankSystem()
+
+        public static void UpdateExchangeRate(Enums.CurrencyTypes currencyType, decimal newExchangeRate)
         {
-            // Lists with some default values just for testing.
-            /*
-            List<BankAccountBase> defaultAccounts = new List<BankAccountBase>()
-            {
-
-            }
-            List<Transaction> defaultTransactions = new List<Transaction>()
-            {
-
-            }
-            List<Loan> defaultLoans = new List<Loan>()
-            {
-
-            }
             
-
-            ExchangeEuro = 1m;
-        }
-        */
-        // Tries to go execute all pending transactions
-        public static void ExecuteTransactions()
-        {
-            foreach (Transaction transaction in PendingTransactions)
+            if ( (currencyType == Enums.CurrencyTypes.EUR || currencyType == Enums.CurrencyTypes.USD) && newExchangeRate > 0)
             {
-                // Move the money and move the transaction to Transaction history
-                // transaction.ExecuteTransaction();
+                // Stores the SEK-to-selectedCurrencyType and vice-versa as variables so that we can access the values in the dictionary.
+                var key1 = (Enums.CurrencyTypes.SEK, currencyType);
+                var key2 = (currencyType, Enums.CurrencyTypes.SEK);
+
+                // Uses the variables holding the keys to update the value of that key-value pair.
+                BankSystem.ExchangeRate[key1] = decimal.Round(1m / newExchangeRate, 4);
+                BankSystem.ExchangeRate[key2] = newExchangeRate;
+
+                // Writes a confirmation that the exchange rates have been updated.
+                Console.WriteLine($"The new exhangerate for {currencyType} is now: {BankSystem.ExchangeRate[key2]} SEK per one {currencyType}.");
+                Helper.PauseBreak("Returning to adminmenu", 3);
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Something went wrong.");
+                Console.WriteLine("The exchangerates have not been updated. Please try again.");
+                Helper.PauseBreak("Returning to adminmenu", 3);
+                return;
             }
         }
 
-        public static void UpdateExchangeRate()
+        public static Dictionary<(Enums.CurrencyTypes From, Enums.CurrencyTypes To), decimal> ExchangeRate { get; private set; } = new()
         {
-            // Enter value
-            // ExchangeEuro = value;
-        }
-
-        public static readonly Dictionary<(Enums.CurrencyTypes From, Enums.CurrencyTypes To), decimal> ExchangeRate = new()
-        {
-            { (Enums.CurrencyTypes.SEK, Enums.CurrencyTypes.EUR), 0.088m },
-            { (Enums.CurrencyTypes.EUR, Enums.CurrencyTypes.SEK), 11.36m },
-            { (Enums.CurrencyTypes.SEK, Enums.CurrencyTypes.USD), 0.091m },
-            { (Enums.CurrencyTypes.USD, Enums.CurrencyTypes.SEK), 11.00m }
+            { (Enums.CurrencyTypes.SEK, Enums.CurrencyTypes.EUR), decimal.Round(1m/InitialSEKperEUR, 4) },
+            { (Enums.CurrencyTypes.EUR, Enums.CurrencyTypes.SEK), InitialSEKperEUR },
+            { (Enums.CurrencyTypes.SEK, Enums.CurrencyTypes.USD), decimal.Round(1m/InitialSEKperUSD, 4) },
+            { (Enums.CurrencyTypes.USD, Enums.CurrencyTypes.SEK), InitialSEKperUSD }
         };
+        public static void FifteenMinutesMethod()
+        {
+            Console.WriteLine("The fifteen minute update is called.");
+            // Only executes pendoing transactions if there are pending transactions.
+            if (PendingTransactions.Count != 0)
+            {            
+                // Executes the all pending transactions.
+                foreach (Transaction transaction in PendingTransactions)
+                {
+                    transaction.ExecuteTransaction();
+                }
+                Helper.PauseBreak("Executing transactions", 3);
+            }
+
+            // Update the savings in all savings accounts maybe?
+            // Finds all savings accounts in the allaccounts list
+            /*
+            foreach (var savingsAccount in AllAccounts.FindAll(x => x is SavingsAccount))
+            {
+                // Add interest to all savings accounts
+                //savingsAccount.Balance = savingsAccount.Balance*savingsAccount.Interest
+            }
+            */
+        }
 
     }
 }

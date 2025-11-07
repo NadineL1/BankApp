@@ -181,9 +181,9 @@ namespace BankApp.Users
                     if (sender.CurrencyType == receiver.CurrencyType)
                     {
                         Transaction newTransaction = new Transaction(sender, receiver, amount, amount);
-                        newTransaction.ExecuteTransaction();
+                        BankSystem.PendingTransactions.Add(newTransaction);                        
 
-                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                        Console.WriteLine($"\nTransfer request successfully created! {amount} {sender.CurrencyType} will soon be sent.");
                     }
                     else 
                     {
@@ -195,9 +195,9 @@ namespace BankApp.Users
                             );
                         // Update the balance.
                         Transaction newTransaction = new Transaction(sender, receiver, convertedAmount, amount);
-                        newTransaction.ExecuteTransaction();
+                        BankSystem.PendingTransactions.Add(newTransaction);
 
-                        Console.WriteLine($"\nTransfer successful! {amount} {sender.CurrencyType} has been sent.");
+                        Console.WriteLine($"\nTransfer request successfully created! {amount} {sender.CurrencyType} will soon be sent.");
                         Console.WriteLine($"Converted {amount} {sender.CurrencyType} to {convertedAmount} {receiver.CurrencyType}.");
                     }             
                 }               
@@ -210,14 +210,85 @@ namespace BankApp.Users
         public void CheckTransactionHistory()
         {
             Console.WriteLine("Checks Transaction History");
-            foreach(Transaction transaction in BankSystem.TransactionHistory)
+            Console.WriteLine("All transactions in system:");
+            foreach (Transaction transaction in BankSystem.TransactionHistory) // DEBUG, REMOVE LATER: Prints all accounts in system to make checking easier
             {
                 transaction.PrintTransaction();
             }
-            Console.ReadLine();
+            Console.WriteLine();
+
+            // Actual method starts here
+            // 
+            Console.WriteLine("Which account's transaction history would you like to see?");
+            Helper.PrintAccountList(CustomerBankAccounts);
+            // An ugly append to the selectionlist for additional options.
+            Console.WriteLine($"{CustomerBankAccounts.Count + 1}. All accounts.");
+            Console.WriteLine($"{CustomerBankAccounts.Count + 2}. Quit.");
+            int historyInput = Helper.ListSelection(CustomerBankAccounts.Count + 2);
+
+            if (historyInput < CustomerBankAccounts.Count)
+            {
+                CustomerBankAccounts[historyInput].PrintTransactionHistory();
+                Console.ReadLine();
+            }
+            else if (historyInput == CustomerBankAccounts.Count)
+            {
+                // Makes a new list and stores all transactions from all the user's accounts in it.
+                List<Transaction> allTransactions = new List<Transaction>();
+                foreach (BankAccountBase account in CustomerBankAccounts)
+                {
+                    foreach (Transaction transaction in account.TransactionList)
+                    {
+                        allTransactions.Add(transaction);
+                    }
+                }
+
+                // Sorts the new list based on the date of the transaction.
+                allTransactions.Sort(delegate (Transaction x, Transaction y)
+                {
+                    if (x.DateOfTransaction == null && y.DateOfTransaction == null) return 0;
+                    else if (x.DateOfTransaction == null) return -1;
+                    else if (y.DateOfTransaction == null) return 1;
+                    else return x.DateOfTransaction.CompareTo(y.DateOfTransaction);
+                });
+
+                Console.WriteLine("Hopefully prints all transactions from all accounts sorted by date of transaction.");
+                Transaction previousTransaction = null;
+                foreach (Transaction transaction in allTransactions)
+                {
+                    // Checks if the this transsaction is the same as the previous one to avoid writing the same things twice.
+                    if (transaction != previousTransaction)
+                    {
+                        // Checks if the sender is one of the user's bankaccounts.
+                        BankAccountBase foundAccount = null;
+                        foundAccount = CustomerBankAccounts.Find(x => x.AccountNumber == transaction.Sender.AccountNumber);
+                        if (foundAccount != null)
+                        {
+                            Console.WriteLine($"At {transaction.DateOfTransaction} you sent {transaction.ConvertedAmount}{transaction.CurrencyType} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+                        }
+
+                        // Checks if the receiver is one of the user's bankaccounts.
+                        foundAccount = null;
+                        foundAccount = CustomerBankAccounts.Find(x => x.AccountNumber == transaction.Receiver.AccountNumber);
+                        if (foundAccount != null)
+                        {
+                            Console.WriteLine($"At {transaction.DateOfTransaction} you received {transaction.ConvertedAmount}{transaction.CurrencyType} from bankaccount \"{transaction.Sender.AccountNumber}\" to bankaccount \"{transaction.Receiver.AccountNumber}\".");
+                        }
+                        previousTransaction = transaction;
+                    }
+                }
+                Console.ReadLine();
+            }
+            else
+            {
+                Helper.PauseBreak("Returning to menu", 3);
+            }
+
             // Call list accounts method()
+
             // Select BankAccount from list
             // PrintTransaction foreach TRansaction in BankAccount.Transaction history
+            Console.ReadLine();
         }
         
         public void CheckBankAccounts()
@@ -263,7 +334,7 @@ namespace BankApp.Users
             Console.WriteLine("\nPress any key to return to the menu.");
             Console.ReadKey();                    
         }
-        
+
         public void CreateBankAccount()
         {
             // Confirm that the customer want to make an new account
@@ -271,106 +342,328 @@ namespace BankApp.Users
             Console.WriteLine("1. Yes");
             Console.WriteLine("2. No");
 
-            int input = int.Parse(Console.ReadLine());
+            int input = Helper.ListSelection(2) + 1;
 
-            switch (input)
-            {
-                case 1:
-                    // Which type of bankaccount do they want (check or savings)
-                    Console.WriteLine("What type of account would you like to create?");
-                    Console.WriteLine("1. Checkings account");
-                    Console.WriteLine("2. Savings account");
-                    int accountType = int.Parse(Console.ReadLine());
+                switch (input)
+                {
+                    case 1:
+                        // Which type of bankaccount do they want (check or savings)
+                        Console.WriteLine("What type of account would you like to create?");
+                        Console.WriteLine("1. Checkings account");
+                        Console.WriteLine("2. Savings account");
+                        int accountType = int.Parse(Console.ReadLine());
 
-                    // Ask user which currency they want the account to be in.
-                    Console.WriteLine("Choose currency for your new account.");
-                    Console.WriteLine("[1] SEK");
-                    Console.WriteLine("[2] EUR");
-                    Console.WriteLine("[3] USD");
+                        // Ask user which currency they want the account to be in.
+                        Console.WriteLine("Choose currency for your new account.");
+                        Console.WriteLine("[1] SEK");
+                        Console.WriteLine("[2] EUR");
+                        Console.WriteLine("[3] USD");
 
-                    int currencyChoice = int.Parse(Console.ReadLine());
-                    Enums.CurrencyTypes chosenCurrency;
+                        int currencyChoice = int.Parse(Console.ReadLine());
+                        Enums.CurrencyTypes chosenCurrency;
 
-                    switch (currencyChoice)
-                    {
-                        case 1:
-                            chosenCurrency = Enums.CurrencyTypes.SEK;
-                            break;
-                        case 2:
-                            chosenCurrency = Enums.CurrencyTypes.EUR;
-                            break;
-                        case 3:
-                            chosenCurrency = Enums.CurrencyTypes.USD;
-                            break;
-                        default:
-                            Console.WriteLine("Invalid choice. Defaulting to SEK.");
-                            chosenCurrency = Enums.CurrencyTypes.SEK;
-                            break;
-                    }
-                    Console.WriteLine($"You chose to have the account in {chosenCurrency}");
+                        switch (currencyChoice)
+                        {
+                            case 1:
+                                chosenCurrency = Enums.CurrencyTypes.SEK;
+                                break;
+                            case 2:
+                                chosenCurrency = Enums.CurrencyTypes.EUR;
+                                break;
+                            case 3:
+                                chosenCurrency = Enums.CurrencyTypes.USD;
+                                break;
+                            default:
+                                Console.WriteLine("Invalid choice. Defaulting to SEK.");
+                                chosenCurrency = Enums.CurrencyTypes.SEK;
+                                break;
+                        }
+                        Console.WriteLine($"You chose to have the account in {chosenCurrency}");
 
-                    // Create a BankAccount object of the correct type
-                    switch (accountType)
-                    {
-                        // Add it to Customer AccountList, BankSystem account list
-                        // Write confirmation of the new BankAccount
-                        case 1:
-                            CheckingsAccount checkingsaccount = new CheckingsAccount(123, chosenCurrency, 0);
-                            CustomerBankAccounts.Add(checkingsaccount);
-                            BankSystem.AllAccounts.Add(checkingsaccount);
-                            Console.WriteLine("Checkings account created successfully!");
-                            break;
+                        // Create a BankAccount object of the correct type
+                        switch (accountType)
+                        {
+                            // Add it to Customer AccountList, BankSystem account list
+                            // Write confirmation of the new BankAccount
+                            case 1:
+                                CheckingsAccount checkingsaccount = new CheckingsAccount(123, chosenCurrency, 0);
+                                CustomerBankAccounts.Add(checkingsaccount);
+                                BankSystem.AllAccounts.Add(checkingsaccount);
+                                Console.WriteLine("Checkings account created successfully!");
+                                break;
 
-                        // Add it to Customer AccountList, BankSystem account list
-                        // Write confirmation of the new BankAccount
-                        case 2:
-                            SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, 0);
-                            CustomerBankAccounts.Add(savingsaccount);
-                            BankSystem.AllAccounts.Add(savingsaccount);
-                            Console.WriteLine("Savings account created successfully!");
-                            break;
-
-
-                        default:
-                            Console.WriteLine("Invalid account type selected.");
-                            break;
-                    }
-                    break;
-
-                case 2:
-                    break;
+                            // Add it to Customer AccountList, BankSystem account list
+                            // Write confirmation of the new BankAccount
+                            case 2:
+                                SavingsAccount savingsaccount = new SavingsAccount(123, chosenCurrency, 0);
+                                CustomerBankAccounts.Add(savingsaccount);
+                                BankSystem.AllAccounts.Add(savingsaccount);
+                                Console.WriteLine("Savings account created successfully!");
+                                break;
 
 
-                default:
-                    Console.WriteLine("Invalid option.");
-                    break;
+                            default:
+                                Console.WriteLine("Invalid account type selected.");
+                                break;
+                        }
+                        break;
 
-            }
-            
+                    case 2:
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid option.");
+                        break;
+
+                }
+        
+
 
             // (Later check what currency they want the acount in)
 
         }
         public void CheckLoans()
         {
-            Console.WriteLine("Checks Loans");
             // Foreach Loan in Customer Loan list
             // Write Loan.info
-            // (Later, maybe make the customer select a loan to make repayments)
+            Console.Clear();
+            Console.WriteLine("ACTIVE LOANS\n");
+            foreach (var loan in CustomerActiveLoans)
+            {
+                loan.PrintLoanInfo();
+            }
+            //Ask user if they want to repay the loan
+            if (CustomerActiveLoans.Count > 0)
+            {
+                Console.WriteLine("Would you like to repay your loan?");
+                Console.WriteLine("1. Yes");
+                Console.WriteLine("2. No");
+
+                int choice;
+
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice < 3)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input.");
+                    }
+                }
+
+                //If yes, run Repay() Method
+                switch (choice)
+                {
+                    case 1:
+                        RepayLoan();
+                        break;
+
+                    case 2:
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid input");
+                        break;
+
+                }
+
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("You have no active loans.");
+                Console.WriteLine("Press anywhere to go back");
+                Console.ReadKey();
+            }
+        }
+
+        public void RepayLoan()
+        {
+            Console.Clear();
+            Console.WriteLine("Which loan would you like to pay?");
+
+
+            // Prints out the list of active loans
+            Helper.PrintLoanList(CustomerActiveLoans);
+
+            int selectedLoan = Helper.ListSelection(CustomerActiveLoans.Count);
+            Loan loan = CustomerActiveLoans[selectedLoan];
+            
+            //Ask user what account they want to payback with
+            Console.Clear();
+            Console.WriteLine("Select which account you want to pay with");
+            Helper.PrintAccountList(CustomerBankAccounts);
+
+
+            int accountChoice = Helper.ListSelection(CustomerBankAccounts.Count);
+            BankAccountBase selectedAccount = CustomerBankAccounts[accountChoice];
+
+            Console.WriteLine($"Enter the amount to repay (remaining balance: {loan.Balance}):");
+            while (true)
+            { 
+            
+                if (decimal.TryParse(Console.ReadLine(), out decimal amount) && amount > 0)
+                {
+                    if (selectedAccount.Balance >= amount)
+                    {
+                       //Prevents the user from paying more than the active loan
+                        if (amount <= loan.Balance)
+                        { 
+                    
+                            selectedAccount.Balance -= amount;
+                            loan.Balance -= amount;
+
+                            Console.WriteLine($"Successfully paid {amount} SEK towards your loan.");
+
+                                if (loan.Balance <= 0)
+                                {
+                                    Console.WriteLine("Loan fully repaid!");
+                                    CustomerActiveLoans.Remove(loan);
+                                    break;
+                                }
+                        
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Cannot pay more than your active loan");
+                            Console.WriteLine("Please enter a new amount");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Insufficient funds in selected account.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. No repayment made.");
+                    Console.WriteLine("Please enter a new amount");
+                }
+            }
+
+            Console.WriteLine("\nPress any key to return to the menu...");
+
+            Console.ReadKey();
         }
         public void LoanRequest()
         {
-            Console.WriteLine("Takes out Loan");
+            Console.Clear();
             // Ask user which account they want the money from the loan to go to
+            Console.WriteLine("Which account would you like the loan to be deposited into");
+            Helper.PrintAccountList(CustomerBankAccounts);
+
+            int input;
+            
+            while (true)
+            {
+                Console.WriteLine("Enter account number: ");
+                if (int.TryParse(Console.ReadLine(), out input) && input > 0 && input <= CustomerBankAccounts.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid account number. Please try again.");
+                }
+            }
+            
+            BankAccountBase selectedAccount = CustomerBankAccounts[input - 1];
+            
             // Ask user the amount they want to borrow
-                // If loan amount isn't more than 5x total balance in all of customer accounts
-                // Show how much customer wants to borrow and how much extra they have to pay in interest
-                    // Ask if they still want to take the loan
-                        // If yes
+            Console.WriteLine("How much would you like to borrow?");
+
+            decimal loanAmount;
+            decimal totalBalance = 0;
+
+            foreach (var account in CustomerBankAccounts)
+            {
+                totalBalance += account.Balance;
+            }
+            
+            // If loan amount isn't more than 5x total balance in all of customer accounts
+            while (true)
+            {
+                if (decimal.TryParse(Console.ReadLine(), out loanAmount) && loanAmount > 0 && loanAmount <= totalBalance * 5)
+                {
+                    break;
+                }
+                else if (loanAmount > totalBalance * 5)
+                {
+                    Console.WriteLine($"You can only borrow up to {totalBalance * 5} SEK");
+                    Console.WriteLine("Please enter a new amount: ");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid amount.");
+                    Console.WriteLine("Please enter a new amount: ");
+                }
+            }
+           
+            // Show how much customer wants to borrow and how much extra they have to pay in interest
+            
+            Console.WriteLine("Choose payback period in months:");
+            decimal paybackInMonths;
+
+            while (true)
+            {
+                if (decimal.TryParse(Console.ReadLine(), out paybackInMonths) && paybackInMonths > 0)
+                {
+                    Console.WriteLine($"Total loan cost:");
+                    Console.WriteLine($"{loanAmount} + {loanAmount * 0.02m * paybackInMonths}");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid amount of months");
+                    Console.WriteLine("Choose payback period in months:");
+                }
+            }
+            
+                // Ask if they still want to take the loan
+                Console.WriteLine("Do you accept the loan?");
+                Console.WriteLine("1. Yes");
+                Console.WriteLine("2. No");
+
+            // If yes
+            int choice;
+
+            while (true)
+            { 
+                if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice < 3)
+                {
+                    switch (choice)
+                    {
                         // Create Loan object
                         // Add Loan object to Customer Loan list
                         // Add Loan to system Loan list
-    }
+                        case 1:
+                            Loan loan = new Loan(loanAmount, 0.02m, this, paybackInMonths);
+                            CustomerActiveLoans.Add(loan);
+                            BankSystem.AllLoan.Add(loan);
+                            selectedAccount.Balance += loanAmount;
+
+                            Console.WriteLine("Loan approved!");
+                            Console.ReadKey();
+
+                            break;
+
+                        case 2:
+                            break;
+                    }
+                        break;
+                }
+                else
+                {
+                    Console.WriteLine("Please select Yes or No");
+                }
+            
+            }
+            
+        }
+
         public void UpdateCustomerInformation()
         {
             // Ask what the user wants to change (mail/phone/password)
