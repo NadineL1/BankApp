@@ -43,11 +43,11 @@ Contains the logic for our three main menus; log-in menu, customer menu, admin m
 The User class holds all the personal information of a user like name, password, e-mail, etc. It is then inherited to create the Customer and Admin classes.
 
 
-**Customer: **
+**Customer:**
 also holds information like which bank accounts are associated with that customer. Customer also holds most of the methods that are called from the customer menu. For example methods that make transaction objects that will later be processed, or methods that allow the user to change the account information of that customer.
 
 
-**Admin: **
+**Admin:**
 only adds the methods called from the adminmenu. 
 
 
@@ -56,11 +56,11 @@ Contains the base bank account properties like the account number, balance, and 
 Inherited into CheckingsAccount and SavingsAccount.
 
 
-**CheckingsAccount: **
+**CheckingsAccount:**
 functions pretty much like BankBaseAccount.
 
 
-**Savingsaccount: **
+**Savingsaccount:**
 adds an interest-rate property that allows us to simulate a savingsaccount accruing interest.
 
 
@@ -68,7 +68,7 @@ adds an interest-rate property that allows us to simulate a savingsaccount accru
 properties: Balance, Interest Users, AmountofMonths, TotalLoanCost method: PrintLoanInfo()
 
 
-**Transactions: **
+**Transactions:**
 Information about the transactions properties: Sender, Receiver, ConvertedAmount, PreConvertedAmount, CurrencyType, DateOfTransaction methods: ExecuteTransaction() PrintTransaction()
 
 
