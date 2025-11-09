@@ -1,9 +1,12 @@
-The BANK APP : Five Bank 
+                                                                            The BANK APP : Five Bank 
 
 This is a group project for school made by: 
 https://github.com/NadineL1
+
 https://github.com/Erkan334
+
 https://github.com/Vic-Linden
+
 https://github.com/EsnoGitAccount
 
 
