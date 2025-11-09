@@ -32,7 +32,7 @@ If you fail to login with customer 3x - the account will be locked
 
 
 
-**CLASSES: **
+**CLASSES:**
 
 
 **Menu:**
